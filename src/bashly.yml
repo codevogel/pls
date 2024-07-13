@@ -68,6 +68,11 @@ commands:
         help: The alias to execute.
         required: true
         validate: not_empty
+  - name: this_does_nothing
+    help: |
+      This command is just for testing purposes.
+      It does nothing. It is only used to test the before hook.
+    private: true
 dependencies:
   yaml_parser:
     command: [ yq ]
