@@ -35,11 +35,13 @@ environment_variables:
     The name of the file that contains the entries.
     It is not recommended to change this value for consistency sake, but you can if you feel the need to do so.
   default: pls.yml 
-- name: pls_tmp_dir
+- name: pls_dir
   help: |
-    The path to the directory used by pls for storing internal temporary files.
-    Is is recommended to keep this value in /tmp/ to avoid cluttering your directories.
-  default: /tmp/pls/
+    The path to the directory used by pls for storing internal files, such as the command cache.
+    It is not recommended to set this to a directory in /tmp/, as this may break caching.
+    Default is determined by '\$HOME/.local/share/pls'.
+    (For you, this points to '$HOME/.local/share/pls')
+  default: $HOME/.local/share/pls
 - name: pls_disable_safe_mode
   help: |
     Disables safe mode. This turns off the verification warning that appears when you run an uncached command.
@@ -65,7 +67,7 @@ commands:
       - name: alias
         help: The alias to execute.
         required: true
-        validate: entry_exists
+        validate: not_empty
 dependencies:
   yaml_parser:
     command: [ yq ]
