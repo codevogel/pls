@@ -3,7 +3,7 @@ Include spec/test_helpers.sh
 BeforeEach 'setup'
 AfterEach 'cleanup'
 
-Describe 'before_spec.sh'
+Describe 'before.sh'
   It 'creates $PLS_DIR if it does not exist'
     export PLS_DIR="/tmp/temp_pls_dir"
     rm -rf "/tmp/temp_pls_dir"

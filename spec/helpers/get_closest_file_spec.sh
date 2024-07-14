@@ -8,7 +8,7 @@ prepare_directory_structure() {
   mkdir -p ./a/b/c
 }
 
-Describe 'src/lib/helpers/get_closest_file.sh'
+Describe 'get_closest_file'
 It 'finds file in same directory'
 touch ./a/b/c/my_file
 When call get_closest_file ./a/b/c my_file
