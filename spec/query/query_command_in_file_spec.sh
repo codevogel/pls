@@ -22,22 +22,30 @@ End
 Describe 'query_command_in_file catches format error'
   
   top_level_error() {
-    echo "Format Error: '$1' should have 'commands' as the (only) top-level node."
+    echo "Format Error: 'samples/query/$1.yml' should have 'commands' as the (only) top-level node."
     echo "It currently has $2 top-level nodes."
     echo "$3 of which are 'commands'."
   }
 
+  occurance_error() {
+    echo "Format Error: 'samples/query/[commands][foo,foo].yml' has multiple commands with the alias 'foo'."
+    echo "It should have only one."
+    echo "It currently has 2 occurances."
+  }
+
   Parameters
-    '[]' 0 0
-    '[notcommands][]' 1 0
-    '[commands,commands][]' 2 2
-    '[commands,notcommands][]' 2 1
+    '[]' "$(top_level_error "[]" 0 0)"
+    '[notcommands][]' "$(top_level_error "[notcommands][]" 1 0)"
+    '[commands,commands][]' "$(top_level_error "[commands,commands][]" 2 2)"
+    '[commands,notcommands][]' "$(top_level_error "[commands,notcommands][]" 2 1)"
+    '[commands][foo,foo]' "$(occurance_error)"
   End
 
   It "getting 'foo' from $1"
     When call query_command_in_file 'foo' "samples/query/$1.yml" 
     The status should be failure
-    The stderr should eq "$(top_level_error "samples/query/$1.yml" $2 $3)"
+    The stderr should eq "$2"
+    The stdout should be blank
   End
 End
 
