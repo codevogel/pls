@@ -4,7 +4,7 @@ global_file="$PLS_GLOBAL"
 local_file="$(get_closest_file "$PWD" "$PLS_FILE_NAME")"
 
 # Query to get command from yml
-query='.commands[] | select(.alias == "'$alias'") | .command'
+query=".commands[] | select(.alias == \"$alias\") | .command"
 
 # Query the global and local files. 
 # Order is important, as local file has higher precedence
