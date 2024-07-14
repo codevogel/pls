@@ -41,7 +41,7 @@ Describe 'query_command_in_file catches format error'
   End
 End
 
-Describe 'query_command_in_file'
+Describe 'query_command_in_file returns command'
   Parameters
     '[commands][foo]' 'foo' 'echo "foo"'
     '[commands][foo,bar]' 'foo' 'echo "foo"'
@@ -50,9 +50,25 @@ Describe 'query_command_in_file'
     '[commands][foo,biz baz]' 'biz baz' 'echo "biz"\necho "baz"'
   End
 
-  It "gets '$2' from $1"
+  It "getting '$2' from $1"
     When call query_command_in_file "$2" "samples/query/$1.yml"
     The status should be success
     The output should eq "$(printf "$3")"
+  End
+End
+
+Describe 'query_command_in_file returns blank when alias not found'
+
+  Parameters
+    '[commands][foo]'
+    '[commands][foo,bar]'
+    '[commands][foo,biz baz]'
+  End
+  
+  local alias='bee'
+  It "getting '$alias' from $1"
+    When call query_command_in_file "$alias" "samples/query/$1.yml"
+    The status should be success
+    The output should be blank
   End
 End
