@@ -1,0 +1,4 @@
+commands:
+  - alias: foo
+    command: |
+      echo "foo"
