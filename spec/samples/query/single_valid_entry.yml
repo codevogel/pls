@@ -1,0 +1,3 @@
+commands:
+  - alias: "echo_foo"
+    command: "echo \"foo\""
