@@ -1,7 +1,7 @@
 commands:
-  - alias: "my_alias"
+  - alias: "foo"
     command: |
       echo "foo"
-  - alias: "my_alias"
+  - alias: "foo"
     command: |
       echo "bar"
