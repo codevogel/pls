@@ -1,4 +1,4 @@
-Include spec/test_helpers.sh
+Include spec/setup_and_cleanup.sh
 Include src/lib/query/query_command_in_file.sh
 
 BeforeEach 'setup'

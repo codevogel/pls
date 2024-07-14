@@ -1,4 +1,4 @@
-Include spec/test_helpers.sh
+Include spec/setup_and_cleanup.sh
 Include src/lib/helpers/get_closest_file.sh
 
 BeforeEach 'setup' 'prepare_directory_structure'

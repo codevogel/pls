@@ -1,4 +1,4 @@
-Include spec/test_helpers.sh
+Include spec/setup_and_cleanup.sh
 
 BeforeEach 'setup'
 AfterEach 'cleanup'
