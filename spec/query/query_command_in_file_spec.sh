@@ -60,6 +60,7 @@ End
 Describe 'query_command_in_file returns blank when alias not found'
 
   Parameters
+    '[commands][]'
     '[commands][foo]'
     '[commands][foo,bar]'
     '[commands][foo,biz baz]'
