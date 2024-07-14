@@ -39,6 +39,12 @@ query_command_in_file() {
 
   if [[ "$num_occurrances" -eq 1 ]]; then
     local command=$(yq ".commands | map(select(.alias == \"$alias\"))[0] | .command" "$file")
+
+    if [[ "$command" == "null" ]]; then
+      echo "Format Error: '$file' has an alias '$alias', but no command." >&2
+      echo "Each alias should have exactly one command." >&2
+      return 1
+    fi
     echo "$command"
   fi
 }
