@@ -1,7 +1,7 @@
 Include spec/setup_and_cleanup.sh
 
-BeforeEach 'setup' 'setup_pls_global'
-AfterEach 'cleanup' 'cleanup_pls_global'
+BeforeEach 'setup'
+AfterEach 'cleanup'
 
 setup_pls_global() {
   PLS_GLOBAL=$(mktemp)
@@ -25,7 +25,7 @@ Describe 'execute_alias'
     End
 
     Example "'$1' in $2"
-      cat "samples/valid/$2.yml" > "$PLS_GLOBAL"
+      cat "samples/valid/$2.yml" > "pls.yml"
       When call ./pls execute_alias "$1"
       The status should be failure
       The output should eq "Alias '$1' was not found."
@@ -34,6 +34,10 @@ Describe 'execute_alias'
 
   Describe 'executes command for alias'
     Describe 'found in $PLS_GLOBAL'
+
+      BeforeEach 'setup_pls_global'
+      AfterEach 'cleanup_pls_global'
+
       Parameters
         'foo' '[commands][foo]' 'foo'
         'foo' '[commands][foo,bar]' 'foo'
@@ -68,6 +72,10 @@ Describe 'execute_alias'
     End
 
     Describe 'found in ./pls.yml over alias found in $PLS_GLOBAL'
+
+      BeforeEach 'setup_pls_global'
+      AfterEach 'cleanup_pls_global'
+
       It "'say' echos 'local' in [commands][say]global and [commands][say]local"
         cat "samples/valid/[commands][say]global.yml" > "$PLS_GLOBAL"
         cat "samples/valid/[commands][say]local.yml" > "./pls.yml"
