@@ -5,6 +5,7 @@ AfterEach 'cleanup' 'cleanup_pls_global'
 
 setup_pls_global() {
   PLS_GLOBAL=$(mktemp)
+  echo "commands:" > "$PLS_GLOBAL"
   export PLS_GLOBAL
 }
 
