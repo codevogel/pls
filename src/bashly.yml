@@ -29,7 +29,7 @@ environment_variables:
     The path to the global .pls file.
     This file contains aliases that are available in all directories.
     Default is determined by '\$HOME/\$PLS_FILE_NAME'.  
-  default: $HOME/.pls
+  default: $HOME/$PLS_FILE_NAME
 - name: pls_file_name
   help: |
     The name of the file that contains the entries.
