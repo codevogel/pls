@@ -1,0 +1,4 @@
+commands:
+  - alias: say
+    command: |
+      echo far
