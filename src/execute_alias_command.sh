@@ -1,6 +1,11 @@
 alias="${args[alias]}"
 
-command=$(query_command "$alias")
+result=$(query_command "$alias" 1)
+
+# command is all but last line
+command=$(echo "$result" | head -n -1)
+# found_in is the last line
+found_in=$(echo "$result" | tail -n 1)
 
 # If no command found, exit
 if [ -z "$command" ]; then
