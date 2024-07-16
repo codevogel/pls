@@ -3,3 +3,5 @@ if [ ! -d $PLS_DIR ]; then
     echo "Failed to create directory $PLS_DIR" 
     exit 1
 fi
+
+validate_format_of_files
