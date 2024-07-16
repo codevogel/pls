@@ -28,8 +28,8 @@ environment_variables:
   help: |
     The path to the global .pls file.
     This file contains aliases that are available in all directories.
-    Default is determined by '\$HOME/\$PLS_FILE_NAME'.  
-  default: $HOME/$PLS_FILE_NAME
+    Default is determined by '\$HOME/pls.yml'.  
+  default: $HOME/pls.yml
 - name: pls_file_name
   help: |
     The name of the file that contains the entries.
