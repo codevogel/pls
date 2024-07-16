@@ -20,3 +20,12 @@ cleanup_global_pls() {
   rm -rf $TEMP_DIR
   unset PLS_GLOBAL
 }
+
+
+setup_temp_pls_dir() {
+  export PLS_DIR="$(mktemp -d)"
+}
+
+cleanup_temp_pls_dir() {
+  rm -rf "$PLS_DIR"
+}
