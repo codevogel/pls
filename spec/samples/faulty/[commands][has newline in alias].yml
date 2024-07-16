@@ -1,0 +1,5 @@
+commands:
+  - alias: |
+      hello
+    command: |
+      echo "world"

@@ -1,0 +1,5 @@
+commands:
+  - alias: foo
+    command: |
+      echo "foo"
+  - command: echo "bar"

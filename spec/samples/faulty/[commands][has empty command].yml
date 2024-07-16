@@ -1,0 +1,3 @@
+commands:
+  - alias: has empty command
+    command: "    "

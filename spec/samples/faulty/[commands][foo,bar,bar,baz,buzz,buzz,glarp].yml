@@ -1,0 +1,22 @@
+commands:
+  - alias: foo
+    command: |
+      echo "foo"
+  - alias: bar
+    command: |
+      echo "bar"
+  - alias: bar
+    command: |
+      echo "bar"
+  - alias: baz
+    command: |
+      echo "baz"
+  - alias: buzz
+    command: | 
+      echo "buzz"
+  - alias: buzz
+    command: |
+      echo "buzz"
+  - alias: glarp
+    command: |
+      echo "glarp"
