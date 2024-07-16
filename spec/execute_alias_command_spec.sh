@@ -1,18 +1,7 @@
 Include spec/setup_and_cleanup.sh
 
-BeforeEach 'setup'
-AfterEach 'cleanup'
-
-setup_pls_global() {
-  PLS_GLOBAL=$(mktemp)
-  echo "commands:" > "$PLS_GLOBAL"
-  export PLS_GLOBAL
-}
-
-cleanup_pls_global() {
-  rm "$PLS_GLOBAL"
-  unset PLS_GLOBAL
-}
+BeforeEach 'setup' 'setup_global_pls'
+AfterEach 'cleanup' 'cleanup_global_pls'
 
 Describe 'execute_alias'
 
