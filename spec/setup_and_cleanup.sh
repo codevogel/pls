@@ -4,6 +4,7 @@ setup() {
   cp -r spec/samples $TESTING_CWD
   cd $TESTING_CWD
   export PLS_FILE_NAME="pls.yml"
+  export PLS_DISABLE_SAFE_MODE="true"
 }
 
 cleanup() {
