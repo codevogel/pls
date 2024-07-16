@@ -24,8 +24,8 @@ Describe 'execute_alias'
   Describe 'executes command for alias'
     Describe 'found in $PLS_GLOBAL'
 
-      BeforeEach 'setup_pls_global'
-      AfterEach 'cleanup_pls_global'
+      BeforeEach 'setup_global_pls'
+      AfterEach 'cleanup_global_pls'
 
       Parameters
         'foo' '[commands][foo]' 'foo'
@@ -62,8 +62,8 @@ Describe 'execute_alias'
 
     Describe 'found in ./pls.yml over alias found in $PLS_GLOBAL'
 
-      BeforeEach 'setup_pls_global'
-      AfterEach 'cleanup_pls_global'
+      BeforeEach 'setup_global_pls'
+      AfterEach 'cleanup_global_pls'
 
       It "'say' echos 'local' in [commands][say]global and [commands][say]local"
         cat "samples/valid/[commands][say]global.yml" > "$PLS_GLOBAL"
