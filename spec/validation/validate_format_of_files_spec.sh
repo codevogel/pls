@@ -14,8 +14,6 @@ Describe 'validate_format_of_files catches format error'
   AfterEach 'cleanup' 'cleanup_global_pls'
 
   Describe "of type 'top level error'"
-    local global="$PLS_GLOBAL"
-
     Parameters
       # $1: destination file
       # $2: sample file
@@ -30,8 +28,8 @@ Describe 'validate_format_of_files catches format error'
       './pls.yml' '[commands,commands][]' 2 2
       './pls.yml' '[commands,notcommands][]' 2 1
     End
-
-    It "in $1 when sample is $2"
+    
+    Example "in $1 when sample is $2"
       top_level_error() {
         local file="$1"
         local toplevel_nodes_count="$2"
