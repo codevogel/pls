@@ -5,13 +5,42 @@ BeforeEach 'setup' 'setup_temp_pls_dir'
 AfterEach 'cleanup' 'cleanup_temp_pls_dir'
 
 Describe 'add_to_cache'
+
+  Describe 'validation'
+    Describe 'fails when argument is blank'
+      Parameters
+        'origin' '' 'foo' 'echo "foo"'
+        'alias' 'origin' '' 'echo "foo"'
+        'command' 'origin' 'foo' ''
+      End
+
+      Example "'$1'"
+        When call add_to_cache "$2" "$3" "$4"
+        The status should be failure
+        The stderr should eq "Usage Error: add_to_cache <origin> <alias> <command>"
+      End
+    End
+
+    Describe 'fails when $PLS_DIR does not point to valid directory'
+      
+      Parameters:value '""' '/tmp/foo/this-directory-does-not-exist'
+      
+      Example "$1"
+        export PLS_DIR="$2"
+        When call add_to_cache "origin" "foo" "echo \"foo\""
+        The status should be failure
+        The stderr should eq "Env Error: PLS_DIR is not set or is not a directory"
+      End
+    End
+  End
+
   Describe 'adds single line command to the cache'
     Parameters
       'origin foo' 'foo' 'echo "foo"'
       'origin bar' 'bar' 'echo "bar"'
     End
 
-    It 'for alias '$2''
+    It "for alias '$2'"
       When call add_to_cache "$1" "$2" "$3"
       The contents of file "$PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: $3")"
     End
@@ -27,7 +56,7 @@ Describe 'add_to_cache'
       echo "    $1" | sed 's/\\n/\n    /'
     }
 
-    It "for alias $2"
+    It "for alias '$2'"
       When call add_to_cache "$1" "$2" 'echo "biz"\necho "baz"'
       The contents of file "$PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: |-\n$(correct_tab_format "$3")\n")" 
     End
