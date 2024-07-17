@@ -14,6 +14,9 @@ if [ -z "$command" ]; then
 fi
 
 prompt_to_continue() {
+    if [[ "$is_cached" == "true" ]]; then
+      echo "This command is already cached."
+    fi
     echo 
     echo "$command"
     echo
@@ -26,19 +29,13 @@ prompt_to_continue() {
     fi
 }
 
-can_continue=false
-# If safe mode is not disabled
-if [[ ! "$PLS_DISABLE_SAFE_MODE" == "true" ]]; then
-  # Check if command is missing from cache
-  if ! exists_in_cache "$found_in" "$alias" "$command"; then
+if exists_in_cache "$found_in" "$alias" "$command"; then
+    if [[ "$PLS_ENABLE_EXTRA_SAFE_MODE" == "true" ]]; then
+      prompt_to_continue
+    fi 
+elif [[ "$PLS_ENABLE_SAFE_MODE" == "true" || "$PLS_ENABLE_EXTRA_SAFE_MODE" == "true" ]]; then
     echo "Alias '$alias' was found in '$found_in', but this command seems new."
     prompt_to_continue
-    can_continue=true
-  fi
-fi
-
-if [[ (! can_continue) || "$PLS_ENABLE_EXTRA_SAFE_MODE" == "true" ]]; then
-  prompt_to_continue
 fi
 
 # Invoke the command and cache it
