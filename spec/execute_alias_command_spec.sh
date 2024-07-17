@@ -24,9 +24,6 @@ Describe 'execute_alias'
   Describe 'executes command for alias'
     Describe 'found in $PLS_GLOBAL'
 
-      BeforeEach 'setup_global_pls'
-      AfterEach 'cleanup_global_pls'
-
       Parameters
         'foo' '[commands][foo]' 'foo'
         'foo' '[commands][foo,bar]' 'foo'
@@ -121,114 +118,101 @@ Describe 'execute_alias'
   End
 
   Describe 'cache validation'
-    Describe 'prompts for continue if SAFE MODE is off'
-      Parameters
-        # $1: alias
-        # $2: sample
-        # $3: command
-        # $4: expected output
-        'foo' '[commands][foo]' 'echo "foo"' 'foo'
-        'foo' '[commands][foo,bar]' 'echo "foo"' 'foo'
-        'bar' '[commands][foo,bar]' 'echo "bar"' 'bar'
-        'foo' '[commands][foo,biz baz]' 'echo "foo"' 'foo'
-        'biz baz' '[commands][foo,biz baz]' 'echo "biz"\necho "baz"' 'biz\nbaz'
+
+    BeforeEach 'setup_temp_pls_dir'
+    AfterEach 'cleanup_temp_pls_dir'
+
+    setup_modes() { 
+      export PLS_ENABLE_SAFE_MODE="$1"
+      export PLS_ENABLE_EXTRA_SAFE_MODE="$2"
+    }
+
+    unset_modes() {
+      unset PLS_ENABLE_SAFE_MODE
+      unset PLS_ENABLE_EXTRA_SAFE_MODE
+    }
+
+    Describe "when SAFE MODE is 'true' and EXTRA SAFE MODE is 'false'"
+
+      BeforeEach 'setup_modes true false'
+      AfterEach 'unset_modes'
+
+      It 'prompts when not cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        The status should be success
+        The output should include "this command seems new"
       End
 
-      expected_stdout() {
-        local alias="$1"
-        local file="$2"
-        local command="$3"
-        local expected_output="$4"
-        %= "Alias '$1' was found in '$2', but this command seems new."
-        %= ""
-        %= "$(printf "$3")"
-        %= ""
-        %= ""
-        %= "$(printf "$4")"
-      }
-
-      It "'$1' in $2"
-        export PLS_DISABLE_SAFE_MODE="not true!"
-        cat "samples/valid/$2.yml" > "./pls.yml"
-        When call bash -c "echo y | ./pls execute_alias \"$1\""
+      It 'is quiet when cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
         The status should be success
-        The output should eq "$(expected_stdout "$1" "$(realpath ./pls.yml)" "$3" "$4")"
+        The output should eq "foo"
       End
     End
 
+    Describe "when SAFE MODE is 'true' and EXTRA SAFE MODE is 'true'"
 
-    Describe 'silent when command is in cache'
-      Parameters
-        # $1: alias
-        # $2: sample
-        # $3: command
-        # $4: expected output
-        'foo' '[commands][foo]' 'foo'
-        'foo' '[commands][foo,bar]' 'foo'
-        'bar' '[commands][foo,bar]' 'bar'
-        'foo' '[commands][foo,biz baz]' 'foo'
-        'biz baz' '[commands][foo,biz baz]' 'biz\nbaz'
+      BeforeEach 'setup_modes true true'
+      AfterEach 'unset_modes'
+
+      It 'only prompts once when not cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        The status should be success
+        The output should eq "$(printf "Alias 'foo' was found in '$(realpath ./pls.yml)', but this command seems new.\n\necho \"foo\"\n\n\nfoo")"
       End
 
-      expected_stdout() {
-        local alias="$1"
-        local file="$2"
-        local command="$3"
-        local expected_output="$4"
-        %= "Alias '$1' was found in '$2', but this command seems new."
-        %= ""
-        %= "$(printf "$3")"
-        %= ""
-        %= ""
-        %= "$(printf "$4")"
-      }
-
-      It "'$1' in $2"
-        export PLS_DISABLE_SAFE_MODE="not true!"
-        cat "samples/valid/$2.yml" > "./pls.yml"
-        # Run once to cache the command
-        bash -c "echo y | ./pls execute_alias \"$1\"" > /dev/null
-        # Call again to see if it prompts
-        When call ./pls execute_alias "$1"
+      It 'it prompts when already cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
         The status should be success
-        The output should eq "$(printf "$3")"
+        The output should eq "$(printf "\necho \"foo\"\n\n\nfoo")"
       End
     End
 
-    Describe 'always prompts when PLS_ENABLE_EXTRA_SAFE_MODE is true'
-      Parameters
-        # $1: alias
-        # $2: sample
-        # $3: command
-        # $4: expected output
-        'foo' '[commands][foo]' 'echo "foo"' 'foo'
-        'foo' '[commands][foo,bar]' 'echo "foo"' 'foo'
-        'bar' '[commands][foo,bar]' 'echo "bar"' 'bar'
-        'foo' '[commands][foo,biz baz]' 'echo "foo"' 'foo'
-        'biz baz' '[commands][foo,biz baz]' 'echo "biz"\necho "baz"' 'biz\nbaz'
+    Describe "when SAFE MODE is 'false' and EXTRA SAFE MODE is 'false'"
+
+      BeforeEach 'setup_modes false false'
+      AfterEach 'unset_modes'
+
+      It 'is quiet when not cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        The status should be success
+        The output should eq "$(printf "foo")"
       End
 
-      expected_stdout() {
-        local alias="$1"
-        local file="$2"
-        local command="$3"
-        local expected_output="$4"
-        %= ""
-        %= "$(printf "$3")"
-        %= ""
-        %= ""
-        %= "$(printf "$4")"
-      }
-
-      It "'$1' in $2"
-        export PLS_ENABLE_EXTRA_SAFE_MODE="true"
-        cat "samples/valid/$2.yml" > "./pls.yml"
-        # Run once to cache the command
-        bash -c "echo y | ./pls execute_alias \"$1\"" > /dev/null
-        # Call again to see if it prompts
-        When call bash -c "echo y | ./pls execute_alias \"$1\""
+      It 'it is quiet when already cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
         The status should be success
-        The output should eq "$(expected_stdout "$1" "$(realpath ./pls.yml)" "$3" "$4")"
+        The output should eq "$(printf "foo")"
+      End
+    End
+
+    Describe "when SAFE MODE is 'false' and EXTRA SAFE MODE is 'true'"
+
+      BeforeEach 'setup_modes false true'
+      AfterEach 'unset_modes'
+
+      It 'it prompts fully when not cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        The status should be success
+        The output should eq "$(printf "Alias 'foo' was found in '$(realpath ./pls.yml)', but this command seems new.\n\necho \"foo\"\n\n\nfoo")"
+      End
+
+      It 'it prompts partially when cached'
+        cat "samples/valid/[commands][foo].yml" > "./pls.yml"
+        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        The status should be success
+        The output should eq "$(printf "\necho \"foo\"\n\n\nfoo")"
       End
     End
   End
