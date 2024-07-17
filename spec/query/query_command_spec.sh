@@ -26,39 +26,43 @@ Describe 'query_command'
 
   Describe 'returns command'
     Parameters
-      '$PLS_GLOBAL' '[commands][foo]' 'foo' 'echo "foo"'
-      '$PLS_GLOBAL' '[commands][foo,bar]' 'foo' 'echo "foo"'
-      '$PLS_GLOBAL' '[commands][foo,bar]' 'bar' 'echo "bar"'
-      '$PLS_GLOBAL' '[commands][foo,biz baz]' 'foo' 'echo "foo"'
-      '$PLS_GLOBAL' '[commands][foo,biz baz]' 'biz baz' 'echo "biz"\necho "baz"'
-      './pls.yml' '[commands][foo]' 'foo' 'echo "foo"'
-      './pls.yml' '[commands][foo,bar]' 'foo' 'echo "foo"'
-      './pls.yml' '[commands][foo,bar]' 'bar' 'echo "bar"'
-      './pls.yml' '[commands][foo,biz baz]' 'foo' 'echo "foo"'
-      './pls.yml' '[commands][foo,biz baz]' 'biz baz' 'echo "biz"\necho "baz"'
+      '[commands][foo]' 'foo' 'echo "foo"'
+      '[commands][foo,bar]' 'foo' 'echo "foo"'
+      '[commands][foo,bar]' 'bar' 'echo "bar"'
+      '[commands][foo,biz baz]' 'foo' 'echo "foo"'
+      '[commands][foo,biz baz]' 'biz baz' 'echo "biz"\necho "baz"'
+    End
+    Describe 'in $PLS_GLOBAL'
+      Example "$(printf '%s in %s' "$2" "$1")"
+        cat "samples/valid/$1.yml" > "$PLS_GLOBAL"
+        When call query_command "$2"
+        The status should be success
+        The output should eq "$(printf "$3")"
+      End
     End
 
-    It "getting '$3' from $2 in $1"
-      local destination="$(get_destination "$1")"
-      cat "samples/valid/$2.yml" > "$destination"
-      When call query_command "$3"
-      The status should be success
-      The output should eq "$(printf "$4")"
+    Describe 'in ./pls.yml'
+      Example "$(printf '%s in %s' "$2" "$1")"
+        cat "samples/valid/$1.yml" > "./pls.yml"
+        When call query_command "$2"
+        The status should be success
+        The output should eq "$(printf "$3")"
+      End
     End
   End
 
-  Describe 'returns blank when alias not found'
-
+  Describe 'returns blank when alias not found and'
     Parameters
-      '[commands][]'
-      '[commands][foo]'
-      '[commands][foo,bar]'
-      '[commands][foo,biz baz]'
+      'not' 'not' 'neither'
+      '$PLS_GLOBAL' 'not' 'global'
+      'not' './pls.yml' 'local'
+      '$PLS_GLOBAL' './pls.yml' 'global and local'
     End
-    
-    local alias='bee'
-    It "getting '$alias' from $1"
-      When call query_command "$alias" 
+
+    Example "$3 pls.yml exists"
+    cat "samples/valid/[commands][foo].yml" > $([[ "$1" == '$PLS_GLOBAL' ]] && echo "$PLS_GLOBAL" || echo "$1")
+      cat "samples/valid/[commands][foo].yml" > "$2"
+      When call query_command 'bar'
       The status should be success
       The output should be blank
     End
