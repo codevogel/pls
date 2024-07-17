@@ -13,7 +13,7 @@ Describe 'execute_alias'
       'bee' '[commands][foo,biz baz]'
     End
 
-    Example "'$1' in $2"
+    Example "'$1' not in $2"
       cat "samples/valid/$2.yml" > "pls.yml"
       When call ./pls execute_alias "$1"
       The status should be failure
