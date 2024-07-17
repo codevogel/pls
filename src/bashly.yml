@@ -68,6 +68,31 @@ commands:
         help: The alias to execute.
         required: true
         validate: not_empty
+  - name: list_aliases
+    alias: [ li ] # Not using ls or list to accomodate for aliases with those names.
+    help: |
+      List all aliases available for invocation in the current directory.
+    flags:
+      - short: -c
+        long: --command
+        help: |
+          Also show the command associated with each alias.
+      - short: -l
+        long: --local
+        help: |
+          Lists only aliases available in the local context.
+        conflicts: [ --global, --all ]
+      - short: -g
+        long: --global
+        help: |
+          Lists only aliases available in the global context.
+        conflicts: [ --local, --all ]
+      - short: -a
+        long: --all
+        help: |
+          Shows aliases in local and global context, even if local alias overwrites global.
+        conflicts: [ --local, --global ]
+       
   - name: this_does_nothing
     help: |
       This command is just for testing purposes.
