@@ -42,16 +42,16 @@ environment_variables:
     Default is determined by '\$HOME/.local/share/pls'.
     (For you, this points to '$HOME/.local/share/pls')
   default: $HOME/.local/share/pls
-- name: pls_disable_safe_mode
+- name: pls_enable_safe_mode
   help: |
-    Disables safe mode. This turns off the verification warning that appears when you run an uncached command.
-    This is not recommended,  especially on sensitive systems. Will not affect extra safe mode.
-  default: false
-- name: pls_extra_safe_mode
+    Enable or disable safe mode. This turns off the verification warning that appears when you run an uncached command.
+    This is not recommended, especially not on sensitive systems. Will not affect extra safe mode.
+  default: "true"
+- name: pls_enable_extra_safe_mode
   help: |
     Enables extra safe mode. This will prompt you to confirm every command before running it, even if it is cached.
     Does not assure that the command is safe, but it does give you a chance to review it.
-  default: false
+  default: "false"
 - name: pls_mock_root
   help: |
     For internal testing purposes only. This variable is used to mock the location of the root directory of the file system.
