@@ -42,7 +42,7 @@ Describe 'exists_in_cache'
       "bar origin" "bar" 'echo "bar"\necho "BAR!"'
     End
 
-    Example "$(printf '%-12s | %-10s | %-15s \n' "$1" "$2" "$3")" 
+    Example "$(printf '%-12s | %-7s | %-15s \n' "$1" "$2" "$3")" 
       echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be success
@@ -57,7 +57,7 @@ Describe 'exists_in_cache'
       "foo origin" "baz" 'faulty command'
     End
 
-    Example "$(printf '%-12s | %-10s | %-15s \n' "$1" "$2" "$3")" 
+    Example "$(printf '%-12s | %-7s | %-15s \n' "$1" "$2" "$3")" 
       echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be failure
