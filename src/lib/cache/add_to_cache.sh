@@ -6,13 +6,13 @@ add_to_cache() {
 
   # Check if all arguments are provided
   if [ -z "$origin" ] || [ -z "$alias" ] || [ -z "$command" ]; then
-    echo "Usage Error: add_to_cache <origin> <alias> <command>"
+    echo "Usage Error: add_to_cache <origin> <alias> <command>" >&2
     return 1
   fi
 
   # Create cache if it does not exist
   if [[ ! -d "$PLS_DIR" ]]; then
-    echo "Env Error: PLS_DIR is not set or is not a directory"
+    echo "Env Error: PLS_DIR is not set or is not a directory" >&2
     return 1
   fi
   [[ ! -f "$cache_file" ]] && touch "$cache_file"
