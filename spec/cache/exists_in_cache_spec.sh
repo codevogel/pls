@@ -34,7 +34,7 @@ Describe 'exists_in_cache'
     End 
   End
 
-  Describe 'succeeds for'
+  Describe 'succeeds for cached origin|alias|command'
     Parameters
       "foo origin" "foo" 'echo "foo"'
       "foo origin" "bar" 'echo "bar"'
@@ -42,7 +42,7 @@ Describe 'exists_in_cache'
       "bar origin" "bar" 'echo "bar"\necho "BAR!"'
     End
 
-    It "origin '$1', alias '$2', and command '$3'"
+    Example "$(printf '%-12s | %-10s | %-15s \n' "$1" "$2" "$3")" 
       echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be success
@@ -50,14 +50,14 @@ Describe 'exists_in_cache'
     End
   End
 
-  Describe 'fails for'
+  Describe 'fails for uncached origin|alias|command'
     Parameters
       "faultyorigin" "foo" 'echo "foo"'
-      "foo origin" "faulty alias" 'echo "bar"'
+      "foo origin" "faulty" 'echo "bar"'
       "foo origin" "baz" 'faulty command'
     End
 
-    It "origin '$1', alias '$2', and command '$3'"
+    Example "$(printf '%-12s | %-10s | %-15s \n' "$1" "$2" "$3")" 
       echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be failure
