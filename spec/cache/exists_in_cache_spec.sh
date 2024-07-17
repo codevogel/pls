@@ -18,6 +18,22 @@ content_in_cache() {
 }
 
 Describe 'exists_in_cache'
+  Describe 'validation'
+    Describe 'fails when argument is blank'
+      Parameters
+        'origin' '' 'foo' 'echo "foo"'
+        'alias' 'origin' '' 'echo "foo"'
+        'command' 'origin' 'foo' ''
+      End
+
+      Example "'$1'"
+        When call exists_in_cache "$2" "$3" "$4"
+        The status should be failure
+        The stderr should eq "Usage Error: exists_in_cache <origin> <alias> <command>"
+      End
+    End 
+  End
+
   Describe 'succeeds for'
     Parameters
       "foo origin" "foo" 'echo "foo"'
