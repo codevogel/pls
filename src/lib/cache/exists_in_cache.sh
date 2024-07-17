@@ -3,6 +3,11 @@ exists_in_cache() {
   local alias="$2"
   local command="$3"
 
+  if [[ -z "$origin" || -z "$alias" || -z "$command" ]]; then
+    echo "Usage Error: exists_in_cache <origin> <alias> <command>" >&2
+    return 1
+  fi
+
   if [ ! -f "$PLS_DIR/.cache.yml" ]; then
     return 1
   fi
