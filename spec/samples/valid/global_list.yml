@@ -1,0 +1,9 @@
+commands:
+  - alias: foo
+    command: echo "global foo"
+  - alias: bar
+    command: echo "global bar"
+  - alias: biz baz
+    command: |
+      echo "global biz"
+      echo "global baz"

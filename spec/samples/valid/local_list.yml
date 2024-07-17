@@ -1,0 +1,7 @@
+commands:
+  - alias: foo
+    command: echo "local foo"
+  - alias: biz baz
+    command: |
+      echo "local biz"
+      echo "local baz"
