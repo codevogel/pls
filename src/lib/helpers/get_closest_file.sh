@@ -8,7 +8,8 @@ get_closest_file() {
     # If we reach the root directory, return an empty string.
     local current_dir="$(realpath $from_dir)"
     while [ "$current_dir" != "/" ]; do
-        if [ -f "$current_dir/$target_file" ]; then
+        local file_path="$current_dir/$target_file"
+        if [[ -f "$file_path" && "$file_path" != "$PLS_GLOBAL" ]]; then
             # Echo the path of the file
             # (If the current directory is the mock root,
             #  return path as if it were the root directory)
