@@ -1,7 +1,9 @@
 commands:
-  - alias: foo
-    command: echo "local foo"
-  - alias: biz baz
-    command: |
-      echo "local biz"
-      echo "local baz"
+  - alias: foxtrot-local
+    command: echo "local foxtrot"
+  - alias: delta-local
+    command: echo "local delta"
+  - alias: bravo-local
+    command: echo "local bravo"
+  - alias: duplicate
+    command: echo "local duplicate"

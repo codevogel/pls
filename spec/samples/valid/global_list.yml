@@ -1,9 +1,13 @@
 commands:
-  - alias: foo
-    command: echo "global foo"
-  - alias: bar
-    command: echo "global bar"
-  - alias: biz baz
+  - alias: zulu-global
+    command: echo "global zulu"
+  - alias: alpha-global
+    command: echo "global alpha"
+  - alias: echo-global
     command: |
-      echo "global biz"
-      echo "global baz"
+      echo "global echo!"
+      echo "...global echo!"
+  - alias: charlie-global
+    command: echo "global charlie"
+  - alias: duplicate
+    command: echo "global duplicate"
