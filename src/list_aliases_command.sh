@@ -40,16 +40,15 @@ list_aliases() {
     echo "None found."
     return
   fi
-
-  local alias_query='.commands | sort_by(.alias) | .[] | "-> " + .alias'
-  local command_query='.commands | sort_by(.alias) | .[] | "-> " + .alias + "\n" + (.command | split("\n") | map(select(. != "") | "   " + .) | join("\n"))'
+  local alias_query='.commands | sort_by(.alias) | .[] | .alias'
+  local command_query='.commands | sort_by(.alias) | .[] | .alias + "\n" + (.command | split("\n") | map(select(. != "") | "   " + .) | join("\n"))'
   yq e "$([[ "$should_print_command" ]] && echo "$command_query" || echo "$alias_query")" "$file"
 }
 
 if [[ "$flag_all" ]]; then
-  echo "Global aliases:"
+  echo "--- Global Aliases ---"
   list_aliases "$global_file" "$flag_command"
-  echo "Local aliases:"
+  echo "--- Local Aliases ---"
   list_aliases "$local_file" "$flag_command"
 elif [[ "$flag_global" ]]; then
   list_aliases "$global_file" "$flag_command"

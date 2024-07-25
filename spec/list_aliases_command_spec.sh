@@ -6,29 +6,29 @@ AfterEach 'cleanup' 'cleanup_global_pls' 'cleanup_temp_pls_dir'
 Describe 'list_aliases_command'
 
   expected_output_both() {
-    %= '-> alpha-global *'
-    %= '-> bravo-local'
-    %= '-> charlie-global *'
-    %= '-> delta-local'
-    %= '-> duplicate'
-    %= '-> echo-global *'
-    %= '-> foxtrot-local'
-    %= '-> zulu-global *'
+    %= 'alpha-global *'
+    %= 'bravo-local'
+    %= 'charlie-global *'
+    %= 'delta-local'
+    %= 'duplicate'
+    %= 'echo-global *'
+    %= 'foxtrot-local'
+    %= 'zulu-global *'
   }
 
   expected_output_local() {
-    %= '-> bravo-local'
-    %= '-> delta-local'
-    %= '-> duplicate'
-    %= '-> foxtrot-local'
+    %= 'bravo-local'
+    %= 'delta-local'
+    %= 'duplicate'
+    %= 'foxtrot-local'
   }
 
   expected_output_global() {
-    %= '-> alpha-global *'
-    %= '-> charlie-global *'
-    %= '-> duplicate *'
-    %= '-> echo-global *'
-    %= '-> zulu-global *'
+    %= 'alpha-global *'
+    %= 'charlie-global *'
+    %= 'duplicate *'
+    %= 'echo-global *'
+    %= 'zulu-global *'
   }
 
   Describe 'prints aliases from local and global files'
@@ -86,11 +86,11 @@ Describe 'list_aliases_command'
   Describe 'prints aliases from only global file with -g flag'
     Example 'when global and local exist'
       expected_output_global() {
-        %= '-> alpha-global'
-        %= '-> charlie-global'
-        %= '-> duplicate'
-        %= '-> echo-global'
-        %= '-> zulu-global'
+        %= 'alpha-global'
+        %= 'charlie-global'
+        %= 'duplicate'
+        %= 'echo-global'
+        %= 'zulu-global'
       }
       cat samples/valid/local_list.yml > ./pls.yml
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
@@ -110,45 +110,45 @@ Describe 'list_aliases_command'
 
   Describe 'it prints aliases grouped by global and local with -a flag'
     expected_output_global() {
-      %= '-> alpha-global'
-      %= '-> charlie-global'
-      %= '-> duplicate'
-      %= '-> echo-global'
-      %= '-> zulu-global'
+      %= 'alpha-global'
+      %= 'charlie-global'
+      %= 'duplicate'
+      %= 'echo-global'
+      %= 'zulu-global'
     }
 
     expected_output_local() {
-      %= '-> bravo-local'
-      %= '-> delta-local'
-      %= '-> duplicate'
-      %= '-> foxtrot-local'
+      %= 'bravo-local'
+      %= 'delta-local'
+      %= 'duplicate'
+      %= 'foxtrot-local'
     }
 
     expected_output_both() {
-      %= 'Global aliases:'
+      %= '--- Global Aliases ---'
       expected_output_global
-      %= 'Local aliases:'
+      %= '--- Local Aliases ---'
       expected_output_local
     }
 
     expected_output_only_local() {
-      %= 'Global aliases:'
+      %= '--- Global Aliases ---'
       %= 'None found.'
-      %= 'Local aliases:'
+      %= '--- Local Aliases ---'
       expected_output_local
     }
 
     expected_output_only_global() {
-      %= 'Global aliases:'
+      %= '--- Global Aliases ---'
       expected_output_global
-      %= 'Local aliases:'
+      %= '--- Local Aliases ---'
       %= 'None found.'
     }
 
     expected_output_neither() {
-      %= 'Global aliases:'
+      %= '--- Global Aliases ---'
       %= 'None found.'
-      %= 'Local aliases:'
+      %= '--- Local Aliases ---'
       %= 'None found.'
     }
 
@@ -186,22 +186,22 @@ Describe 'list_aliases_command'
   Describe 'prints commands with -c flag'
 
     expected_output_plain() {
-      %= '-> alpha-global *'
+      %= 'alpha-global *'
       %= '   echo "global alpha"'
-      %= '-> bravo-local'
+      %= 'bravo-local'
       %= '   echo "local bravo"'
-      %= '-> charlie-global *'
+      %= 'charlie-global *'
       %= '   echo "global charlie"'
-      %= '-> delta-local'
+      %= 'delta-local'
       %= '   echo "local delta"'
-      %= '-> duplicate'
+      %= 'duplicate'
       %= '   echo "local duplicate"'
-      %= '-> echo-global *'
+      %= 'echo-global *'
       %= '   echo "global echo!"'
       %= '   echo "...global echo!"'
-      %= '-> foxtrot-local'
+      %= 'foxtrot-local'
       %= '   echo "local foxtrot"'
-      %= '-> zulu-global *'
+      %= 'zulu-global *'
       %= '   echo "global zulu"'
     }
 
@@ -214,16 +214,16 @@ Describe 'list_aliases_command'
     End
 
     expected_output_global() {
-      %= '-> alpha-global'
+      %= 'alpha-global'
       %= '   echo "global alpha"'
-      %= '-> charlie-global'
+      %= 'charlie-global'
       %= '   echo "global charlie"'
-      %= '-> duplicate'
+      %= 'duplicate'
       %= '   echo "global duplicate"'
-      %= '-> echo-global'
+      %= 'echo-global'
       %= '   echo "global echo!"'
       %= '   echo "...global echo!"'
-      %= '-> zulu-global'
+      %= 'zulu-global'
       %= '   echo "global zulu"'
     }
 
@@ -236,13 +236,13 @@ Describe 'list_aliases_command'
     End
 
     expected_output_local() {
-      %= '-> bravo-local'
+      %= 'bravo-local'
       %= '   echo "local bravo"'
-      %= '-> delta-local'
+      %= 'delta-local'
       %= '   echo "local delta"'
-      %= '-> duplicate'
+      %= 'duplicate'
       %= '   echo "local duplicate"'
-      %= '-> foxtrot-local'
+      %= 'foxtrot-local'
       %= '   echo "local foxtrot"'
     }
 
@@ -255,9 +255,9 @@ Describe 'list_aliases_command'
     End
 
     expected_output_both() {
-      %= 'Global aliases:'
+      %= '--- Global Aliases ---'
       expected_output_global
-      %= 'Local aliases:'
+      %= '--- Local Aliases ---'
       expected_output_local
     }
 
