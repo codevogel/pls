@@ -70,10 +70,6 @@ commands:
     help: |
       List all aliases available for invocation in the current directory.
     flags:
-      - short: -c
-        long: --command
-        help: |
-          Also show the command associated with each alias.
       - short: -l
         long: --local
         help: |
@@ -89,6 +85,10 @@ commands:
         help: |
           Shows aliases in local and global context, even if local alias overwrites global.
         conflicts: [ --local, --global ]
+      - short: -c
+        long: --command
+        help: |
+          Also show the command associated with each alias.
   - name: pick_alias
     alias: [ p ]
     help: |
