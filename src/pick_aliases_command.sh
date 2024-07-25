@@ -6,7 +6,7 @@ if [[ "$current_list" == "No aliases found." ]]; then
 fi
 
 # if fzf is not installed, exit
-if command -v fzf &> /dev/null; then
+if [[ "$PLS_ENABLE_FZF" == "true" && $(command -v fzf &> /dev/null) -eq 0 ]]; then
   picked_alias="$(echo "$current_list" | fzf)"
   # Remove ' *' from the end of the alias if it exists
 else

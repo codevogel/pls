@@ -6,6 +6,7 @@ setup() {
   export PLS_FILE_NAME="pls.yml"
   export PLS_ENABLE_SAFE_MODE="false"
   export PLS_ENABLE_EXTRA_SAFE_MODE="false"
+  export PLS_ENABLE_FZF="true"
 }
 
 cleanup() {

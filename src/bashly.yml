@@ -58,6 +58,11 @@ environment_variables:
     Do not change this value unless you know what you are doing.
   default: ""
   private: true
+- name: pls_enable_fzf
+  help: |
+    Enable or disable the use of fzf for interactive selection.
+    This is only used for the 'pick_aliases' command.
+  default: "true"
 commands:
   - name: execute_alias
     help: |
