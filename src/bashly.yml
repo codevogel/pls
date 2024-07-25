@@ -65,8 +65,6 @@ commands:
     args:
       - name: alias
         help: The alias to execute.
-        required: true
-        validate: not_empty
   - name: list_aliases
     alias: [ li ] # Not using ls or list to accomodate for aliases with those names.
     help: |
