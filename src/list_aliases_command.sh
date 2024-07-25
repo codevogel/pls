@@ -6,32 +6,6 @@ flag_all="${args[--all]}"
 local_file="$(get_closest_file "$PWD" "$PLS_FILE_NAME")"
 global_file="$PLS_GLOBAL"
 
-combine_files() {
-  echo "commands:" > "$PLS_DIR/.combined.yml"
-  if [ -f "$local_file" ] && [ -f "$global_file" ]; then
-    # Append the two files, replacing commands: with a: and b: respectively
-    local temp_file="$(mktemp)"
-    sed "s/commands:/local:/" "$local_file" > "$temp_file"
-    sed "s/commands:/global:/" "$global_file" >> "$temp_file"
-    # Add a (*) to all aliases that are in the a: section
-    yq e -i '.commands = ((.global | map(.alias = .alias + " *")) + .local) | del(.global,.local)' "$temp_file"
-    yq eval '
-      .commands |= (
-      map(select(.alias | test(" \\*$") | not)) + 
-      map(select(.alias | test(" \\*$"))) | 
-      unique_by(.alias | sub(" \\*$"; "")) |
-      sort_by(.alias)
-    )' "$temp_file" > "$PLS_DIR/.combined.yml"
-  elif [ -f "$local_file" ]; then
-    cat "$local_file" > "$PLS_DIR/.combined.yml"
-  elif [ -f "$global_file" ]; then
-    if [[ "$(yq e '.commands | length' "$global_file")" -eq 0 ]]; then
-      return
-    fi
-    yq eval '.commands | map(.alias = .alias + " *")' "$global_file" >> "$PLS_DIR/.combined.yml"
-  fi
-}
-
 list_aliases() {
   local file="$1"
   local should_print_command="$2"
@@ -55,6 +29,8 @@ elif [[ "$flag_global" ]]; then
 elif [[ "$flag_local" ]]; then
   list_aliases "$local_file" "$flag_command"
 else
-  combine_files
-  list_aliases "$PLS_DIR/.combined.yml" "$flag_command"
+  temp_combined_file="$(mktemp)"
+  echo "$(merge_pls_files "$global_file" "$local_file")" > "$temp_combined_file"
+  list_aliases "$temp_combined_file" "$flag_command"
+  rm "$temp_combined_file"
 fi
