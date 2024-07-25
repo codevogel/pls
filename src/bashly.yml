@@ -66,7 +66,7 @@ commands:
       - name: alias
         help: The alias to execute.
   - name: list_aliases
-    alias: [ li ] # Not using ls or list to accomodate for aliases with those names.
+    alias: [ l ] 
     help: |
       List all aliases available for invocation in the current directory.
     flags:
