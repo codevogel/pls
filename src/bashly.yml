@@ -117,6 +117,12 @@ commands:
         pls pick_alias
         pls p
         pls
+  - name: clear_cache
+    help: |
+      Clear the cache of all commands that have been run with pls.
+    examples:
+      - |
+        pls clear_cache
   - name: this_does_nothing
     help: |
       This command is just for testing purposes.
