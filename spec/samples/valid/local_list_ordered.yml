@@ -1,0 +1,9 @@
+commands:
+- alias: bravo-local
+  command: echo "local bravo"
+- alias: delta-local
+  command: echo "local delta"
+- alias: duplicate
+  command: echo "local duplicate"
+- alias: foxtrot-local
+  command: echo "local foxtrot"
