@@ -89,8 +89,8 @@ commands:
         help: |
           Shows aliases in local and global context, even if local alias overwrites global.
         conflicts: [ --local, --global ]
-  - name: pick_aliases
-    alias: [ pi ] # Not using pick to accomodate for aliases with that name.
+  - name: pick_alias
+    alias: [ p ]
     help: |
       Pick an alias from the list of available aliases to execute.
       Note: This supports fuzzy finder 'fzf' if you have it installed.
