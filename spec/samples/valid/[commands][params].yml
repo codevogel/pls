@@ -1,0 +1,5 @@
+commands:
+  - alias: params
+    command: |
+      echo "param 1: $1"
+      echo "param 2: $2"
