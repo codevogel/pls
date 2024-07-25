@@ -4,7 +4,7 @@ list_aliases() {
   local flag_local="${args[--local]}"
   local flag_all="${args[--all]}"
 
-  local local_file="$(get_closest_file "$PWD" "$PLS_FILE_NAME")"
+  local local_file="$(get_closest_file "$PWD" "$PLS_FILENAME")"
   local global_file="$PLS_GLOBAL"
 
   print_aliases() {

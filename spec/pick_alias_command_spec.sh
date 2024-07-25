@@ -9,7 +9,7 @@ Describe 'pick_alias_command'
 
     Example "picks 'zulu-global *'"
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./pls.yml
+      cat samples/valid/local_list.yml > ./$PLS_FILENAME
 
       Mock fzf
         echo "zulu-global *"
@@ -22,7 +22,7 @@ Describe 'pick_alias_command'
 
     Example "picks 'foxtrot-local'"
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./pls.yml
+      cat samples/valid/local_list.yml > ./$PLS_FILENAME
 
       Mock fzf
         echo "foxtrot-local"
@@ -41,7 +41,7 @@ Describe 'pick_alias_command'
       export PLS_ENABLE_FZF=false 
 
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./pls.yml
+      cat samples/valid/local_list.yml > ./$PLS_FILENAME
 
       When call bash -c 'echo foxtrot-local | ./pls p' 
 
@@ -55,7 +55,7 @@ Describe 'pick_alias_command'
       export PLS_ENABLE_FZF=false 
 
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./pls.yml
+      cat samples/valid/local_list.yml > ./$PLS_FILENAME
 
       When call bash -c 'echo 7 | ./pls p' 
 

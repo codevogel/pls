@@ -8,7 +8,7 @@ query_command() {
   fi
 
   local global_file="$PLS_GLOBAL"
-  local local_file="$(get_closest_file "$PWD" "$PLS_FILE_NAME")"
+  local local_file="$(get_closest_file "$PWD" "$PLS_FILENAME")"
 
   local command
   local found_in

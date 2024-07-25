@@ -62,7 +62,7 @@ validate_format_of_file() {
 
 validate_format_of_files() {
   local global_file="$PLS_GLOBAL"
-  local local_file=$(get_closest_file "$PWD" "pls.yml")
+  local local_file=$(get_closest_file "$PWD" "$PLS_FILENAME")
 
   if [[ -f "$global_file" ]]; then
     validate_format_of_file "$global_file"

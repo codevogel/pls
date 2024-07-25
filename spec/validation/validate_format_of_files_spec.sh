@@ -3,6 +3,8 @@ Include 'spec/setup_and_cleanup.sh'
 get_destination() {
   if [[ "$1" == '$PLS_GLOBAL' ]]; then
     echo "$PLS_GLOBAL"
+  elif [[ "$1" == './$PLS_FILENAME' ]]; then
+    echo "./$PLS_FILENAME"
   else
     echo "$1"
   fi
@@ -23,10 +25,10 @@ Describe 'validate_format_of_files catches format error'
       '$PLS_GLOBAL' '[notcommands][]' 1 0
       '$PLS_GLOBAL' '[commands,commands][]' 2 2
       '$PLS_GLOBAL' '[commands,notcommands][]' 2 1
-      './pls.yml' '[]' 0 0
-      './pls.yml' '[notcommands][]' 1 0
-      './pls.yml' '[commands,commands][]' 2 2
-      './pls.yml' '[commands,notcommands][]' 2 1
+      './$PLS_FILENAME' '[]' 0 0
+      './$PLS_FILENAME' '[notcommands][]' 1 0
+      './$PLS_FILENAME' '[commands,commands][]' 2 2
+      './$PLS_FILENAME' '[commands,notcommands][]' 2 1
     End
     
     Example "in $1 when sample is $2"
@@ -58,11 +60,11 @@ Describe 'validate_format_of_files catches format error'
       '$PLS_GLOBAL' '[commands][has neither alias nor command]' 1 0 0
       '$PLS_GLOBAL' '[commands][foo,has no alias]' 2 1 2
       '$PLS_GLOBAL' '[commands][foo,has no command]' 2 2 1
-      './pls.yml' '[commands][has no alias]' 1 0 1
-      './pls.yml' '[commands][has no command]' 1 1 0
-      './pls.yml' '[commands][has neither alias nor command]' 1 0 0
-      './pls.yml' '[commands][foo,has no alias]' 2 1 2
-      './pls.yml' '[commands][foo,has no command]' 2 2 1
+      './$PLS_FILENAME' '[commands][has no alias]' 1 0 1
+      './$PLS_FILENAME' '[commands][has no command]' 1 1 0
+      './$PLS_FILENAME' '[commands][has neither alias nor command]' 1 0 0
+      './$PLS_FILENAME' '[commands][foo,has no alias]' 2 1 2
+      './$PLS_FILENAME' '[commands][foo,has no command]' 2 2 1
     End
 
     It "in $1 when sample is $2"
@@ -95,8 +97,8 @@ Describe 'validate_format_of_files catches format error'
     Parameters
       '$PLS_GLOBAL' '[commands][has newline in alias]'
       '$PLS_GLOBAL' '[commands][has multiple newlines in alias]'
-      './pls.yml' '[commands][has newline in alias]'
-      './pls.yml' '[commands][has multiple newlines in alias]'
+      './$PLS_FILENAME' '[commands][has newline in alias]'
+      './$PLS_FILENAME' '[commands][has multiple newlines in alias]'
     End
 
     Example "in $1 when sample is $2"
@@ -151,7 +153,7 @@ Describe 'validate_format_of_files catches format error'
 
     Parameters
       '$PLS_GLOBAL' '[commands][has empty command]'
-      './pls.yml' '[commands][has empty command]'
+      './$PLS_FILENAME' '[commands][has empty command]'
     End
 
     Example "in $1 when sample is $2"
