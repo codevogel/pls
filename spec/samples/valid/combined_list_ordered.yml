@@ -1,0 +1,19 @@
+commands:
+  - alias: alpha-global *
+    command: echo "global alpha"
+  - alias: bravo-local
+    command: echo "local bravo"
+  - alias: charlie-global *
+    command: echo "global charlie"
+  - alias: delta-local
+    command: echo "local delta"
+  - alias: duplicate
+    command: echo "local duplicate"
+  - alias: echo-global *
+    command: |
+      echo "global echo!"
+      echo "...global echo!"
+  - alias: foxtrot-local
+    command: echo "local foxtrot"
+  - alias: zulu-global *
+    command: echo "global zulu"
