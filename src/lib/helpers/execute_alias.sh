@@ -39,7 +39,14 @@ execute_alias() {
       prompt_to_continue
   fi
 
-  # Invoke the command and cache it
-  eval "$command"
+  command_args="${args[command_args]}"
+  # Create a temporary function
+  exec_alias_command() {
+      eval "$command"
+  }
+
+  # Execute the function with the arguments
+  exec_alias_command $command_args
+
   add_to_cache "$found_in" "$alias" "$command"
 }

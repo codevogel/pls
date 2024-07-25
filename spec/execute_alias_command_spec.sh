@@ -117,6 +117,29 @@ Describe 'execute_alias'
     End
   End
 
+  Describe 'executes parameterized command'
+    Example 'both parameters'
+      cat "samples/valid/[commands][params].yml" > "./$PLS_FILENAME"
+      When call ./pls execute_alias params 'foo' 'bar'
+      The status should be success
+      The output should eq "$(printf 'param 1: foo\nparam 2: bar')"
+    End
+
+    Example 'one parameter left out leaves it empty'
+      cat "samples/valid/[commands][params].yml" > "./$PLS_FILENAME"
+      When call ./pls execute_alias params 'foo'
+      The status should be success
+      The output should eq "$(printf 'param 1: foo\nparam 2: ')"
+    End
+
+    Example 'no parameters leaves both empty'
+      cat "samples/valid/[commands][params].yml" > "./$PLS_FILENAME"
+      When call ./pls execute_alias params
+      The status should be success
+      The output should eq "$(printf 'param 1: \nparam 2: ')"
+    End
+  End
+
   Describe 'cache validation'
 
     setup_modes() { 
