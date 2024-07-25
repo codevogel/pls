@@ -31,10 +31,10 @@ execute_alias() {
   }
 
   if exists_in_cache "$found_in" "$alias" "$command"; then
-      if [[ "$PLS_ENABLE_EXTRA_SAFE_MODE" == "true" ]]; then
+      if [[ "$PLS_ALWAYS_VERIFY" == "true" ]]; then
         prompt_to_continue
       fi 
-  elif [[ "$PLS_ENABLE_SAFE_MODE" == "true" || "$PLS_ENABLE_EXTRA_SAFE_MODE" == "true" ]]; then
+  elif [[ "$PLS_ENABLE_CACHE_CHECK" == "true" || "$PLS_ALWAYS_VERIFY" == "true" ]]; then
       echo "Alias '$alias' was found in '$found_in', but this command seems new."
       prompt_to_continue
   fi

@@ -123,13 +123,13 @@ Describe 'execute_alias'
     AfterEach 'cleanup_temp_pls_dir'
 
     setup_modes() { 
-      export PLS_ENABLE_SAFE_MODE="$1"
-      export PLS_ENABLE_EXTRA_SAFE_MODE="$2"
+      export PLS_ENABLE_CACHE_CHECK="$1"
+      export PLS_ALWAYS_VERIFY="$2"
     }
 
     unset_modes() {
-      unset PLS_ENABLE_SAFE_MODE
-      unset PLS_ENABLE_EXTRA_SAFE_MODE
+      unset PLS_ENABLE_CACHE_CHECK
+      unset PLS_ALWAYS_VERIFY
     }
 
     Describe "when SAFE MODE is 'true' and EXTRA SAFE MODE is 'false'"

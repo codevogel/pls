@@ -4,8 +4,8 @@ setup() {
   cp -r spec/samples $TESTING_CWD
   cd $TESTING_CWD
   export PLS_FILENAME=".pls"
-  export PLS_ENABLE_SAFE_MODE="false"
-  export PLS_ENABLE_EXTRA_SAFE_MODE="false"
+  export PLS_ENABLE_CACHE_CHECK="false"
+  export PLS_ALWAYS_CHECK="false"
   export PLS_ENABLE_FZF="true"
 }
 
