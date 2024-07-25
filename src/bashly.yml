@@ -65,6 +65,18 @@ commands:
     args:
       - name: alias
         help: The alias to execute.
+    examples:
+      - |
+        pls execute_alias build
+          Executes the command associated with the alias 'build'.
+        pls e test
+          Executes the command associated with the alias 'test'.
+      - |
+        pls deploy
+          Executes the command associated with the alias 'deploy'.
+      - |
+        pls
+          Launches an interactive prompt to select an alias to execute.
   - name: list_aliases
     alias: [ l ] 
     help: |
@@ -89,11 +101,23 @@ commands:
         long: --command
         help: |
           Also show the command associated with each alias.
+    examples:
+      - |
+        pls list_aliases
+          Lists all aliases avaliable in the current directory.
+      - |
+        pls l -gc
+          Lists all aliases that are stored in the file at \$PLS_GLOBAL, and additionally shows the command associated with each alias.
   - name: pick_alias
     alias: [ p ]
     help: |
       Pick an alias from the list of available aliases to execute.
       Note: This supports fuzzy finder 'fzf' if you have it installed.
+    examples:
+      - |
+        pls pick_alias
+        pls p
+        pls
   - name: this_does_nothing
     help: |
       This command is just for testing purposes.
