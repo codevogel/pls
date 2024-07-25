@@ -7,10 +7,12 @@ setup() {
   export PLS_ENABLE_CACHE_CHECK="false"
   export PLS_ALWAYS_CHECK="false"
   export PLS_ENABLE_FZF="true"
+  export PLS_DIR="$(mktemp -d)"
 }
 
 cleanup() {
   rm -rf $TESTING_CWD
+  rm -rf "$PLS_DIR"
 }
 
 setup_global_pls() {
@@ -22,13 +24,4 @@ setup_global_pls() {
 cleanup_global_pls() {
   rm -rf $TEMP_DIR
   unset PLS_GLOBAL
-}
-
-
-setup_temp_pls_dir() {
-  export PLS_DIR="$(mktemp -d)"
-}
-
-cleanup_temp_pls_dir() {
-  rm -rf "$PLS_DIR"
 }

@@ -1,7 +1,7 @@
 Include 'spec/setup_and_cleanup.sh'
 
-BeforeEach 'setup' 'setup_global_pls' 'setup_temp_pls_dir'
-AfterEach 'cleanup' 'cleanup_global_pls' 'cleanup_temp_pls_dir'
+BeforeEach 'setup' 'setup_global_pls'
+AfterEach 'cleanup' 'cleanup_global_pls'
 
 Describe 'list_aliases_command'
 

@@ -1,8 +1,8 @@
 Include 'spec/setup_and_cleanup.sh'
 Include 'src/lib/cache/add_to_cache.sh'
 
-BeforeEach 'setup' 'setup_temp_pls_dir'
-AfterEach 'cleanup' 'cleanup_temp_pls_dir'
+BeforeEach 'setup'
+AfterEach 'cleanup'
 
 Describe 'add_to_cache'
 

@@ -1,8 +1,8 @@
 Include 'spec/setup_and_cleanup.sh'
 Include 'src/lib/cache/exists_in_cache.sh'
 
-BeforeEach 'setup' 'setup_temp_pls_dir'
-AfterEach 'cleanup' 'cleanup_temp_pls_dir'
+BeforeEach 'setup'
+AfterEach 'cleanup'
 
 content_in_cache() {
   %= "foo origin:"

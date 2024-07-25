@@ -119,9 +119,6 @@ Describe 'execute_alias'
 
   Describe 'cache validation'
 
-    BeforeEach 'setup_temp_pls_dir'
-    AfterEach 'cleanup_temp_pls_dir'
-
     setup_modes() { 
       export PLS_ENABLE_CACHE_CHECK="$1"
       export PLS_ALWAYS_VERIFY="$2"
