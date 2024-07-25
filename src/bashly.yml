@@ -58,6 +58,7 @@ environment_variables:
   default: "true"
 commands:
   - name: execute_alias
+    alias: [ e ]
     help: |
       Execute the command associated with given ALIAS.
     default: force
