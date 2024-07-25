@@ -24,24 +24,18 @@ help: |
 
   To see examples of how to use pls, run 'pls <command> --help'
 environment_variables:
-- name: pls_global
-  help: |
-    The path to the global .pls file.
-    This file contains aliases that are available in all directories.
-    Default is determined by '\$HOME/pls.yml'.  
-  default: $HOME/pls.yml
 - name: pls_file_name
   help: |
-    The name of the file that contains the entries.
-    It is not recommended to change this value for consistency sake, but you can if you feel the need to do so.
+    The name of the data file in which your aliases live. It is not recommended to change this value for consistency sake, but you can if you feel the need to do so.
   default: pls.yml 
+- name: pls_global
+  help: |
+    The path to the global .pls file (contains aliases that are available in all directories). Default is determined by '\$HOME/\$PLS_FILE_NAME'.
+  default: $(echo $HOME/$PLS_FILE_NAME)
 - name: pls_dir
   help: |
-    The path to the directory used by pls for storing internal files, such as the command cache.
-    It is not recommended to set this to a directory in /tmp/, as this may break caching.
-    Default is determined by '\$HOME/.local/share/pls'.
-    (For you, this points to '$HOME/.local/share/pls')
-  default: $HOME/.local/share/pls
+    The path to the directory used by pls for storing internal files, such as the command cache. It is not recommended to set this to a directory in /tmp/, as this may break caching across reboots. Default is determined by '\$HOME/.local/share/pls'.
+  default: $(echo $HOME/.local/share/pls)
 - name: pls_enable_safe_mode
   help: |
     Enable or disable safe mode. This turns off the verification warning that appears when you run an uncached command.
@@ -60,8 +54,7 @@ environment_variables:
   private: true
 - name: pls_enable_fzf
   help: |
-    Enable or disable the use of fzf for interactive selection.
-    This is only used for the 'pick_aliases' command.
+    Enable or disable the use of fzf for interactive selection. Note that this is only relevant for the 'pick_alias' command. If fzf is not installed, this will have no effect.
   default: "true"
 commands:
   - name: execute_alias
