@@ -3,7 +3,7 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup' 'setup_global_pls'
 AfterEach 'cleanup' 'cleanup_global_pls'
 
-Describe 'pick_aliases_command'
+Describe 'pick_alias_command'
 
   Describe 'picks with fzf'
 
@@ -15,7 +15,7 @@ Describe 'pick_aliases_command'
         echo "zulu-global *"
       End
 
-      When call ./pls pick_aliases
+      When call ./pls p
       The status should be success
       The output should eq "global zulu"
     End
@@ -28,7 +28,7 @@ Describe 'pick_aliases_command'
         echo "foxtrot-local"
       End
 
-      When call ./pls pick_aliases
+      When call ./pls p
       The status should be success
       The output should eq "local foxtrot"
     End
@@ -43,7 +43,7 @@ Describe 'pick_aliases_command'
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
       cat samples/valid/local_list.yml > ./pls.yml
 
-      When call bash -c 'echo foxtrot-local | ./pls pick_aliases' 
+      When call bash -c 'echo foxtrot-local | ./pls p' 
 
       The status should be success
       The output should include "local foxtrot"
@@ -57,7 +57,7 @@ Describe 'pick_aliases_command'
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
       cat samples/valid/local_list.yml > ./pls.yml
 
-      When call bash -c 'echo 7 | ./pls pick_aliases' 
+      When call bash -c 'echo 7 | ./pls p' 
 
       The status should be success
       The output should include "local foxtrot"
