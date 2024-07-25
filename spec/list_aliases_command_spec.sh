@@ -62,7 +62,7 @@ Describe 'list_aliases_command'
       rm "$PLS_GLOBAL"
       When call ./pls list_aliases
       The status should be success
-      The output should eq 'None found.'
+      The output should eq 'No aliases found.'
     End
   End
 
@@ -79,7 +79,7 @@ Describe 'list_aliases_command'
       cat samples/valid/global_list.yml > "$PLS_GLOBAL"
       When call ./pls list_aliases -l
       The status should be success
-      The output should eq 'None found.'
+      The output should eq 'No aliases found.'
     End
   End
 
@@ -104,7 +104,7 @@ Describe 'list_aliases_command'
       cat samples/valid/local_list.yml > ./pls.yml
       When call ./pls list_aliases -g
       The status should be success
-      The output should eq 'None found.'
+      The output should eq 'No aliases found.'
     End
   End
 
@@ -133,7 +133,7 @@ Describe 'list_aliases_command'
 
     expected_output_only_local() {
       %= '--- Global Aliases ---'
-      %= 'None found.'
+      %= 'No aliases found.'
       %= '--- Local Aliases ---'
       expected_output_local
     }
@@ -142,14 +142,14 @@ Describe 'list_aliases_command'
       %= '--- Global Aliases ---'
       expected_output_global
       %= '--- Local Aliases ---'
-      %= 'None found.'
+      %= 'No aliases found.'
     }
 
     expected_output_neither() {
       %= '--- Global Aliases ---'
-      %= 'None found.'
+      %= 'No aliases found.'
       %= '--- Local Aliases ---'
-      %= 'None found.'
+      %= 'No aliases found.'
     }
 
     Example 'when global and local exist'
