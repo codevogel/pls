@@ -38,7 +38,7 @@ environment_variables:
   default: $(echo $HOME/.local/share/pls)
 - name: pls_enable_cache_check
   help: |
-    Enable or disable cache checking. This turns off the verification warning that appears when you run an uncached command.
+    Enable or disable cache checking, which prevents you from unexpectedly running the wrong command. Setting this to false turns off the verification warning that appears when you run an uncached command.
     This is not recommended, especially not on sensitive systems. This setting is overridden by 'pls_always_cache_check'.
   default: "true"
 - name: pls_always_verify
