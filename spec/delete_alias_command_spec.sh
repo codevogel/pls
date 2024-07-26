@@ -48,7 +48,7 @@ Describe 'delete_alias_command'
       local target_file="$(realpath .)/$PLS_FILENAME"
       When run ./pls delete_alias -a "my alias" -d l
       The status should be failure
-      The stderr should eq "Error: Can not delete from file '$target_file' as it does not exist."
+      The stderr should eq "Error: Can not delete from local file as it does exist here or in any parent."
     End
 
     Example 'with destination here'
