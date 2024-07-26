@@ -143,7 +143,7 @@ commands:
         long: --destination
         arg: destination
         help: |
-          The directory in which to store the alias. Default is the current directory.  
+          Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists') 
         validate: is_destination
         required: true
   - name: clear_cache
