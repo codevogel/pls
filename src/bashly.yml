@@ -160,7 +160,7 @@ commands:
       - short: -d
         long: --destination
         help: |
-          Remove the alias from the pls file for the desired context. (g)lobal, (l)ocal
+          Remove the alias from the pls file for the desired context. (g)lobal, (l)ocal, (h)ere
         arg: destination
         validate: is_destination
         required: true
