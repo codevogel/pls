@@ -144,6 +144,16 @@ commands:
           Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists') 
         validate: is_destination
         required: true
+    examples:
+      - |
+        pls add_alias -a build -c 'npm run build' -d l
+          Adds an alias 'build' that runs a single-line command to the local pls file.
+      - |
+        pls a -a test -c 'echo hello\necho world!' -d g
+          Adds an alias 'hello' that runs a multi-line command to the global pls file.
+      - |
+        pls a -a my_name -c 'echo "My name is $1"' -d h
+          Adds an alias 'foo' that runs a parameterized command and stores it in the pls file in the current directory. The command can be run with 'pls my_name <name>'.
   - name: delete_alias
     alias: [ r ]
     help: |
