@@ -19,8 +19,6 @@ help: |
         Streamline your team's workflow by sharing aliases across projects, or
         make setup of your product dead-easy for your users.
         Just add a pls file to the project's root directory, and you're off!
-   * Editor Integration:
-        Use your preferred text editor to create and modify complex commands.
 
   To see examples of how to use pls, run 'pls <command> --help'
 environment_variables:
@@ -30,7 +28,7 @@ environment_variables:
   default: .pls.yml
 - name: pls_global
   help: |
-    The path to the global .pls file (contains aliases that are available in all directories). Default is determined by '\$HOME/\$PLS_FILENAME'.
+    The path to the global pls file (contains aliases that are available in all directories). Default is determined by '\$HOME/\$PLS_FILENAME'.
   default: $(echo $HOME/$PLS_FILENAME)
 - name: pls_dir
   help: |
