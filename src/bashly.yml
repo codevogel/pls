@@ -118,6 +118,32 @@ commands:
           Same as above.
         pls
           Same as above.
+  - name: add_alias
+    alias: [ a ]
+    help: |
+      Add or alter a new alias in the current directory.
+    flags:
+      - short: -a
+        long: --alias
+        arg: alias
+        help: The name of the alias to add.
+        required: true
+      - short: -c
+        long: --command
+        arg: command
+        help: The command to associate with the alias.
+        required: true
+      - short: -f
+        long: --force
+        help: |
+          Overwrite the alias if it already exists.
+      - short: -d
+        long: --destination
+        arg: destination
+        help: |
+          The directory in which to store the alias. Default is the current directory.  
+        validate: is_destination
+        required: true
   - name: clear_cache
     help: |
       Clear the cache of all commands that have been run with pls.
