@@ -11,13 +11,10 @@ fi
 
 # If alias already exists in file, --force flag must be used
 num_occurances_of_alias="$(yq e ".commands | map(select(.alias == \"$alias\")) | length" "$target_file")"
-if [[ $num_occurances_of_alias -gt 1 ]]; then
-  echo "Format Error: Multiple occurrances of alias \"$alias\" found in file \"$target_file\"." >&2
-  return 1
-elif [[ $num_occurances_of_alias -eq 1 ]]; then
+if [[ $num_occurances_of_alias -eq 1 ]]; then
   if [ ! "${args[--force]}" ]; then
-    echo "Error: Alias \"$alias\" already exists in file \"$target_file\". Use --force to overwrite." >&2
-    return 1
+    echo "Error: Alias '$alias' already exists in file '$target_file'. Use --force to overwrite." >&2
+    exit 1
   fi
   # Remove the old alias
   delete_entry_from_file "$alias" "$target_file"
