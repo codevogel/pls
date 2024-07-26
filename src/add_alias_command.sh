@@ -4,6 +4,10 @@ destination="${args[--destination]}"
 
 target_file="$(destination_to_path "$destination")"
 
+if [[ -z "$target_file" && ("$destination" == "local" || "$destination" == "l") ]]; then
+  target_file="$(realpath .)/$PLS_FILENAME" 
+fi
+
 # Create file if it does not exist
 if [ ! -f "$target_file" ]; then
   echo "commands:" > "$target_file"
