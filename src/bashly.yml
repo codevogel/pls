@@ -119,8 +119,11 @@ commands:
     examples:
       - |
         pls pick_alias
+          Starts an interactive prompt to select an alias to execute.
         pls p
+          Same as above.
         pls
+          Same as above.
   - name: clear_cache
     help: |
       Clear the cache of all commands that have been run with pls.
