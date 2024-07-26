@@ -128,11 +128,13 @@ commands:
         arg: alias
         help: The name of the alias to add.
         required: true
+        validate: not_empty
       - short: -c
         long: --command
         arg: command
         help: The command to associate with the alias.
         required: true
+        validate: not_empty
       - short: -f
         long: --force
         help: |
