@@ -35,6 +35,15 @@ Describe 'destination_to_path'
     End
   End
 
+  Describe 'returns blank if no local file exists'
+    Parameters:value 'l' 'local'
+    Example "$1"
+      rm "$(realpath "..")/$PLS_FILENAME"
+      When call destination_to_path "$1"
+      The output should eq ""
+    End
+  End
+
   Describe 'returns path to the here file (even if local file exists) for destination'
     Parameters:value 'h' 'here'
     Example "$1"
