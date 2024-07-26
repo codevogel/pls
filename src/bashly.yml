@@ -146,6 +146,24 @@ commands:
           Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists') 
         validate: is_destination
         required: true
+  - name: delete_alias
+    alias: [ r ]
+    help: |
+      Remove an alias from the desired directory.
+    flags:
+      - short: -a
+        long: --alias
+        arg: alias
+        help: The name of the alias to remove.
+        required: true
+        validate: not_empty
+      - short: -d
+        long: --destination
+        help: |
+          Remove the alias from the pls file for the desired context. (g)lobal, (l)ocal
+        arg: destination
+        validate: is_destination
+        required: true
   - name: clear_cache
     help: |
       Clear the cache of all commands that have been run with pls.
