@@ -20,7 +20,7 @@ elif [[ $num_occurances_of_alias -eq 1 ]]; then
     return 1
   fi
   # Remove the old alias
-  delete_alias_from_file "$alias" "$target_file"
+  delete_entry_from_file "$alias" "$target_file"
 fi
 
 # Add alias:command entry to file
