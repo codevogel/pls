@@ -4,7 +4,7 @@ destination="${args[--destination]}"
 
 target_file="$(destination_to_path "$destination")"
 
-# Create file if it doesn't exist
+# Create file if it does not exist
 if [ ! -f "$target_file" ]; then
   echo "commands:" > "$target_file"
 fi
