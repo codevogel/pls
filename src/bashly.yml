@@ -72,50 +72,6 @@ commands:
       - |
         pls
           Launches an interactive prompt to select an alias to execute.
-  - name: list_aliases
-    alias: [ l ] 
-    help: |
-      List all aliases available for invocation in the current directory.
-    flags:
-      - short: -l
-        long: --local
-        help: |
-          Lists only aliases available in the local context.
-        conflicts: [ --global, --all ]
-      - short: -g
-        long: --global
-        help: |
-          Lists only aliases available in the global context.
-        conflicts: [ --local, --all ]
-      - short: -a
-        long: --all
-        help: |
-          Shows aliases in local and global context, even if local alias overwrites global.
-        conflicts: [ --local, --global ]
-      - short: -c
-        long: --command
-        help: |
-          Also show the command associated with each alias.
-    examples:
-      - |
-        pls list_aliases
-          Lists all aliases avaliable in the current directory.
-      - |
-        pls l -gc
-          Lists all aliases that are stored in the file at \$PLS_GLOBAL, and additionally shows the command associated with each alias.
-  - name: pick_alias
-    alias: [ p ]
-    help: |
-      Pick an alias from the list of available aliases to execute.
-      Note: This supports fuzzy finder 'fzf' if you have it installed.
-    examples:
-      - |
-        pls pick_alias
-          Starts an interactive prompt to select an alias to execute.
-        pls p
-          Same as above.
-        pls
-          Same as above.
   - name: add_alias
     alias: [ a ]
     help: |
@@ -182,6 +138,50 @@ commands:
       - |
         pls d -a foo -d h
           Removes the entry for alias 'foo' from the file in the current directory.
+  - name: list_aliases
+    alias: [ l ] 
+    help: |
+      List all aliases available for invocation in the current directory.
+    flags:
+      - short: -l
+        long: --local
+        help: |
+          Lists only aliases available in the local context.
+        conflicts: [ --global, --all ]
+      - short: -g
+        long: --global
+        help: |
+          Lists only aliases available in the global context.
+        conflicts: [ --local, --all ]
+      - short: -a
+        long: --all
+        help: |
+          Shows aliases in local and global context, even if local alias overwrites global.
+        conflicts: [ --local, --global ]
+      - short: -c
+        long: --command
+        help: |
+          Also show the command associated with each alias.
+    examples:
+      - |
+        pls list_aliases
+          Lists all aliases avaliable in the current directory.
+      - |
+        pls l -gc
+          Lists all aliases that are stored in the file at \$PLS_GLOBAL, and additionally shows the command associated with each alias.
+  - name: pick_alias
+    alias: [ p ]
+    help: |
+      Pick an alias from the list of available aliases to execute.
+      Note: This supports fuzzy finder 'fzf' if you have it installed.
+    examples:
+      - |
+        pls pick_alias
+          Starts an interactive prompt to select an alias to execute.
+        pls p
+          Same as above.
+        pls
+          Same as above.
   - name: clear_cache
     help: |
       Clear the cache of all commands that have been run with pls.
