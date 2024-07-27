@@ -105,13 +105,19 @@ pls_execute_alias_usage() {
   echo
 
   printf "%s\n" "Usage:"
-  printf "  pls [execute_alias] [ALIAS] [COMMAND_ARGS...]\n"
+  printf "  pls [execute_alias] [ALIAS] [COMMAND_ARGS...] [OPTIONS]\n"
   printf "  pls execute_alias --help | -h\n"
   echo
 
   # :command.long_usage
   if [[ -n $long_usage ]]; then
     printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--print, -p"
+    printf "    Print the command instead of executing it. (Useful if you want to pipe the\n    command into a different shell.)\n"
+    echo
 
     # :command.usage_fixed_flags
     printf "  %s\n" "--help, -h"
@@ -823,6 +829,11 @@ execute_alias() {
       fi
   }
 
+  if [ "${args[--print]}" ]; then
+    echo "$command"
+    return
+  fi
+
   if exists_in_cache "$found_in" "$alias" "$command"; then
       if [[ "$PLS_ALWAYS_VERIFY" == "true" ]]; then
         prompt_to_continue
@@ -836,6 +847,7 @@ execute_alias() {
   command_args="${args[command_args]}"
   # Create a temporary function
   exec_alias_command() {
+
       eval "$command"
   }
 
@@ -923,7 +935,6 @@ pls_execute_alias_command() {
   if [ -z "${args[alias]}" ]; then
     pick_and_execute_alias
   else
-
     execute_alias "${args[alias]}"
   fi
 
@@ -1175,6 +1186,13 @@ pls_execute_alias_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --print | -p)
+
+        # :flag.case_no_arg
+        args['--print']=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2

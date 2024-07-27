@@ -30,6 +30,11 @@ execute_alias() {
       fi
   }
 
+  if [ "${args[--print]}" ]; then
+    echo "$command"
+    return
+  fi
+
   if exists_in_cache "$found_in" "$alias" "$command"; then
       if [[ "$PLS_ALWAYS_VERIFY" == "true" ]]; then
         prompt_to_continue
@@ -42,6 +47,7 @@ execute_alias() {
   command_args="${args[command_args]}"
   # Create a temporary function
   exec_alias_command() {
+
       eval "$command"
   }
 

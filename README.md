@@ -33,8 +33,6 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
 
 `pls` supports single-line and multi-line commands, as well as parameterized commands. Finally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
 
-
-
 <details>
   <summary>❓Why would I use <code>pls</code>?</summary>
   <ul>
@@ -118,6 +116,8 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
     ❯ ./pls hello
     Hello, World!
     ```
+
+    > ℹ️ Note: When you add the -p flag, the command will be printed instead of executed. This is useful if you want to run the command in your main shell process, or want to pipe the command to run in a different shell.
 
     
 
