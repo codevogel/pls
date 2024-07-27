@@ -1,0 +1,7 @@
+commands:
+  - alias: "build"
+    command: |
+      bashly generate -w
+  - alias: "test"
+    command: |
+      shellspec --shell bash --format documentation
