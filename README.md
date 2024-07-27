@@ -142,7 +142,7 @@ A few points of interest here:
 
 > ℹ️ Don't worry too much about remembering all this - if you break any of these rules, you should get an error when running `pls`, pointing you in the right direction to correct the formatting.
 
-## Command Cache
+## Command cache
 
 Each time you execute an alias, `pls` stores:
 - the alias that was executed
