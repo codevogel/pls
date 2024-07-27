@@ -196,5 +196,16 @@ To clear the cache, you can run `pls clear_cache`.
 
 You can add any of these to your bash profile using `export VAR_NAME="value"`.
 
+## Roadmap
+
+- [x] Add support for single-line commands
+- [x] Add support for multi-line commands
+- [x] Add support for parameterized commands
+- [x] Add context-aware aliases
+- [x] Add command cache verification
+- [x] List available aliases
+- [x] Add alias picker
+- [ ] What else would you like to see? Let us know by opening an issue!
+
 ## Contributing
 Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information on how to contribute to this project.
