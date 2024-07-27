@@ -1,19 +1,37 @@
 # Project Level Shortcuts (pls)
 
-Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliase for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls!
-
+Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliase for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls! 🐦
 ## What does it do?
 
-`pls` works by creating a `.pls.yml` file in the root of your project directory. This file contains a list of aliases and their corresponding commands. When you run `pls <alias>` in (any subdirectory of) your project, the command associated with that alias is executed. Additionally, you can create a global `.pls` file that contains aliases that are available system-wide. Local aliases take precedence over global aliases.
+`pls` allows you to store your aliases in `pls` files. You can either define system-wide aliases in a `global` file, or place project-specific aliases in a `local` file, e.g., in the root of your project directory. The `pls` file (by default named `.pls.yml`) contains a list of aliases and their corresponding commands. When you run `pls <alias>`, the command associated with that alias is executed. Aliases from a `local` context take precedence over aliases from the `global` context, allowing you to re-use the same alias in different contexts.
 
-`pls` supports both single-line and multi-line commands, as well as parameterized commands. Additionally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
+`pls` supports single-line and multi-line commands, as well as parameterized commands. Finally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
+
+
+
+<details>
+  <summary>❓Why would I use <code>pls</code>?</summary>
+  <ul>
+    <li><b>Organized alias management:</b> Instead of cluttering your shell profile with numerous aliases, <code>pls</code> lets you keep them organized in separate files, making it easier to manage and maintain your shortcuts.</li>
+    <li><b>Context-aware aliases:</b> <code>pls</code> allows you to have project-specific aliases that override global ones, enabling you to reuse common alias names (like "test") across different projects with varying implementations.</li>
+    <li><b>Command cache verification:</b> The command caching feature warns you when you're about to run a new or modified command, helping prevent accidental execution of potentially harmful commands.</li>
+    <li><b>Portability and synchronization:</b> Easily sync your aliases between different machines (e.g., work and home computers) by managing your <code>.pls.yml</code> files.</li>
+    <li><b>Fuzzy command picker:</b> The built-in alias picker (with optional <code>fzf</code> integration) makes it easy to find and execute aliases without remembering exact names.</li>
+    <li><b>Parameterized commands:</b> <code>pls</code> supports parameterized commands, allowing you to pass arguments to your aliases.</li>
+    <li><b>Works with bash:</b> <code>pls</code> is a lightweight shell script that works with any shell that supports bash syntax.</li>
+  </ul>
+</details>
+
+<details>
+  <summary>❓How does it work under the hood?</summary>
+  If you execute an alias, <code>pls</code> will first query the <code>global</code> context (which is the file that lives at <code>$PLS_GLOBAL</code>). It then searches for the closest file that matches <code>$PLS_FILENAME</code> that lives in the current, or any of the parent directories (excluding <code>$PLS_GLOBAL</code> file). If it finds any conflicts (aliases that appear in both the <code>global</code> and <code>local</code> context), the command from the <code>local</code> file is picked. It then verifies whether this exact command has been ran before, taking into account the alias, the file which it is stored in, and the exact command contents. If the command is new, was moved to a different location, or has changed since the last execution, <code>pls</code> will prompt you to confirm the execution of the command. This is to prevent accidental execution of potentially harmful commands. 
+</details>
 
 ## Getting started
 
-
 ### Installation
 
-  This is a quick guide to get `pls` working on your system. 👷
+  This is a quick guide to get `pls` working on your system. 🔧🐦
   
   First, make sure you have the dependencies installed, then proceed to the [instructions](#instructions) below.
 
@@ -21,10 +39,10 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
   - `yq` - A lightweight and portable command-line YAML processor. ([Installation instructions](https://mikefarah.gitbook.io/yq/#install))
   - Optional: `fzf` - A command-line fuzzy finder. ([Installation instructions](https://github.com/junegunn/fzf?tab=readme-ov-file#installation))
 
-ℹ️ Note that `fzf` is completely optional. It is used only for the `pick_alias` command, which uses a fallback picker if you don't have `fzf` installed.
+> ℹ️ Note that `fzf` is completely optional. It is used only for the `pick_alias` command, which uses a fallback picker if you don't have `fzf` installed.
 
 
-  #### Instructions
+#### Instructions
 
   1. Download the `pls` script and extract it to a directory on your `PATH` (or add it to your `PATH` in step 2).
      
@@ -43,7 +61,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 1. To get started with `pls`, you need to add your first alias. To do that, there are two approaches:
 
-    1. Create a `.pls.yml` file and manually add the following contents:
+    1. Create a `.pls.yml` file and manually add the following contents (see ['File format'](#file-format) if you want to expand on it further):
         ```yaml
         commands:
           - alias: "hello"
@@ -57,14 +75,29 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
        ```bash:
        pls a -a "hello" -c "echo 'Hello, World!'" -d local
        ```
-2. To execute the alias, run the following command:
-    ```bash
-    pls hello
+2. To execute the alias, run `pls hello`. 
+    You should first be prompted to confirm that you indeed want to run this command. Enter `y` or `Y` and press `Return`.
+
+    > ℹ️ Note that when you execute the alias another time, `pls` will have cached usage of the command, and you will not be prompted until the command (or location of the file) changes.
+
     ```
-    The output should be:
-    ```bash
+    ❯ ./pls hello
+    Alias 'hello' was found in '/home/codevogel/work/pls/.pls.yml', but this command seems new.
+
+    echo 'Hello, World!'
+
+    Are you sure you want to invoke the above command? [y/n] y
+    Hello, World!
+
+    ❯ ./pls hello
     Hello, World!
     ```
+
+    
+
+  3. You can also leave out the alias, and `pls` will launch an interactive picker that lets you choose from a list of available aliases. Try it now, just run `pls` !
+
+
 
 ## Command overview
 
@@ -77,80 +110,47 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 | `pick_alias`    | `p`         |                    |                                                       | Pick an alias from the list of available aliases to execute.        |
 | `clear_cache`   |           |                    |                                                       | Clear the cache of all commands that have been run with pls.        |
 
+Additional flags are `--help/-h` and `--version/-v` which provide help and version information, respectively. 
 ### Examples
 
-Here follow some examples of how to use commands that `pls` provides.
+View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
 
-#### Execute Alias
+## File format 
 
+`pls` uses YAML files to store aliases. YAML is a human-readable data serialization format that is easy to read and write, which should make adding commands a pretty straight-forward experience. An example of a properly formatted `.pls.yml` file is shown here:
 
-- `pls execute_alias build`
-   
-  Executes the command associated with the alias 'build'.
+```yaml
+commands:
+  - alias: my-alias
+    command: echo "hello from my-alias!"
+  - alias: my-multiline-command
+    command: |
+      echo "echo!"
+      echo "... echo!"
+  - alias: work
+    command: cd ~/some/really/long/path/to/my/directory/work
+  - alias: greet me
+    command: |
+      echo "Hello, my name is $1!"
+```
+A few points of interest here:
+- The `commands` key should be the *only* root key of the YAML file, and must always be present. (This means that at minimum, a `pls` file should contain `commands:`)
+- The `commands` key contains an array of objects (which may be empty), and can hold:
+  - An `alias` key that contains a *single-line* string representing the alias you want to use. (Spaces and symbols are allowed, but discouraged.)
+  - The `command` key that contains *either* a  *single-line* or *multi-line* string containing the command you want to execute. Multi-line commands must be preceded by a `|` or `|-` character and indented.
+  - The `command` key can also contain a *parameterized* command, where `$1`, `$2`, etc. are replaced with the arguments passed to the alias.
 
-- `pls e test`
+> ℹ️ Don't worry too much about remembering all this - if you break any of these rules, you should get an error when running `pls`, pointing you in the right direction to correct the formatting.
 
-  Executes the command associated with the alias 'test'.
+## Command Cache
 
-- `pls deploy`
+Each time you execute an alias, `pls` stores:
+- the alias that was executed
+- the exact command that was executed
+- the path to the file where the alias was found
 
-  Executes the command associated with the alias 'deploy'.
+This allows `pls` to warn you when you try to execute an alias that points to a different command than the one you have previously executed. This is especially useful when you are working on a project with multiple collaborators (maybe someone has changed one of the aliases), or when you have multiple aliases with the same name in different directories.
 
-- `pls`
-  
-  Launches an interactive prompt to select an alias to execute. (This is equivalent for [pick alias](#pick_alias))
+> ℹ️ If you want to be informed about the contents of the command, regardless of it being cached already, or if you want to turn off the warning altogether, see the `PLS_ALWAYS_VERIFY` and `PLS_ENABLE_CACHE_CHECK` environment variables in the [Configuration](#configuration) section.
 
-#### Add Alias
-
-ℹ️ Note that adding and deleting aliases through the CLI is optional, as the `pls` files use an easily modifiable YAML format.
-
-- `pls add_alias -a build -c 'npm run build' -d l`
-
-  Adds an alias 'build' that runs a single-line command to the closest pls file (except the global file).
-
-- `pls a -a test -c 'echo hello\necho world!' -d g`
-
-  Adds an alias 'hello' that runs a multi-line command to the global pls file.
-
-- `pls a -a my_name -c 'echo "My name is $1"' -d h`
-
-  Adds an alias 'foo' that runs a parameterized command and stores it in the pls file in the current directory. The command can be run with 'pls my_name <name>'.
-
-#### Delete Alias
-
-ℹ️ Note that adding and deleting aliases through the CLI is optional, as the `pls` files use an easily modifiable YAML format.
-
-  - `pls delete_alias -a build -d l`
-  
-    Removes the entry for alias 'build' from the closest local file.
-  - `pls d -a deploy -d g`
-    
-    Removes the entry for alias 'deploy' from the global file.
-  
-  - `pls d -a foo -d h`
-    
-    Removes the entry for alias 'foo' from the file in the current directory.
-
-#### List Aliases
-
-  - `pls list_aliases`
-    
-      Lists all aliases available for invocation in the current directory.
-
-  - `pls l`
-
-      Equivalent to the above command.
-  
-  - `pls l -gc`
-
-      Lists all the aliases listed in the global file, and additionally show the command associated with each alias.
-
-#### Pick Alias
-
-ℹ️ This command uses [fzf](https://github.com/junegunn/fzf) when you have it installed. If you don't, it uses a fallback picker instead.
-
-  - `pls pick_alias`
-    
-    Launches an interactive prompt to select an alias to execute.
-
-  - `pls p`
+To clear the cache, you can run `pls clear_cache`.
