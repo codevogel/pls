@@ -154,3 +154,21 @@ This allows `pls` to warn you when you try to execute an alias that points to a 
 > ℹ️ If you want to be informed about the contents of the command, regardless of it being cached already, or if you want to turn off the warning altogether, see the `PLS_ALWAYS_VERIFY` and `PLS_ENABLE_CACHE_CHECK` environment variables in the [Configuration](#configuration) section.
 
 To clear the cache, you can run `pls clear_cache`.
+
+## Configuration
+
+`pls` can be configured using environment variables. Here are the available variables:
+
+| Variable                | Description                                                                                   | Default Value |
+|-------------------------|-----------------------------------------------------------------------------------------------|---------------|
+| `PLS_FILENAME`          | The name of the data file that `pls` looks for.                                                | `.pls.yml`    |
+| `PLS_GLOBAL`            | The path to the global `pls` file (system-wide)                                                           | `$HOME/$PLS_FILENAME` |
+| `PLS_ENABLE_CACHE_CHECK`| If set to `true`, `pls` will check the cache for the command before executing it.              | `true`        |
+| `PLS_ALWAYS_VERIFY`     | If set to `true`, `pls` will always prompt you to confirm the execution of the command, even if `PLS_ENABLE_CACHE_CHECK` is `false`        | `false`       |
+| `PLS_ENABLE_FZF`        | If set to `true`, `pls` will use `fzf` as the picker (given that you have it installed).       | N/A       |
+| `PLS_DIR`               | The directory where internal `pls` files are stored. Not recommended to place this in `/tmp/` as that would delete the cache on reboot.                                   | `$HOME/local/.share/pls`           |
+
+You can add any of these to your bash profile using `export VAR_NAME="value"`.
+
+## Contributing
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information on how to contribute to this project.
