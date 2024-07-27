@@ -32,10 +32,10 @@ pls_usage() {
   # :command.usage_commands
   printf "%s\n" "Commands:"
   printf "  %s   Execute the command associated with given ALIAS. (default)\n" "execute_alias"
-  printf "  %s   List all aliases available for invocation in the current directory.\n" "list_aliases "
-  printf "  %s   Pick an alias from the list of available aliases to execute.\n" "pick_alias   "
   printf "  %s   Add or alter a new alias in the current directory.\n" "add_alias    "
   printf "  %s   Remove an alias from the desired directory.\n" "delete_alias "
+  printf "  %s   List all aliases available for invocation in the current directory.\n" "list_aliases "
+  printf "  %s   Pick an alias from the list of available aliases to execute.\n" "pick_alias   "
   printf "  %s   Clear the cache of all commands that have been run with pls.\n" "clear_cache  "
   echo
 
@@ -142,6 +142,108 @@ pls_execute_alias_usage() {
 }
 
 # :command.usage
+pls_add_alias_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "pls add_alias\n\n"
+    printf "  Add or alter a new alias in the current directory.\n\n"
+  else
+    printf "pls add_alias - Add or alter a new alias in the current directory.\n\n"
+  fi
+  printf "Alias: a\n"
+  echo
+
+  printf "%s\n" "Usage:"
+  printf "  pls add_alias [OPTIONS]\n"
+  printf "  pls add_alias --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--alias, -a ALIAS (required)"
+    printf "    The name of the alias to add.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--command, -c COMMAND (required)"
+    printf "    The command to associate with the alias.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--force, -f"
+    printf "    Overwrite the alias if it already exists.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--destination, -d DESTINATION (required)"
+    printf "    Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or\n    (h)ere. ('here' means 'use the CWD, even if a local file exists')\n"
+    echo
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  pls add_alias -a build -c 'npm run build' -d l\n    Adds an alias 'build' that runs a single-line command to the local pls file.\n"
+    printf "  pls a -a test -c 'echo hello\necho world!' -d g\n    Adds an alias 'hello' that runs a multi-line command to the global pls file.\n"
+    printf "  pls a -a my_name -c 'echo \"My name is $1\"' -d h\n    Adds an alias 'foo' that runs a parameterized command and stores it in the\n  pls file in the current directory. The command can be run with 'pls my_name\n  <name>'.\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+pls_delete_alias_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "pls delete_alias\n\n"
+    printf "  Remove an alias from the desired directory.\n\n"
+  else
+    printf "pls delete_alias - Remove an alias from the desired directory.\n\n"
+  fi
+  printf "Alias: r\n"
+  echo
+
+  printf "%s\n" "Usage:"
+  printf "  pls delete_alias [OPTIONS]\n"
+  printf "  pls delete_alias --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--alias, -a ALIAS (required)"
+    printf "    The name of the alias to remove.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--destination, -d DESTINATION (required)"
+    printf "    Remove the alias from the pls file for the desired context. (g)lobal,\n    (l)ocal, (h)ere\n"
+    echo
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  pls delete_alias -a build -d l\n    Removes the entry for alias 'build' from the closest local file.\n"
+    printf "  pls d -a deploy -d g\n    Removes the entry for alias 'deploy' from the global file.\n"
+    printf "  pls d -a foo -d h\n    Removes the entry for alias 'foo' from the file in the current directory.\n"
+    echo
+
+  fi
+}
+
+# :command.usage
 pls_list_aliases_usage() {
   if [[ -n $long_usage ]]; then
     printf "pls list_aliases\n\n"
@@ -224,101 +326,6 @@ pls_pick_alias_usage() {
     # :command.usage_examples
     printf "%s\n" "Examples:"
     printf "  pls pick_alias\n    Starts an interactive prompt to select an alias to execute.\n  pls p\n    Same as above.\n  pls\n    Same as above.\n"
-    echo
-
-  fi
-}
-
-# :command.usage
-pls_add_alias_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "pls add_alias\n\n"
-    printf "  Add or alter a new alias in the current directory.\n\n"
-  else
-    printf "pls add_alias - Add or alter a new alias in the current directory.\n\n"
-  fi
-  printf "Alias: a\n"
-  echo
-
-  printf "%s\n" "Usage:"
-  printf "  pls add_alias [OPTIONS]\n"
-  printf "  pls add_alias --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "Options:"
-
-    # :command.usage_flags
-    # :flag.usage
-    printf "  %s\n" "--alias, -a ALIAS (required)"
-    printf "    The name of the alias to add.\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--command, -c COMMAND (required)"
-    printf "    The command to associate with the alias.\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--force, -f"
-    printf "    Overwrite the alias if it already exists.\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--destination, -d DESTINATION (required)"
-    printf "    Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or\n    (h)ere. ('here' means 'use the CWD, even if a local file exists')\n"
-    echo
-
-    # :command.usage_fixed_flags
-    printf "  %s\n" "--help, -h"
-    printf "    Show this help\n"
-    echo
-
-  fi
-}
-
-# :command.usage
-pls_delete_alias_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "pls delete_alias\n\n"
-    printf "  Remove an alias from the desired directory.\n\n"
-  else
-    printf "pls delete_alias - Remove an alias from the desired directory.\n\n"
-  fi
-  printf "Alias: r\n"
-  echo
-
-  printf "%s\n" "Usage:"
-  printf "  pls delete_alias [OPTIONS]\n"
-  printf "  pls delete_alias --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "Options:"
-
-    # :command.usage_flags
-    # :flag.usage
-    printf "  %s\n" "--alias, -a ALIAS (required)"
-    printf "    The name of the alias to remove.\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--destination, -d DESTINATION (required)"
-    printf "    Remove the alias from the pls file for the desired context. (g)lobal,\n    (l)ocal, (h)ere\n"
-    echo
-
-    # :command.usage_fixed_flags
-    printf "  %s\n" "--help, -h"
-    printf "    Show this help\n"
-    echo
-
-    # :command.usage_examples
-    printf "%s\n" "Examples:"
-    printf "  pls delete_alias -a build -d l\n    Removes the entry for alias 'build' from the closest local file.\n"
-    printf "  pls d -a deploy -d g\n    Removes the entry for alias 'deploy' from the global file.\n"
-    printf "  pls d -a foo -d h\n    Removes the entry for alias 'foo' from the file in the current directory.\n"
     echo
 
   fi
@@ -878,7 +885,7 @@ list_aliases() {
   fi
 }
 
-# src/lib/workers/pick_alias.sh
+# src/lib/workers/pick_and_execute_alias.sh
 pick_and_execute_alias() {
   current_list="$(list_aliases)"
 
@@ -889,7 +896,7 @@ pick_and_execute_alias() {
 
   # if fzf is not installed, exit
   if [[ "$PLS_ENABLE_FZF" == "true" && $(command -v fzf &> /dev/null) -eq 0 ]]; then
-    picked_alias="$(echo "$current_list" | fzf)"
+    picked_alias="$(echo "$current_list" | fzf --height 40% --reverse --prompt="Enter alias: ")"
     # Remove ' *' from the end of the alias if it exists
   else
     # print the list with
@@ -919,46 +926,6 @@ pls_execute_alias_command() {
 
     execute_alias "${args[alias]}"
   fi
-
-}
-
-# :command.function
-pls_list_aliases_command() {
-  # src/list_aliases_command.sh
-  list_aliases
-
-}
-
-# :command.function
-pls_pick_alias_command() {
-  # src/pick_alias_command.sh
-  current_list="$(list_aliases)"
-
-  if [[ "$current_list" == "No aliases found." ]]; then
-    echo "No aliases found."
-    exit 0
-  fi
-
-  # if fzf is not installed, exit
-  if [[ "$PLS_ENABLE_FZF" == "true" && $(command -v fzf &> /dev/null) -eq 0 ]]; then
-    picked_alias="$(echo "$current_list" | fzf)"
-    # Remove ' *' from the end of the alias if it exists
-  else
-    # print the list with
-    # 1 | content
-    echo "$current_list" | awk '{print NR " | " $0}'
-    read -p "Enter alias (or n): " input
-    if [[ "$input" =~ ^[0-9]+$ && "$input" -gt 0 ]]; then
-      # Get alias from line number
-      picked_alias="$(echo "$current_list" | sed -n "${input}p")"
-    else
-      # actually entered an alias instead of a number
-
-      picked_alias="$input"
-    fi
-  fi
-  picked_alias="${picked_alias% \*}"
-  execute_alias "$picked_alias"
 
 }
 
@@ -1012,6 +979,20 @@ pls_delete_alias_command() {
   fi
 
   delete_entry_from_file "$alias" "$target_file"
+
+}
+
+# :command.function
+pls_list_aliases_command() {
+  # src/list_aliases_command.sh
+  list_aliases
+
+}
+
+# :command.function
+pls_pick_alias_command() {
+  # src/pick_alias_command.sh
+  pick_and_execute_alias
 
 }
 
@@ -1095,20 +1076,6 @@ parse_requirements() {
       shift $#
       ;;
 
-    list_aliases | l)
-      action="list_aliases"
-      shift
-      pls_list_aliases_parse_requirements "$@"
-      shift $#
-      ;;
-
-    pick_alias | p)
-      action="pick_alias"
-      shift
-      pls_pick_alias_parse_requirements "$@"
-      shift $#
-      ;;
-
     add_alias | a)
       action="add_alias"
       shift
@@ -1120,6 +1087,20 @@ parse_requirements() {
       action="delete_alias"
       shift
       pls_delete_alias_parse_requirements "$@"
+      shift $#
+      ;;
+
+    list_aliases | l)
+      action="list_aliases"
+      shift
+      pls_list_aliases_parse_requirements "$@"
+      shift $#
+      ;;
+
+    pick_alias | p)
+      action="pick_alias"
+      shift
+      pls_pick_alias_parse_requirements "$@"
       shift $#
       ;;
 
@@ -1216,146 +1197,6 @@ pls_execute_alias_parse_requirements() {
 
         fi
         shift
-
-        ;;
-
-    esac
-  done
-
-}
-
-# :command.parse_requirements
-pls_list_aliases_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        pls_list_aliases_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.command_filter
-  action="list_aliases"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-      # :flag.case
-      --local | -l)
-        # :flag.conflicts
-        for conflict in --global --all; do
-          if [[ -n "${args[$conflict]:-}" ]]; then
-            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
-            exit 1
-          fi
-        done
-
-        # :flag.case_no_arg
-        args['--local']=1
-        shift
-        ;;
-
-      # :flag.case
-      --global | -g)
-        # :flag.conflicts
-        for conflict in --local --all; do
-          if [[ -n "${args[$conflict]:-}" ]]; then
-            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
-            exit 1
-          fi
-        done
-
-        # :flag.case_no_arg
-        args['--global']=1
-        shift
-        ;;
-
-      # :flag.case
-      --all | -a)
-        # :flag.conflicts
-        for conflict in --local --global; do
-          if [[ -n "${args[$conflict]:-}" ]]; then
-            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
-            exit 1
-          fi
-        done
-
-        # :flag.case_no_arg
-        args['--all']=1
-        shift
-        ;;
-
-      # :flag.case
-      --command | -c)
-
-        # :flag.case_no_arg
-        args['--command']=1
-        shift
-        ;;
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        printf "invalid argument: %s\n" "$key" >&2
-        exit 1
-
-        ;;
-
-    esac
-  done
-
-}
-
-# :command.parse_requirements
-pls_pick_alias_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        pls_pick_alias_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.command_filter
-  action="pick_alias"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        printf "invalid argument: %s\n" "$key" >&2
-        exit 1
 
         ;;
 
@@ -1585,6 +1426,146 @@ pls_delete_alias_parse_requirements() {
 }
 
 # :command.parse_requirements
+pls_list_aliases_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        pls_list_aliases_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="list_aliases"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --local | -l)
+        # :flag.conflicts
+        for conflict in --global --all; do
+          if [[ -n "${args[$conflict]:-}" ]]; then
+            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
+            exit 1
+          fi
+        done
+
+        # :flag.case_no_arg
+        args['--local']=1
+        shift
+        ;;
+
+      # :flag.case
+      --global | -g)
+        # :flag.conflicts
+        for conflict in --local --all; do
+          if [[ -n "${args[$conflict]:-}" ]]; then
+            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
+            exit 1
+          fi
+        done
+
+        # :flag.case_no_arg
+        args['--global']=1
+        shift
+        ;;
+
+      # :flag.case
+      --all | -a)
+        # :flag.conflicts
+        for conflict in --local --global; do
+          if [[ -n "${args[$conflict]:-}" ]]; then
+            printf "conflicting options: %s cannot be used with %s\n" "$key" "$conflict" >&2
+            exit 1
+          fi
+        done
+
+        # :flag.case_no_arg
+        args['--all']=1
+        shift
+        ;;
+
+      # :flag.case
+      --command | -c)
+
+        # :flag.case_no_arg
+        args['--command']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
+pls_pick_alias_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        pls_pick_alias_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="pick_alias"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
 pls_clear_cache_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
@@ -1715,10 +1696,10 @@ run() {
 
   case "$action" in
     "execute_alias") pls_execute_alias_command ;;
-    "list_aliases") pls_list_aliases_command ;;
-    "pick_alias") pls_pick_alias_command ;;
     "add_alias") pls_add_alias_command ;;
     "delete_alias") pls_delete_alias_command ;;
+    "list_aliases") pls_list_aliases_command ;;
+    "pick_alias") pls_pick_alias_command ;;
     "clear_cache") pls_clear_cache_command ;;
     "this_does_nothing") pls_this_does_nothing_command ;;
   esac
