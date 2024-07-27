@@ -1,6 +1,23 @@
 # Project Level Shortcuts (pls)
 
 Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliase for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls! 🐦
+
+**Table of Contents**
+
+- [Project Level Shortcuts (pls)](#project-level-shortcuts-pls)
+  - [What does it do?](#what-does-it-do)
+  - [Getting started](#getting-started)
+    - [Installation](#installation)
+      - [Dependencies](#dependencies)
+      - [Instructions](#instructions)
+    - [Usage](#usage)
+  - [Command overview](#command-overview)
+    - [Examples](#examples)
+  - [File format](#file-format)
+  - [Command cache](#command-cache)
+  - [Configuration](#configuration)
+  - [Contributing](#contributing)
+
 ## What does it do?
 
 `pls` allows you to store your aliases in `pls` files. You can either define system-wide aliases in a `global` file, or place project-specific aliases in a `local` file, e.g., in the root of your project directory. The `pls` file (by default named `.pls.yml`) contains a list of aliases and their corresponding commands. When you run `pls <alias>`, the command associated with that alias is executed. Aliases from a `local` context take precedence over aliases from the `global` context, allowing you to re-use the same alias in different contexts.
