@@ -105,13 +105,19 @@ pls_execute_alias_usage() {
   echo
 
   printf "%s\n" "Usage:"
-  printf "  pls [execute_alias] [ALIAS] [COMMAND_ARGS...]\n"
+  printf "  pls [execute_alias] [ALIAS] [COMMAND_ARGS...] [OPTIONS]\n"
   printf "  pls execute_alias --help | -h\n"
   echo
 
   # :command.long_usage
   if [[ -n $long_usage ]]; then
     printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--print, -p"
+    printf "    Print the command instead of executing it. (Useful if you want to pipe the\n    command into a different shell.)\n"
+    echo
 
     # :command.usage_fixed_flags
     printf "  %s\n" "--help, -h"
@@ -511,6 +517,15 @@ exists_in_cache() {
   fi
 }
 
+# src/lib/helpers/check_version.sh
+check_version() {
+  local min_version="$1"
+  local actual_version="$2"
+  if [[ "$(printf '%s\n%s' "$min_version" "$actual_version" | sort -V | head -n1)" != "$min_version" ]]; then
+    return 1
+  fi
+}
+
 # src/lib/helpers/destination_to_path.sh
 destination_to_path() {
   local destination="$1"
@@ -823,6 +838,11 @@ execute_alias() {
       fi
   }
 
+  if [ "${args[--print]}" ]; then
+    echo "$command"
+    return
+  fi
+
   if exists_in_cache "$found_in" "$alias" "$command"; then
       if [[ "$PLS_ALWAYS_VERIFY" == "true" ]]; then
         prompt_to_continue
@@ -836,6 +856,7 @@ execute_alias() {
   command_args="${args[command_args]}"
   # Create a temporary function
   exec_alias_command() {
+
       eval "$command"
   }
 
@@ -894,8 +915,8 @@ pick_and_execute_alias() {
     exit 0
   fi
 
-  # if fzf is not installed, exit
-  if [[ "$PLS_ENABLE_FZF" == "true" && $(command -v fzf &> /dev/null) -eq 0 ]]; then
+  # if $PLS_ENABLE_FZF is true, and fzf is installed
+  if [[ "$PLS_ENABLE_FZF" = true ]] && command -v fzf >/dev/null 2>&1; then
     picked_alias="$(echo "$current_list" | fzf --height 40% --reverse --prompt="Enter alias: ")"
     # Remove ' *' from the end of the alias if it exists
   else
@@ -1175,6 +1196,13 @@ pls_execute_alias_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --print | -p)
+
+        # :flag.case_no_arg
+        args['--print']=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1656,6 +1684,7 @@ pls_this_does_nothing_parse_requirements() {
 # :command.user_hooks
 before_hook() {
   # src/before.sh
+  # Create the PLS_DIR if it does not exist.
   mkdir -p $PLS_DIR
   if [ ! -d $PLS_DIR ]; then
       echo "Failed to create directory $PLS_DIR"
@@ -1663,6 +1692,15 @@ before_hook() {
       exit 1
   fi
 
+  # Ensure yq is installed and is at least version v4.44.2
+  min_version="v4.44.2"
+  actual_version="$(yq --version | awk '{print $NF}')"
+  if ! check_version "$name" "$actual_version" "$min_version"; then
+    echo "Error: Your yq version $actual_version is older than $min_version . Please upgrade it to use pls" <&2
+    exit 1
+  fi
+
+  # Validate syntax of pls files
   validate_format_of_files
 
 }

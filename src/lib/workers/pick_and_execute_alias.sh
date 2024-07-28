@@ -6,8 +6,8 @@ pick_and_execute_alias() {
     exit 0
   fi
 
-  # if fzf is not installed, exit
-  if [[ "$PLS_ENABLE_FZF" == "true" && $(command -v fzf &> /dev/null) -eq 0 ]]; then
+  # if $PLS_ENABLE_FZF is true, and fzf is installed
+  if [[ "$PLS_ENABLE_FZF" = true ]] && command -v fzf >/dev/null 2>&1; then
     picked_alias="$(echo "$current_list" | fzf --height 40% --reverse --prompt="Enter alias: ")"
     # Remove ' *' from the end of the alias if it exists
   else

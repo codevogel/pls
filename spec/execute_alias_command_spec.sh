@@ -21,6 +21,15 @@ Describe 'execute_alias'
     End
   End
 
+  Describe 'prints with -p flag'
+    Example 'prints command'
+      cat "samples/valid/[commands][foo,biz baz].yml" > "./$PLS_FILENAME"
+      When call ./pls execute_alias -p "biz baz"
+      The status should be success
+      The output should eq "$(printf "echo \"biz\"\necho \"baz\"\n")"
+    End
+  End
+
   Describe 'executes command for alias'
     Describe 'found in $PLS_GLOBAL'
 

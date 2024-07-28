@@ -33,8 +33,6 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
 
 `pls` supports single-line and multi-line commands, as well as parameterized commands. Finally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
 
-
-
 <details>
   <summary>❓Why would I use <code>pls</code>?</summary>
   <ul>
@@ -62,7 +60,7 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
   First, make sure you have the dependencies installed, then proceed to the [instructions](#instructions) below.
 
 #### Dependencies
-  - `yq` - A lightweight and portable command-line YAML processor. ([Installation instructions](https://mikefarah.gitbook.io/yq/#install))
+  - `yq` (tested with `v4.44.2`) - A lightweight and portable command-line YAML processor. ([Installation instructions](https://mikefarah.gitbook.io/yq/#install))
   - Optional: `fzf` - A command-line fuzzy finder. ([Installation instructions](https://github.com/junegunn/fzf?tab=readme-ov-file#installation))
 
 > ℹ️ Note: `fzf` is completely optional. It is used only for the `pick_alias` command, which uses a fallback picker if you don't have `fzf` installed.
@@ -118,6 +116,8 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
     ❯ ./pls hello
     Hello, World!
     ```
+
+    > ℹ️ Note: When you add the -p flag, the command will be printed instead of executed. This is useful if you want to run the command in your main shell process, or want to pipe the command to run in a different shell.
 
     
 
