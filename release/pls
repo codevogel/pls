@@ -517,6 +517,15 @@ exists_in_cache() {
   fi
 }
 
+# src/lib/helpers/check_version.sh
+check_version() {
+  local min_version="$1"
+  local actual_version="$2"
+  if [[ "$(printf '%s\n%s' "$min_version" "$actual_version" | sort -V | head -n1)" != "$min_version" ]]; then
+    return 1
+  fi
+}
+
 # src/lib/helpers/destination_to_path.sh
 destination_to_path() {
   local destination="$1"
@@ -906,8 +915,8 @@ pick_and_execute_alias() {
     exit 0
   fi
 
-  # if fzf is not installed, exit
-  if [[ "$PLS_ENABLE_FZF" == "true" && $(which fzf &> /dev/null) ]]; then
+  # if $PLS_ENABLE_FZF is true, and fzf is installed
+  if [[ "$PLS_ENABLE_FZF" = true ]] && command -v fzf >/dev/null 2>&1; then
     picked_alias="$(echo "$current_list" | fzf --height 40% --reverse --prompt="Enter alias: ")"
     # Remove ' *' from the end of the alias if it exists
   else
@@ -1675,6 +1684,7 @@ pls_this_does_nothing_parse_requirements() {
 # :command.user_hooks
 before_hook() {
   # src/before.sh
+  # Create the PLS_DIR if it does not exist.
   mkdir -p $PLS_DIR
   if [ ! -d $PLS_DIR ]; then
       echo "Failed to create directory $PLS_DIR"
@@ -1682,6 +1692,15 @@ before_hook() {
       exit 1
   fi
 
+  # Ensure yq is installed and is at least version v4.44.2
+  min_version="v4.44.2"
+  actual_version="$(yq --version | awk '{print $NF}')"
+  if ! check_version "$name" "$actual_version" "$min_version"; then
+    echo "Error: Your yq version $actual_version is older than $min_version . Please upgrade it to use pls" <&2
+    exit 1
+  fi
+
+  # Validate syntax of pls files
   validate_format_of_files
 
 }
