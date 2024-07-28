@@ -42,6 +42,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
     - [Try in Docker](#try-in-docker)
   - [Command overview](#command-overview)
     - [Examples](#examples)
+  - [Use in main shell](#use-in-main-shell)
   - [File format](#file-format)
   - [Command cache](#command-cache)
   - [Configuration](#configuration)
@@ -99,6 +100,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
      - If your shell is `bash`: `echo 'export PATH="$PATH:/path/to/dir"' >> ~/.bashrc`
      - If your shell is `zsh`: `echo 'export PATH="$PATH:/path/to/dir"' >> ~/.zshrc`
      - If your shell is something else, do the equivalent of the above.
+  3. Optionally, add support for running the commands in your main shell process. See the [Use in main shell](#use-in-main-shell) section for more information.
   3. Test the installation by running `pls --help`.
 
 ### Usage
@@ -158,6 +160,57 @@ Additional flags are `--help/-h` and `--version/-v` which provide help and versi
 ### Examples
 
 View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
+
+## Use in main shell
+
+### If your main shell is bash
+
+If you want `pls` to execute the command in your main shell process, and your shell is `bash`, then you can simply add `.` or `source` in front of your `pls` command:
+
+```bash
+# Executes 'cd ~/work/godot/' in the main shell process
+. pls godot
+```
+
+You could setup an alias for this in your `.bashrc`:
+
+```bash
+alias plz=". pls"
+```
+
+### If your main shell is not bash
+
+If your main shell is not `bash`, you can still use `pls` in your main shell process. Just know that the command will be executed in a bash subshell. If you want to execute the command in your main shell process, you can make use of the `-p` flag and `eval`. Here is an example for `zsh`, in which we set up a function `plz` that executes the command in the main shell process:
+
+We create a `zsh` function at `~/.zshfuncs/plz`
+```zsh
+cmd="$(pls "$1" -p)"
+execute_command() { # Use a function so we can use parameterized commands as well
+   eval "$cmd"
+}
+execute_command ${@:2}
+```
+
+Then we load it in our `.zshrc`:
+
+```bash
+# Load the zsh function 'plz'
+echo 'fpath=(~/.zshfuncs "${fpath[@]}")' >> ~/.zshrc
+echo 'autoload -Uz plz' >> ~/.zshrc
+```
+
+Now say we have the following in our `.pls.yml` file:
+```yaml
+commands:
+  - alias: go
+    command: cd $1 && ls -al
+```
+
+We can use `plz` in our `zsh` shell:
+
+```zsh
+plz go ~/work/godot/ # cd's to ~/work/godot/ and lists the contents
+```
 
 ## File format 
 
