@@ -2,16 +2,35 @@
 
 Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliases for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls! ðŸ¦
 
-#### Quick Start
+### Quick Start ðŸš€ 
 
-For advanced users, here's a quick guide to get `pls` working on your system. ðŸš€
+- **Install**
 
-1. `cd` to the directory where you want to store the `pls` script.
-2. Download the script from `release/pls`: `curl -O https://raw.githubusercontent.com/codevogel/pls/main/release/pls`
-2. Add the directory to your `PATH`: `echo "export PATH=\"$PATH:$(realpath .)\"" >> ~/.bashrc`
-3. Add an empty `.pls.yml` file: `echo "commands:" > ./.pls.yml`
+  For advanced users, here's a quick guide to get `pls` working on your system.
 
-#### Table of Contents
+  ```bash
+  # cd to directory that should house the pls script
+  cd /path/to/pls/dir
+  # download and make executable
+  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/release/pls > pls && chmod +x pls
+  # add pls to your PATH
+  echo 'export PATH="$PATH:/path/to/pls/dir"' >> ~/.bashrc
+  ```
+- **Try in Docker**
+
+  If you want to try `pls` without installing it on your own system first, you can use the following commands:
+
+  ```bash
+  # cd to directory that should house the Dockerfile
+  cd ./pls-test
+  # download the Dockerfile
+  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/Dockerfile > Dockerfile
+  # build and run the Docker container
+  docker build -t plsbuntu .
+  docker run -it plsbuntu
+  ```
+
+### Table of Contents
 
 - [Project Level Shortcuts (pls)](#project-level-shortcuts-pls)
   - [What does it do?](#what-does-it-do)
@@ -20,8 +39,10 @@ For advanced users, here's a quick guide to get `pls` working on your system. ðŸ
       - [Dependencies](#dependencies)
       - [Instructions](#instructions)
     - [Usage](#usage)
+    - [Try in Docker](#try-in-docker)
   - [Command overview](#command-overview)
     - [Examples](#examples)
+  - [Use in main shell](#use-in-main-shell)
   - [File format](#file-format)
   - [Command cache](#command-cache)
   - [Configuration](#configuration)
@@ -79,6 +100,7 @@ For advanced users, here's a quick guide to get `pls` working on your system. ðŸ
      - If your shell is `bash`: `echo 'export PATH="$PATH:/path/to/dir"' >> ~/.bashrc`
      - If your shell is `zsh`: `echo 'export PATH="$PATH:/path/to/dir"' >> ~/.zshrc`
      - If your shell is something else, do the equivalent of the above.
+  3. Optionally, add support for running the commands in your main shell process. See the [Use in main shell](#use-in-main-shell) section for more information.
   3. Test the installation by running `pls --help`.
 
 ### Usage
@@ -123,13 +145,11 @@ For advanced users, here's a quick guide to get `pls` working on your system. ðŸ
 
   3. You can also leave out the alias, and `pls` will launch an interactive picker that lets you choose from a list of available aliases. Try it now, just run `pls` !
 
-
-
 ## Command overview
 
 | Command       | Shorthand | Args               | Flags                                                 | Description                                                         |
 |---------------|-----------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------|
-| `execute_alias` | `e`         | `alias` <br> `command_args` |                                                       | Execute the command associated with given ALIAS. (default)          |
+| `execute_alias` | `e`         | `alias` <br> `command_args` | `-p/--print`                                                      | Execute the command associated with given ALIAS. (default)          |
 | `add_alias`     | `a`         |                    | `-a/--alias` <br> `-c/--command` <br> `-d/--destination` <br> `[-f/--force]` | Add or alter a new alias in the current directory.                  |
 | `delete_alias`  | `d`         |                    | `-a/--alias` <br> `-d/--destination`                           | Remove an alias from the desired directory.                         |
 | `list_aliases`  | `l`         |                    | `-l/--local` <br> `-g/--global` <br> `-a/--all` <br> `-c/--command`          | List all aliases available for invocation in the current directory. |
@@ -140,6 +160,57 @@ Additional flags are `--help/-h` and `--version/-v` which provide help and versi
 ### Examples
 
 View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
+
+## Use in main shell
+
+### If your main shell is bash
+
+If you want `pls` to execute the command in your main shell process, and your shell is `bash`, then you can simply add `.` or `source` in front of your `pls` command:
+
+```bash
+# Executes 'cd ~/work/godot/' in the main shell process
+. pls godot
+```
+
+You could setup an alias for this in your `.bashrc`:
+
+```bash
+alias plz=". pls"
+```
+
+### If your main shell is not bash
+
+If your main shell is not `bash`, you can still use `pls` in your main shell process. Just know that the command will be executed in a bash subshell. If you want to execute the command in your main shell process, you can make use of the `-p` flag and `eval`. Here is an example for `zsh`, in which we set up a function `plz` that executes the command in the main shell process:
+
+We create a `zsh` function at `~/.zshfuncs/plz`
+```zsh
+cmd="$(pls "$1" -p)"
+execute_command() { # Use a function so we can use parameterized commands as well
+   eval "$cmd"
+}
+execute_command ${@:2}
+```
+
+Then we load it in our `.zshrc`:
+
+```bash
+# Load the zsh function 'plz'
+echo 'fpath=(~/.zshfuncs "${fpath[@]}")' >> ~/.zshrc
+echo 'autoload -Uz plz' >> ~/.zshrc
+```
+
+Now say we have the following in our `.pls.yml` file:
+```yaml
+commands:
+  - alias: go
+    command: cd $1 && ls -al
+```
+
+We can use `plz` in our `zsh` shell:
+
+```zsh
+plz go ~/work/godot/ # cd's to ~/work/godot/ and lists the contents
+```
 
 ## File format 
 
