@@ -60,7 +60,7 @@ For advanced users, here's a quick guide to get `pls` working on your system. �
   First, make sure you have the dependencies installed, then proceed to the [instructions](#instructions) below.
 
 #### Dependencies
-  - `yq` - A lightweight and portable command-line YAML processor. ([Installation instructions](https://mikefarah.gitbook.io/yq/#install))
+  - `yq` (tested with `v4.44.2`) - A lightweight and portable command-line YAML processor. ([Installation instructions](https://mikefarah.gitbook.io/yq/#install))
   - Optional: `fzf` - A command-line fuzzy finder. ([Installation instructions](https://github.com/junegunn/fzf?tab=readme-ov-file#installation))
 
 > ℹ️ Note: `fzf` is completely optional. It is used only for the `pick_alias` command, which uses a fallback picker if you don't have `fzf` installed.
