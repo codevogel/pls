@@ -147,7 +147,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 | Command       | Shorthand | Args               | Flags                                                 | Description                                                         |
 |---------------|-----------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------|
-| `execute_alias` | `e`         | `alias` <br> `command_args` |                                                       | Execute the command associated with given ALIAS. (default)          |
+| `execute_alias` | `e`         | `alias` <br> `command_args` | `-p/--print`                                                      | Execute the command associated with given ALIAS. (default)          |
 | `add_alias`     | `a`         |                    | `-a/--alias` <br> `-c/--command` <br> `-d/--destination` <br> `[-f/--force]` | Add or alter a new alias in the current directory.                  |
 | `delete_alias`  | `d`         |                    | `-a/--alias` <br> `-d/--destination`                           | Remove an alias from the desired directory.                         |
 | `list_aliases`  | `l`         |                    | `-l/--local` <br> `-g/--global` <br> `-a/--all` <br> `-c/--command`          | List all aliases available for invocation in the current directory. |
