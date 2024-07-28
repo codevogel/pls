@@ -30,7 +30,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
   docker run -it plsbuntu
   ```
 
-#### Table of Contents
+### Table of Contents
 
 - [Project Level Shortcuts (pls)](#project-level-shortcuts-pls)
   - [What does it do?](#what-does-it-do)
