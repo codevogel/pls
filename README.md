@@ -2,14 +2,33 @@
 
 Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliases for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls! ðŸ¦
 
-#### Quick Start
+### Quick Start ðŸš€ 
 
-For advanced users, here's a quick guide to get `pls` working on your system. ðŸš€
+- **Install**
 
-1. `cd` to the directory where you want to store the `pls` script.
-2. Download the script from `release/pls`: `curl -O https://raw.githubusercontent.com/codevogel/pls/main/release/pls`
-2. Add the directory to your `PATH`: `echo "export PATH=\"$PATH:$(realpath .)\"" >> ~/.bashrc`
-3. Add an empty `.pls.yml` file: `echo "commands:" > ./.pls.yml`
+  For advanced users, here's a quick guide to get `pls` working on your system.
+
+  ```bash
+  # cd to directory that should house the pls script
+  cd /path/to/pls/dir
+  # download and make executable
+  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/release/pls > pls && chmod +x pls
+  # add pls to your PATH
+  echo 'export PATH="$PATH:/path/to/pls/dir"' >> ~/.bashrc
+  ```
+- **Try in Docker**
+
+  If you want to try `pls` without installing it on your own system first, you can use the following commands:
+
+  ```bash
+  # cd to directory that should house the Dockerfile
+  cd ./pls-test
+  # download the Dockerfile
+  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/Dockerfile > Dockerfile
+  # build and run the Docker container
+  docker build -t plsbuntu .
+  docker run -it plsbuntu
+  ```
 
 #### Table of Contents
 
@@ -20,6 +39,7 @@ For advanced users, here's a quick guide to get `pls` working on your system. ðŸ
       - [Dependencies](#dependencies)
       - [Instructions](#instructions)
     - [Usage](#usage)
+    - [Try in Docker](#try-in-docker)
   - [Command overview](#command-overview)
     - [Examples](#examples)
   - [File format](#file-format)
@@ -122,8 +142,6 @@ For advanced users, here's a quick guide to get `pls` working on your system. ðŸ
     
 
   3. You can also leave out the alias, and `pls` will launch an interactive picker that lets you choose from a list of available aliases. Try it now, just run `pls` !
-
-
 
 ## Command overview
 
