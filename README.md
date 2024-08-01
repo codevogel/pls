@@ -50,9 +50,9 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 ## What does it do?
 
-`pls` allows you to store your aliases in `pls` files. You can either define system-wide aliases in a `global` file, or place project-specific aliases in a `local` file, e.g., in the root of your project directory. The `pls` file (by default named `.pls.yml`) contains a list of aliases and their corresponding commands. When you run `pls <alias>`, the command associated with that alias is executed. Aliases from a `local` context take precedence over aliases from the `global` context, allowing you to reuse the same alias in different contexts.
+`pls` allows you to store your aliases in `pls` files. You can either define system-wide aliases in a `global` file, or place project-specific aliases in a `local` file, e.g., in the root of your project directory. The `pls` file (by default named `.pls.yml`) contains a list of aliases and their corresponding commands. When you run `pls <alias>`, the command associated with that alias is executed. Aliases from a `local`, project-specific context take precedence over aliases from the `global`, system-wide context, allowing you to reuse the same alias in different contexts. For example, if you have two projects that use different testing frameworks, `pls` allows you to just run `pls test` in either directory, reducing the need to remember framework-specific commands.
 
-`pls` supports single-line and multi-line commands, as well as parameterized commands. Finally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
+`pls` supports single-line and multi-line commands, as well as parameterized commands. Additionally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
 
 <details>
   <summary>❓Why would I use <code>pls</code>?</summary>
