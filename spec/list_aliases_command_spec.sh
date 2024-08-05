@@ -37,7 +37,7 @@ Describe 'list_aliases_command'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
 
-      When call ./pls list_aliases
+      When call ./pls -l 
       The status should be success
       The output should eq "$(expected_output_both)"
     End
@@ -45,7 +45,7 @@ Describe 'list_aliases_command'
     Example 'when only local exists'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
 
-      When call ./pls list_aliases
+      When call ./pls -l
       The status should be success
       The output should eq "$(expected_output_local)" 
     End
@@ -53,14 +53,14 @@ Describe 'list_aliases_command'
     Example 'when only global exists'
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
 
-      When call ./pls list_aliases
+      When call ./pls -l 
       The status should be success
       The output should eq "$(expected_output_global)" 
     End
 
     Example 'when neither exist'
       rm "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases
+      When call ./pls -l
       The status should be success
       The output should eq 'No aliases found.'
     End
@@ -70,14 +70,14 @@ Describe 'list_aliases_command'
     Example 'when global and local exist'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -l
+      When call ./pls -ls l
       The status should be success
       The output should eq "$(expected_output_local)"
     End
 
     Example 'when local does not exist'
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -l
+      When call ./pls -ls l
       The status should be success
       The output should eq 'No aliases found.'
     End
@@ -94,7 +94,7 @@ Describe 'list_aliases_command'
       }
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -g
+      When call ./pls -ls g
       The status should be success
       The output should eq "$(expected_output_global)"
     End
@@ -102,7 +102,7 @@ Describe 'list_aliases_command'
     Example 'when global does not exist'
       rm "$TEST_PLS_GLOBAL"
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
-      When call ./pls list_aliases -g
+      When call ./pls -ls g
       The status should be success
       The output should eq 'No aliases found.'
     End
@@ -155,14 +155,14 @@ Describe 'list_aliases_command'
     Example 'when global and local exist'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -a
+      When call ./pls -ls a
       The status should be success
       The output should eq "$(expected_output_both)"
     End
 
     Example 'blank when neither exist'
       rm "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -a
+      When call ./pls -ls a
       The status should be success
       The output should eq "$(expected_output_neither)" 
     End
@@ -170,14 +170,14 @@ Describe 'list_aliases_command'
     Example 'when only local exists'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       rm "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -a
+      When call ./pls -ls a
       The status should be success
       The output should eq "$(expected_output_only_local)"
     End
 
     Example 'when only global exists'
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -a
+      When call ./pls -ls a
       The status should be success
       The output should eq "$(expected_output_only_global)"
     End
@@ -205,10 +205,10 @@ Describe 'list_aliases_command'
       %= '   echo "global zulu"'
     }
 
-    Example '-c'
+    Example '-L'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -c
+      When call ./pls -L 
       The status should be success
       The output should eq "$(expected_output_plain)"
     End
@@ -227,10 +227,10 @@ Describe 'list_aliases_command'
       %= '   echo "global zulu"'
     }
 
-    Example '-c -g'
+    Example '-Ls g'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -c -g
+      When call ./pls -Ls g
       The status should be success
       The output should eq "$(expected_output_global)"
     End
@@ -246,10 +246,10 @@ Describe 'list_aliases_command'
       %= '   echo "local foxtrot"'
     }
 
-    Example '-c -l'
+    Example '-Ls l'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -c -l
+      When call ./pls -Ls l 
       The status should be success
       The output should eq "$(expected_output_local)"
     End
@@ -261,10 +261,10 @@ Describe 'list_aliases_command'
       expected_output_local
     }
 
-    Example '-c -a'
+    Example '-Ls a'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls list_aliases -c -a
+      When call ./pls -Ls a
       The status should be success
       The output should eq "$(expected_output_both)"
     End
