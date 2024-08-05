@@ -34,8 +34,8 @@ Describe 'list_aliases_command'
   Describe 'prints aliases from local and global files'
     
     Example 'when both exist'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
 
       When call ./pls list_aliases
       The status should be success
@@ -43,7 +43,7 @@ Describe 'list_aliases_command'
     End
 
     Example 'when only local exists'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
 
       When call ./pls list_aliases
       The status should be success
@@ -51,7 +51,7 @@ Describe 'list_aliases_command'
     End
 
     Example 'when only global exists'
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
 
       When call ./pls list_aliases
       The status should be success
@@ -59,7 +59,7 @@ Describe 'list_aliases_command'
     End
 
     Example 'when neither exist'
-      rm "$PLS_GLOBAL"
+      rm "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases
       The status should be success
       The output should eq 'No aliases found.'
@@ -68,15 +68,15 @@ Describe 'list_aliases_command'
 
   Describe 'prints aliases from only local file with -l flag'
     Example 'when global and local exist'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -l
       The status should be success
       The output should eq "$(expected_output_local)"
     End
 
     Example 'when local does not exist'
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -l
       The status should be success
       The output should eq 'No aliases found.'
@@ -92,16 +92,16 @@ Describe 'list_aliases_command'
         %= 'echo-global'
         %= 'zulu-global'
       }
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -g
       The status should be success
       The output should eq "$(expected_output_global)"
     End
 
     Example 'when global does not exist'
-      rm "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
+      rm "$TEST_PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       When call ./pls list_aliases -g
       The status should be success
       The output should eq 'No aliases found.'
@@ -153,30 +153,30 @@ Describe 'list_aliases_command'
     }
 
     Example 'when global and local exist'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -a
       The status should be success
       The output should eq "$(expected_output_both)"
     End
 
     Example 'blank when neither exist'
-      rm "$PLS_GLOBAL"
+      rm "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -a
       The status should be success
       The output should eq "$(expected_output_neither)" 
     End
 
     Example 'when only local exists'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      rm "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      rm "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -a
       The status should be success
       The output should eq "$(expected_output_only_local)"
     End
 
     Example 'when only global exists'
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -a
       The status should be success
       The output should eq "$(expected_output_only_global)"
@@ -206,8 +206,8 @@ Describe 'list_aliases_command'
     }
 
     Example '-c'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -c
       The status should be success
       The output should eq "$(expected_output_plain)"
@@ -228,8 +228,8 @@ Describe 'list_aliases_command'
     }
 
     Example '-c -g'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -c -g
       The status should be success
       The output should eq "$(expected_output_global)"
@@ -247,8 +247,8 @@ Describe 'list_aliases_command'
     }
 
     Example '-c -l'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -c -l
       The status should be success
       The output should eq "$(expected_output_local)"
@@ -262,8 +262,8 @@ Describe 'list_aliases_command'
     }
 
     Example '-c -a'
-      cat samples/valid/local_list.yml > "$PLS_FILENAME"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
+      cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       When call ./pls list_aliases -c -a
       The status should be success
       The output should eq "$(expected_output_both)"

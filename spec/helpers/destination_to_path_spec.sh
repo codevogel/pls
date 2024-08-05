@@ -3,12 +3,10 @@ Include 'src/lib/helpers/destination_to_path.sh'
 Include 'src/lib/helpers/get_closest_file.sh'
 
 prepare_file_structure() {
-  # Create a global file
-  mkdir -p ./global
-  export PLS_GLOBAL="$(realpath ./global/$PLS_FILENAME)"
 
+  export PLS_FILENAME="$TEST_PLS_FILENAME"
   # Create a local file
-  echo "commands: " > "./$PLS_FILENAME"
+  echo "commands: " > "./$TEST_PLS_FILENAME"
 
   # Create new subdirectory and change to it
   mkdir -p ./new_cwd
@@ -20,10 +18,12 @@ AfterEach 'cleanup'
 
 Describe 'destination_to_path'
   Describe 'returns path to the global file for destination'
+    Before 'setup_global_pls' 'export_global_pls'
+    After 'cleanup_global_pls'
     Parameters:value 'g' 'global'
     Example "$1"
       When call destination_to_path "$1"
-      The output should eq "$PLS_GLOBAL"
+      The output should eq "$TEST_PLS_GLOBAL"
     End
   End
   
@@ -31,14 +31,14 @@ Describe 'destination_to_path'
     Parameters:value 'l' 'local'
     Example "$1"
       When call destination_to_path "$1"
-      The output should eq "$(realpath "..")/$PLS_FILENAME"
+      The output should eq "$(realpath "..")/$TEST_PLS_FILENAME"
     End
   End
 
   Describe 'returns blank if no local file exists'
     Parameters:value 'l' 'local'
     Example "$1"
-      rm "$(realpath "..")/$PLS_FILENAME"
+      rm "$(realpath "..")/$TEST_PLS_FILENAME"
       When call destination_to_path "$1"
       The output should eq ""
     End
@@ -48,7 +48,7 @@ Describe 'destination_to_path'
     Parameters:value 'h' 'here'
     Example "$1"
       When call destination_to_path "$1"
-      The output should eq "$(realpath ".")/$PLS_FILENAME"
+      The output should eq "$(realpath ".")/$TEST_PLS_FILENAME"
     End
   End
 
