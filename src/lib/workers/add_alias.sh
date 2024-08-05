@@ -1,11 +1,11 @@
 add_alias() { 
   alias="${args[alias]}"
   command="${args[--command]}"
-  destination="${args[--destination]}"
+  target="${args[--target]}"
 
-  target_file="$(destination_to_path "$destination")"
+  target_file="$(target_to_path "$target")"
 
-  if [[ -z "$target_file" && ("$destination" == "local" || "$destination" == "l") ]]; then
+  if [[ -z "$target_file" && ("$target" == "local" || "$target" == "l") ]]; then
     target_file="$(realpath .)/$PLS_FILENAME" 
   fi
 

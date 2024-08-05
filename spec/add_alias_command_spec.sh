@@ -25,7 +25,7 @@ Describe 'add_alias_command'
     Example "with destination 'local'"
       local target_file="$(realpath ..)/$TEST_PLS_FILENAME"
       echo "commands:" > "$target_file"
-      When call ./pls -a "my alias" -c "my command" -d l
+      When call ./pls -a "my alias" -c "my command" -t l
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -34,7 +34,7 @@ Describe 'add_alias_command'
       echo "PLS_GLOBAL=\"$(realpath ..)/global/$TEST_PLS_FILENAME\"" >> "$TEST_PLS_RC"
       local target_file="$(realpath ..)/global/$TEST_PLS_FILENAME"
       echo "commands:" > "$target_file"
-      When call ./pls -a "my alias" -c "my command" -d g
+      When call ./pls -a "my alias" -c "my command" -t g
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -43,7 +43,7 @@ Describe 'add_alias_command'
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
       echo "commands:" > "$target_file"
       echo "commands:" > "$(realpath ..)/$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my command" -d h
+      When call ./pls -a "my alias" -c "my command" -t h
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -52,7 +52,7 @@ Describe 'add_alias_command'
   Describe 'creates file if it does not exist'
     Example "with destination 'local'"
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my command" -d l
+      When call ./pls -a "my alias" -c "my command" -t l
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -60,7 +60,7 @@ Describe 'add_alias_command'
     Example "with destination 'global'"
       echo "PLS_GLOBAL=\"$(realpath ..)/global/$TEST_PLS_FILENAME\"" >> "$TEST_PLS_RC"
       local target_file="$(realpath ..)/global/$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my command" -d g
+      When call ./pls -a "my alias" -c "my command" -t g
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -68,7 +68,7 @@ Describe 'add_alias_command'
     Example "with destination 'here' (even if local file exists)"
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
       echo "commands:" > "$(realpath ..)/$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my command" -d h
+      When call ./pls -a "my alias" -c "my command" -t h
       The status should be success
       The contents of file "$target_file" should eq "$(expected_output)" 
     End
@@ -77,7 +77,7 @@ Describe 'add_alias_command'
   Describe 'fails when entry already exists'
     Example "when 'my alias' already exists"
       echo "$(expected_output)" > "./$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my command" -d l
+      When call ./pls -a "my alias" -c "my command" -t l
       The status should be failure
       The stderr should eq "Error: Alias 'my alias' already exists in file '$(realpath .)/$TEST_PLS_FILENAME'. Use --force to overwrite."
     End
@@ -92,7 +92,7 @@ Describe 'add_alias_command'
   Describe 'overwrites existing entry if force flag is set'
     Example "when 'my alias' already exists"
       echo "$(expected_output)" > "./$TEST_PLS_FILENAME"
-      When call ./pls -a "my alias" -c "my new command" -d l --force
+      When call ./pls -a "my alias" -c "my new command" -t l --force
       The status should be success
       The contents of file "$(realpath .)/$TEST_PLS_FILENAME" should eq "$(expected_output_after_edit)"
     End

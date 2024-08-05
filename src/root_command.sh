@@ -1,7 +1,7 @@
 alias="${args[alias]}"
 flag_add="${args[--add]}"
 flag_command="${args[--command]}"
-flag_destination="${args[--destination]}"
+flag_target="${args[--target]}"
 
 if [ -n "$flag_add" ]; then
   add_alias
