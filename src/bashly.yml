@@ -79,30 +79,15 @@ flags:
     help: |
       OPERATION: List all aliases available, and also list the associated commands.
     conflicts: [ --print, --add, --delete ]
-#   - name: pick_alias
-#     alias: [ p ]
-#     help: |
-#       Pick an alias from the list of available aliases to execute.
-#       Note: This supports fuzzy finder 'fzf' if you have it installed.
-#     examples:
-#       - |
-#         pls pick_alias
-#           Starts an interactive prompt to select an alias to execute.
-#         pls p
-#           Same as above.
-#         pls
-#           Same as above.
-#   - name: clear_cache
-#     help: |
-#       Clear the cache of all commands that have been run with pls.
-#     examples:
-#       - |
-#         pls clear_cache
-#   - name: this_does_nothing
-#     help: |
-#       This command is just for testing purposes.
-#       It does nothing. It is only used to test the before hook.
-#     private: true
+  - long: --clear-cache
+    help: |
+      OPERATION: Clear the cache of all commands that have been run with pls.
+    conflicts: [ --print, --add, --delete, --list ]
+  - long: --this-does-nothing
+    help: |
+      This flag is just for testing purposes.
+      It does nothing. It is only used to test the before hook.
+    private: true
 dependencies:
   yaml_parser:
     command: [ yq ]

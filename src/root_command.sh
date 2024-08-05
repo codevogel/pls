@@ -5,6 +5,17 @@ flag_target="${args[--target]}"
 flag_delete="${args[--delete]}"
 flag_list="${args[--list]}"
 flag_verbose_list="${args[--List]}"
+flag_clear_cache="${args[--clear-cache]}"
+flag_this_does_nothing="${args[--this-does-nothing]}"
+
+if [ -n "$flag_this_does_nothing" ]; then
+  exit
+fi
+
+if [ -n "$flag_clear_cache" ]; then
+  rm "$PLS_DIR/.cache.yml"
+  exit
+fi
 
 if [ -n "$flag_list" ]; then
   list_aliases 0
