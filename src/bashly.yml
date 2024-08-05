@@ -25,7 +25,22 @@ environment_variables:
   - name: pls_rc
     help: The path to the configuration file to use. Contains additional environment variables for advanced users. Default is determined by '\$HOME/.config/pls/.plsrc'. 
     default: $HOME/.config/pls/.plsrc
+args:
+  - name: alias
+    help: The alias to execute.
+    required: false
+    validate: not_empty
+  - name: command_args
+    help: Arguments to pass to the command.
+    repeatable: true
+    required: false
+flags:
+  - short: -p
+    long: --print
     help: |
+      Print the command instead of executing  it. (Useful if you want to pipe the command into a different shell.)
+    required: false
+    
 # commands:
 #   - name: execute_alias
 #     alias: [ e ]

@@ -1,9 +1,10 @@
+
 Include spec/setup_and_cleanup.sh
 
 BeforeEach 'setup' 'setup_global_pls'
 AfterEach 'cleanup' 'cleanup_global_pls'
 
-Describe 'execute_alias'
+Describe 'executes an alias'
 
   Describe 'fails when alias is not found'
     Parameters
@@ -15,18 +16,9 @@ Describe 'execute_alias'
 
     Example "'$1' not in $2"
       cat "samples/valid/$2.yml" > "./$TEST_PLS_FILENAME"
-      When call ./pls execute_alias "$1"
+      When call ./pls "$1"
       The status should be failure
       The output should eq "Alias '$1' was not found."
-    End
-  End
-
-  Describe 'prints with -p flag'
-    Example 'prints command'
-      cat "samples/valid/[commands][foo,biz baz].yml" > "./$TEST_PLS_FILENAME"
-      When call ./pls execute_alias -p "biz baz"
-      The status should be success
-      The output should eq "$(printf "echo \"biz\"\necho \"baz\"\n")"
     End
   End
 
@@ -43,7 +35,7 @@ Describe 'execute_alias'
       
       It "'$1' in $2"
         cat "samples/valid/$2.yml" > "$TEST_PLS_GLOBAL"
-        When call ./pls execute_alias "$1"
+        When call ./pls "$1"
         The status should be success
         The output should eq "$(printf "$3")"
       End
@@ -60,7 +52,7 @@ Describe 'execute_alias'
       
       It "'$1' in $2"
         cat "samples/valid/$2.yml" > "./$TEST_PLS_FILENAME"
-        When call ./pls execute_alias "$1"
+        When call ./pls "$1"
         The status should be success
         The output should eq "$(printf "$3")"
       End
@@ -71,7 +63,7 @@ Describe 'execute_alias'
       It "'say' echos 'local' in [commands][say]global and [commands][say]local"
         cat "samples/valid/[commands][say]global.yml" > "$TEST_PLS_GLOBAL"
         cat "samples/valid/[commands][say]local.yml" > "./$TEST_PLS_FILENAME"
-        When call ./pls execute_alias say
+        When call ./pls say
         The status should be success
         The output should eq "local"
       End
@@ -95,7 +87,7 @@ Describe 'execute_alias'
         cat "samples/valid/[commands][foo].yml" > "$1/$TEST_PLS_FILENAME"
         mv ./pls "./a/b/c/pls"
         cd "./a/b/c"
-        When call ./pls execute_alias foo
+        When call ./pls foo
         The status should be success
         The output should eq "foo"
       End
@@ -119,7 +111,7 @@ Describe 'execute_alias'
         cat "samples/valid/[commands][say]far.yml" > "$2/$TEST_PLS_FILENAME"
         mv ./pls "./a/b/c/pls"
         cd "./a/b/c"
-        When call ./pls execute_alias say
+        When call ./pls say
         The status should be success
         The output should eq "close"
       End
@@ -129,21 +121,21 @@ Describe 'execute_alias'
   Describe 'executes parameterized command'
     Example 'both parameters'
       cat "samples/valid/[commands][params].yml" > "./$TEST_PLS_FILENAME"
-      When call ./pls execute_alias params 'foo' 'bar'
+      When call ./pls params 'foo' 'bar'
       The status should be success
       The output should eq "$(printf 'param 1: foo\nparam 2: bar')"
     End
 
     Example 'one parameter left out leaves it empty'
       cat "samples/valid/[commands][params].yml" > "./$TEST_PLS_FILENAME"
-      When call ./pls execute_alias params 'foo'
+      When call ./pls params 'foo'
       The status should be success
       The output should eq "$(printf 'param 1: foo\nparam 2: ')"
     End
 
     Example 'no parameters leaves both empty'
       cat "samples/valid/[commands][params].yml" > "./$TEST_PLS_FILENAME"
-      When call ./pls execute_alias params
+      When call ./pls params
       The status should be success
       The output should eq "$(printf 'param 1: \nparam 2: ')"
     End
@@ -168,15 +160,15 @@ Describe 'execute_alias'
 
       It 'prompts when not cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should include "this command seems new"
       End
 
       It 'is quiet when cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        bash -c "echo 'y' | ./pls foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "foo"
       End
@@ -189,15 +181,15 @@ Describe 'execute_alias'
 
       It 'only prompts once when not cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "Alias 'foo' was found in '$(realpath ./$TEST_PLS_FILENAME)', but this command seems new.\n\necho \"foo\"\n\n\nfoo")"
       End
 
       It 'it prompts when already cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        bash -c "echo 'y' | ./pls foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "\necho \"foo\"\n\n\nfoo")"
       End
@@ -210,15 +202,15 @@ Describe 'execute_alias'
 
       It 'is quiet when not cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "foo")"
       End
 
       It 'it is quiet when already cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        bash -c "echo 'y' | ./pls foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "foo")"
       End
@@ -231,15 +223,15 @@ Describe 'execute_alias'
 
       It 'it prompts fully when not cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "Alias 'foo' was found in '$(realpath ./$TEST_PLS_FILENAME)', but this command seems new.\n\necho \"foo\"\n\n\nfoo")"
       End
 
       It 'it prompts partially when cached'
         cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
-        bash -c "echo 'y' | ./pls execute_alias foo" > /dev/null
-        When call bash -c "echo 'y' | ./pls execute_alias foo"
+        bash -c "echo 'y' | ./pls foo" > /dev/null
+        When call bash -c "echo 'y' | ./pls foo"
         The status should be success
         The output should eq "$(printf "\necho \"foo\"\n\n\nfoo")"
       End
