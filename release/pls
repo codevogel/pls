@@ -55,39 +55,9 @@ pls_usage() {
     printf "%s\n" "Environment Variables:"
 
     # :environment_variable.usage
-    printf "  %s\n" "PLS_FILENAME"
-    printf "    The name of the data file in which your aliases live. It is not recommended\n    to change this value for consistency sake, but you can if you feel the need\n    to do so.\n"
-    printf "    Default: .pls.yml\n"
-    echo
-
-    # :environment_variable.usage
-    printf "  %s\n" "PLS_GLOBAL"
-    printf "    The path to the global pls file (contains aliases that are available in all\n    directories). Default is determined by '\$HOME/\$PLS_FILENAME'.\n"
-    printf "    Default: $(echo $HOME/$PLS_FILENAME)\n"
-    echo
-
-    # :environment_variable.usage
-    printf "  %s\n" "PLS_DIR"
-    printf "    The path to the directory used by pls for storing internal files, such as\n    the command cache. It is not recommended to set this to a directory in\n    /tmp/, as this may break caching across reboots. Default is determined by\n    '\$HOME/.local/share/pls'.\n"
-    printf "    Default: $(echo $HOME/.local/share/pls)\n"
-    echo
-
-    # :environment_variable.usage
-    printf "  %s\n" "PLS_ENABLE_CACHE_CHECK"
-    printf "    Enable or disable cache checking, which prevents you from unexpectedly\n    running the wrong command. Setting this to false turns off the verification\n    warning that appears when you run an uncached command.\n    This is not recommended, especially not on sensitive systems. This setting\n    is overridden by 'pls_always_cache_check'.\n"
-    printf "    Default: true\n"
-    echo
-
-    # :environment_variable.usage
-    printf "  %s\n" "PLS_ALWAYS_VERIFY"
-    printf "    This will always prompt you to confirm every command before running it, even\n    if it is already cached. Does not assure that the command is safe, but does\n    give you a chance to review it. This setting overrides\n    'pls_enable_cache_check'.\n"
-    printf "    Default: false\n"
-    echo
-
-    # :environment_variable.usage
-    printf "  %s\n" "PLS_ENABLE_FZF"
-    printf "    Enable or disable the use of fzf for interactive selection. Note that this\n    is only relevant for the 'pick_alias' command. If fzf is not installed, this\n    will have no effect.\n"
-    printf "    Default: true\n"
+    printf "  %s\n" "PLS_RC"
+    printf "    The path to the configuration file to use. Contains additional environment\n    variables for advanced users. Default is determined by\n    '\$HOME/.config/pls/.plsrc'.\n"
+    printf "    Default: $HOME/.config/pls/.plsrc\n"
     echo
 
   fi
@@ -500,6 +470,11 @@ exists_in_cache() {
 
   if [[ -z "$origin" || -z "$alias" || -z "$command" ]]; then
     echo "Usage Error: exists_in_cache <origin> <alias> <command>" >&2
+    return 1
+  fi
+
+  if [ ! -d "$PLS_DIR" ]; then
+    echo "Directory not found at $PLS_DIR" >&2
     return 1
   fi
 
@@ -1061,19 +1036,9 @@ parse_requirements() {
 
   # :command.environment_variables_filter
   # :command.environment_variables_default
-  export PLS_FILENAME="${PLS_FILENAME:-.pls.yml}"
-  export PLS_GLOBAL="${PLS_GLOBAL:-$(echo $HOME/$PLS_FILENAME)}"
-  export PLS_DIR="${PLS_DIR:-$(echo $HOME/.local/share/pls)}"
-  export PLS_ENABLE_CACHE_CHECK="${PLS_ENABLE_CACHE_CHECK:-true}"
-  export PLS_ALWAYS_VERIFY="${PLS_ALWAYS_VERIFY:-false}"
-  export PLS_ENABLE_FZF="${PLS_ENABLE_FZF:-true}"
+  export PLS_RC="${PLS_RC:-$HOME/.config/pls/.plsrc}"
 
-  env_var_names+=("PLS_FILENAME")
-  env_var_names+=("PLS_GLOBAL")
-  env_var_names+=("PLS_DIR")
-  env_var_names+=("PLS_ENABLE_CACHE_CHECK")
-  env_var_names+=("PLS_ALWAYS_VERIFY")
-  env_var_names+=("PLS_ENABLE_FZF")
+  env_var_names+=("PLS_RC")
 
   # :command.dependencies_filter
   if command -v yq >/dev/null 2>&1; then
@@ -1685,6 +1650,46 @@ pls_this_does_nothing_parse_requirements() {
 before_hook() {
   # src/before.sh
   # Create the PLS_DIR if it does not exist.
+  if [ ! -d $(dirname "$PLS_RC") ]; then
+      mkdir -p "$(dirname "$PLS_RC")"
+  fi
+
+  if [ ! -f "$PLS_RC" ]; then
+    echo '
+  # The name of the data file in which your aliases live.
+  # It is not recommended to change this value for consistency sake, but you can if you feel the need to do so.
+  PLS_FILENAME=.pls.yml
+
+  # The path to the global pls file (contains aliases that are available in all directories).
+
+  PLS_GLOBAL=$HOME/$PLS_FILENAME
+
+  # The path to the directory used by pls for storing internal files, such as the command cache.
+
+  # It is not recommended to set this to a directory in /tmp as this may break caching across reboots.
+
+  PLS_DIR=$HOME/.local/share/pls
+
+  # Enable or disable cache checking, which prevents you from unexpectedly running the wrong command.
+
+  # Setting this to false turns off the verification warning that appears when you run an uncached command.
+  # This is not recommended, especially not on sensitive systems.
+
+  # This setting is overridden by 'pls_always_cache_check'.
+  PLS_ENABLE_CACHE_CHECK=true
+
+  # This will always prompt you to confirm every command before running it, even if it is already cached.
+
+  # Does not assure that the command is safe, but does give you a chance to review it. This setting overrides 'pls_enable_cache_check'.
+  PLS_ALWAYS_VERIFY=false
+
+  # Enable or disable the use of fzf for interactive selection. Note that this is only relevant for the 'pick_alias' command. If fzf is not installed, th
+  PLS_ENABLE_FZF=true
+  ' > $PLS_RC
+  fi
+
+  source $PLS_RC
+
   mkdir -p $PLS_DIR
   if [ ! -d $PLS_DIR ]; then
       echo "Failed to create directory $PLS_DIR"
@@ -1712,12 +1717,7 @@ initialize() {
   set -e
 
   # :command.environment_variables_default
-  export PLS_FILENAME="${PLS_FILENAME:-.pls.yml}"
-  export PLS_GLOBAL="${PLS_GLOBAL:-$(echo $HOME/$PLS_FILENAME)}"
-  export PLS_DIR="${PLS_DIR:-$(echo $HOME/.local/share/pls)}"
-  export PLS_ENABLE_CACHE_CHECK="${PLS_ENABLE_CACHE_CHECK:-true}"
-  export PLS_ALWAYS_VERIFY="${PLS_ALWAYS_VERIFY:-false}"
-  export PLS_ENABLE_FZF="${PLS_ENABLE_FZF:-true}"
+  export PLS_RC="${PLS_RC:-$HOME/.config/pls/.plsrc}"
 
 }
 

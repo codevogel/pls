@@ -43,7 +43,7 @@ Describe 'get_closest_file'
     The output should eq ""
   End
 
-  It 'does not find file at $PLS_GLOBAL'
+  It 'does not find file at $TEST_PLS_GLOBAL'
     export PLS_GLOBAL="$TESTING_CWD/my_file"
     touch ./my_file
     When call get_closest_file "$PWD" my_file

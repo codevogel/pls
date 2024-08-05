@@ -4,8 +4,8 @@ Include 'src/lib/query/query_command.sh'
 Include 'src/lib/query/query_command_in_file.sh'
 
 get_destination() {
-  if [[ "$1" == '$PLS_GLOBAL' ]]; then
-    echo "$PLS_GLOBAL"
+  if [[ "$1" == '$TEST_PLS_GLOBAL' ]]; then
+    echo "$TEST_PLS_GLOBAL"
   else
     echo "$1"
   fi
@@ -13,7 +13,7 @@ get_destination() {
 
 Describe 'query_command'
 
-  BeforeEach 'setup' 'setup_global_pls'
+  BeforeEach 'setup' 'setup_global_pls' 'export_global_pls' 'export_pls_filename'
   AfterEach 'cleanup' 'cleanup_global_pls'
 
   Describe 'validation'
@@ -34,7 +34,7 @@ Describe 'query_command'
     End
     Describe 'in $PLS_GLOBAL'
       Example "$(printf '%s in %s' "$2" "$1")"
-        cat "samples/valid/$1.yml" > "$PLS_GLOBAL"
+        cat "samples/valid/$1.yml" > "$TEST_PLS_GLOBAL"
         When call query_command "$2"
         The status should be success
         The output should eq "$(printf "$3")"
@@ -43,7 +43,7 @@ Describe 'query_command'
 
     Describe 'in ./$PLS_FILENAME'
       Example "$(printf '%s in %s' "$2" "$1")"
-        cat "samples/valid/$1.yml" > "./$PLS_FILENAME"
+        cat "samples/valid/$1.yml" > "./$TEST_PLS_FILENAME"
         When call query_command "$2"
         The status should be success
         The output should eq "$(printf "$3")"
@@ -59,8 +59,8 @@ Describe 'query_command'
       '$PLS_GLOBAL' './$PLS_FILENAME' 'global and local'
     End
 
-    Example "$3 $PLS_FILENAME exists"
-    cat "samples/valid/[commands][foo].yml" > $([[ "$1" == '$PLS_GLOBAL' ]] && echo "$PLS_GLOBAL" || echo "$1")
+    Example "$3 $TEST_PLS_FILENAME exists"
+    cat "samples/valid/[commands][foo].yml" > $([[ "$1" == '$TEST_PLS_GLOBAL' ]] && echo "$TEST_PLS_GLOBAL" || echo "$1")
       cat "samples/valid/[commands][foo].yml" > "$2"
       When call query_command 'bar'
       The status should be success
@@ -70,37 +70,37 @@ Describe 'query_command'
 
   Describe 'reports origin of command if requested and'
     It 'command is in $PLS_GLOBAL'
-      cat "samples/valid/[commands][foo].yml" > "$PLS_GLOBAL"
+      cat "samples/valid/[commands][foo].yml" > "$TEST_PLS_GLOBAL"
       When call query_command 'foo' 1
       The status should be success
-      The output should eq "$(printf "echo \"foo\"\n$PLS_GLOBAL")"
+      The output should eq "$(printf "echo \"foo\"\n$TEST_PLS_GLOBAL")"
     End
 
     It 'command is in ./$PLS_FILENAME'
-      cat "samples/valid/[commands][foo].yml" > "./$PLS_FILENAME"
+      cat "samples/valid/[commands][foo].yml" > "./$TEST_PLS_FILENAME"
       When call query_command 'foo' 1
       The status should be success
-      The output should eq "$(printf "echo \"foo\"\n$(realpath ./$PLS_FILENAME)")"
+      The output should eq "$(printf "echo \"foo\"\n$(realpath ./$TEST_PLS_FILENAME)")"
     End
 
     It 'command is in ../../$PLS_FILENAME'
       mkdir -p ./a/b/c
       cp ./pls ./a/b/c/pls
-      cat "samples/valid/[commands][foo].yml" > "./a/$PLS_FILENAME"
+      cat "samples/valid/[commands][foo].yml" > "./a/$TEST_PLS_FILENAME"
       cd ./a/b/c
       When call query_command 'foo' 1
       The status should be success
-      The output should eq "$(printf "echo \"foo\"\n$(realpath ../../$PLS_FILENAME)")"
+      The output should eq "$(printf "echo \"foo\"\n$(realpath ../../$TEST_PLS_FILENAME)")"
     End
   End
 
   Describe 'prefers command in local $PLS_FILENAME over $PLS_GLOBAL'
-    Example "getting 'say' from [commands][say]global in \$PLS_GLOBAL and [commands][say]local in ./$PLS_FILENAME"
-      cat "samples/valid/[commands][say]global.yml" > "$PLS_GLOBAL"
-      cat "samples/valid/[commands][say]local.yml" > "./$PLS_FILENAME"
+    Example "getting 'say' from [commands][say]global in \$PLS_GLOBAL and [commands][say]local in ./\$PLS_FILENAME"
+      cat "samples/valid/[commands][say]global.yml" > "$TEST_PLS_GLOBAL"
+      cat "samples/valid/[commands][say]local.yml" > "./$TEST_PLS_FILENAME"
       When call query_command 'say' 1
       The status should be success
-      The output should eq "$(printf "echo local\n$(realpath ./$PLS_FILENAME)")"
+      The output should eq "$(printf "echo local\n$(realpath ./$TEST_PLS_FILENAME)")"
     End  
   End
 End

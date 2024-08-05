@@ -42,8 +42,10 @@ Describe 'exists_in_cache'
       "bar origin" "bar" 'echo "bar"\necho "BAR!"'
     End
 
-    Example "$(printf '%-12s | %-7s | %-15s \n' "$1" "$2" "$3")" 
-      echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
+    Example "$(printf '%-12s | %-7s | %-15s \n' "$1" "$2" "$3")"
+      mkdir -p "$TEST_PLS_DIR"
+      echo "$(content_in_cache)" > "$TEST_PLS_DIR/.cache.yml"
+      export PLS_DIR="$TEST_PLS_DIR"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be success
       The output should be blank
@@ -58,10 +60,12 @@ Describe 'exists_in_cache'
     End
 
     Example "$(printf '%-12s | %-7s | %-15s \n' "$1" "$2" "$3")" 
-      echo "$(content_in_cache)" > "$PLS_DIR/.cache.yml"
+      mkdir -p "$TEST_PLS_DIR"
+      echo "$(content_in_cache)" > "$TEST_PLS_DIR/.cache.yml"
+      export PLS_DIR="$TEST_PLS_DIR"
       When call exists_in_cache "$1" "$2" "$3" 
       The status should be failure
-      The output should be blank
+      The stderr should be blank
     End
   End
 End

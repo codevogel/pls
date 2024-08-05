@@ -8,6 +8,11 @@ exists_in_cache() {
     return 1
   fi
 
+  if [ ! -d "$PLS_DIR" ]; then
+    echo "Directory not found at $PLS_DIR" >&2
+    return 1
+  fi
+
   if [ ! -f "$PLS_DIR/.cache.yml" ]; then
     return 1
   fi
