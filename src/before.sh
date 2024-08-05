@@ -10,13 +10,11 @@ if [ ! -f "$PLS_RC" ]; then
 PLS_FILENAME=.pls.yml
 
 # The path to the global pls file (contains aliases that are available in all directories). 
-# Default is determined by \$HOME/\$PLS_FILENAME.
-PLS_GLOBAL=\$HOME/\$PLS_FILENAME
+PLS_GLOBAL=$HOME/$PLS_FILENAME
 
 # The path to the directory used by pls for storing internal files, such as the command cache. 
 # It is not recommended to set this to a directory in /tmp as this may break caching across reboots. 
-# Default is determined by \$HOME/.local/share/pls.
-PLS_DIR=\$HOME/.local/share/pls
+PLS_DIR=$HOME/.local/share/pls
 
 # Enable or disable cache checking, which prevents you from unexpectedly running the wrong command. 
 # Setting this to false turns off the verification warning that appears when you run an uncached command.
