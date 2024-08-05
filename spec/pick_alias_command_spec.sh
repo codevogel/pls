@@ -15,7 +15,7 @@ Describe 'pick_alias_command'
         echo "zulu-global *"
       End
 
-      When call ./pls p
+      When call ./pls
       The status should be success
       The output should eq "global zulu"
     End
@@ -28,7 +28,7 @@ Describe 'pick_alias_command'
         echo "foxtrot-local"
       End
 
-      When call ./pls p
+      When call ./pls
       The status should be success
       The output should eq "local foxtrot"
     End
@@ -43,7 +43,7 @@ Describe 'pick_alias_command'
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
-      When call bash -c 'echo foxtrot-local | ./pls p' 
+      When call bash -c 'echo foxtrot-local | ./pls' 
 
       The status should be success
       The output should include "local foxtrot"
@@ -57,7 +57,7 @@ Describe 'pick_alias_command'
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
       cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
-      When call bash -c 'echo 7 | ./pls p' 
+      When call bash -c 'echo 7 | ./pls' 
 
       The status should be success
       The output should include "local foxtrot"
