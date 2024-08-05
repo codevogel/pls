@@ -39,38 +39,33 @@ flags:
     long: --print
     help: |
       Print the command instead of executing  it. (Useful if you want to pipe the command into a different shell.)
-    required: false
+  - short: -a
+    long: --add
+    help: |
+      Adds the alias with the given --command to the pls file at --destination.
+    needs: [ --command, --destination ]
+    conflicts: [ --print ]
+  - short: -c
+    long: --command
+    arg: command
+    help: The command to associate with the alias.
+    validate: not_empty
+    needs: [ --add ]
+  - short: -d
+    long: --destination
+    arg: destination
+    help: |
+      Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists')
+    validate: not_empty
+    allowed: [ g, l, h, global, local, here ]
+    needs: [ --add ]
+  - short: -f
+    long: --force
+    help: |
+      Overwrite the alias if it already exists.
+    needs: [ --add ]
+
     
-# commands:
-#   - name: execute_alias
-#     alias: [ e ]
-#     help: |
-#       Execute the command associated with given ALIAS.
-#     default: force
-#     args:
-#       - name: alias
-#         help: The alias to execute.
-#       - name: command_args
-#         help: Arguments to pass to the command.
-#         repeatable: true
-#         required: false
-#     flags:
-#       - short: -p
-#         long: --print
-#         help: |
-#           Print the command instead of executing it. (Useful if you want to pipe the command into a different shell.)
-#     examples:
-#       - |
-#         pls execute_alias build
-#           Executes the command associated with the alias 'build'.
-#         pls e test
-#           Executes the command associated with the alias 'test'.
-#       - |
-#         pls deploy
-#           Executes the command associated with the alias 'deploy'.
-#       - |
-#         pls
-#           Launches an interactive prompt to select an alias to execute.
 #   - name: add_alias
 #     alias: [ a ]
 #     help: |
