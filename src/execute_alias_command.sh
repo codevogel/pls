@@ -1,6 +1,6 @@
 if [ -z "${args[alias]}" ]; then
   pick_and_execute_alias
 else 
-  execute_alias "${args[alias]}"
+  execute_alias
 fi
 
