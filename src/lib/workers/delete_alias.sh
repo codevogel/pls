@@ -1,8 +1,8 @@
 delete_alias() {
   alias="${args[alias]}"
-  target="${args[--target]}"
+  scope="${args[--scope]}"
 
-  target_file="$(target_to_path "$target")"
+  target_file="$(scope_to_path "$scope")"
 
   if [[ -z "$target_file" ]]; then
     echo "Error: Can not delete from local file as it does exist here or in any parent." >&2

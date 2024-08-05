@@ -42,69 +42,43 @@ flags:
   - short: -a
     long: --add
     help: |
-      Adds the alias with the given --command to the pls file at --destination.
-    needs: [ --command, --target ]
-    conflicts: [ --print, --delete ]
+      OPERATION: Adds the alias with the given --command to the pls file at a desired context. 
+    needs: [ --command, --scope ]
+    conflicts: [ --print, --delete, --list ]
   - short: -c
     long: --command
     arg: command
-    help: The command to associate with the alias.
-    validate: not_empty
-    needs: [ --add ]
-  - short: -t
-    long: --target
-    arg: target
     help: |
-      Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists')
+      OPTION: The command to associate with the alias. Only relevant for --add.
     validate: not_empty
-    allowed: [ g, l, h, global, local, here ]
+    conflicts:  [ --print, --delete ]
   - short: -f
     long: --force
     help: |
-      Overwrite the alias if it already exists.
+      OPTION: Overwrite the alias if it already exists. Only relevant for --add.
     needs: [ --add ]
+  - short: -s
+    long:  --scope
+    arg: scope
+    allowed: [ g, l, a, h, global, local, all, here ]
+    help: |
+      OPTION: The scope of the alias. Only relevant for --add.
   - short: -d
     long: --delete
     help: |
-      Delete the alias from the pls file at --destination.
-    needs: [ --target ]
-    conflicts: [ --print, --add ]
-  - short: -x
-    long: --execute
-    arg: something
-    allowed: [ a, b, c]
-
-#   - name: list_aliases
-#     alias: [ l ] 
-#     help: |
-#       List all aliases available for invocation in the current directory.
-#     flags:
-#       - short: -l
-#         long: --local
-#         help: |
-#           Lists only aliases available in the local context.
-#         conflicts: [ --global, --all ]
-#       - short: -g
-#         long: --global
-#         help: |
-#           Lists only aliases available in the global context.
-#         conflicts: [ --local, --all ]
-#       - short: -a
-#         long: --all
-#         help: |
-#           Shows aliases in local and global context, even if local alias overwrites global.
-#         conflicts: [ --local, --global ]
-#       - short: -c
-#         long: --command
-#         help: |
-#           Also show the command associated with each alias.
-#     examples:
-#       - |
-#         pls list_aliases
-#           Lists all aliases avaliable in the current directory.
-#       - |
-#         pls l -gc
-#           Lists all aliases that are stored in the file at \$PLS_GLOBAL, and additionally shows the command associated with each alias.
+      OPERATION: Delete the alias from the pls file at --destination.
+    needs: [ --scope ]
+    conflicts: [ --print, --add, --list ]
+  - short: -l
+    long: --list
+    help: |
+      OPERATION: List all aliases available.
+    conflicts: [ --print, --add, --delete ]
+  - short: -L
+    long: --List
+    help: |
+      OPERATION: List all aliases available, and also list the associated commands.
+    conflicts: [ --print, --add, --delete ]
 #   - name: pick_alias
 #     alias: [ p ]
 #     help: |

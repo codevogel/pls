@@ -1,11 +1,11 @@
 add_alias() { 
   alias="${args[alias]}"
   command="${args[--command]}"
-  target="${args[--target]}"
+  scope="${args[--scope]}"
 
-  target_file="$(target_to_path "$target")"
+  target_file="$(scope_to_path "$scope")"
 
-  if [[ -z "$target_file" && ("$target" == "local" || "$target" == "l") ]]; then
+  if [[ -z "$target_file" && ("$scope" == "local" || "$scope" == "l") ]]; then
     target_file="$(realpath .)/$PLS_FILENAME" 
   fi
 
