@@ -11,5 +11,5 @@ fi
 if [ -z "$alias" ]; then
   pick_and_execute_alias
 else 
-  execute_alias "$alias"
+  execute_alias
 fi

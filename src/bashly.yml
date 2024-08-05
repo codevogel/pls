@@ -43,95 +43,37 @@ flags:
     long: --add
     help: |
       Adds the alias with the given --command to the pls file at --destination.
-    needs: [ --command, --destination ]
-    conflicts: [ --print ]
+    needs: [ --command, --target ]
+    conflicts: [ --print, --delete ]
   - short: -c
     long: --command
     arg: command
     help: The command to associate with the alias.
     validate: not_empty
     needs: [ --add ]
-  - short: -d
-    long: --destination
-    arg: destination
+  - short: -t
+    long: --target
+    arg: target
     help: |
       Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists')
     validate: not_empty
     allowed: [ g, l, h, global, local, here ]
-    needs: [ --add ]
   - short: -f
     long: --force
     help: |
       Overwrite the alias if it already exists.
     needs: [ --add ]
+  - short: -d
+    long: --delete
+    help: |
+      Delete the alias from the pls file at --destination.
+    needs: [ --target ]
+    conflicts: [ --print, --add ]
+  - short: -x
+    long: --execute
+    arg: something
+    allowed: [ a, b, c]
 
-    
-#   - name: add_alias
-#     alias: [ a ]
-#     help: |
-#       Add or alter a new alias in the current directory.
-#     flags:
-#       - short: -a
-#         long: --alias
-#         arg: alias
-#         help: The name of the alias to add.
-#         required: true
-#         validate: not_empty
-#       - short: -c
-#         long: --command
-#         arg: command
-#         help: The command to associate with the alias.
-#         required: true
-#         validate: not_empty
-#       - short: -f
-#         long: --force
-#         help: |
-#           Overwrite the alias if it already exists.
-#       - short: -d
-#         long: --destination
-#         arg: destination
-#         help: |
-#           Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists') 
-#         validate: is_destination
-#         required: true
-#     examples:
-#       - |
-#         pls add_alias -a build -c 'npm run build' -d l
-#           Adds an alias 'build' that runs a single-line command to the local pls file.
-#       - |
-#         pls a -a test -c 'echo hello\necho world!' -d g
-#           Adds an alias 'hello' that runs a multi-line command to the global pls file.
-#       - |
-#         pls a -a my_name -c 'echo "My name is $1"' -d h
-#           Adds an alias 'foo' that runs a parameterized command and stores it in the pls file in the current directory. The command can be run with 'pls my_name <name>'.
-#   - name: delete_alias
-#     alias: [ r ]
-#     help: |
-#       Remove an alias from the desired directory.
-#     flags:
-#       - short: -a
-#         long: --alias
-#         arg: alias
-#         help: The name of the alias to remove.
-#         required: true
-#         validate: not_empty
-#       - short: -d
-#         long: --destination
-#         help: |
-#           Remove the alias from the pls file for the desired context. (g)lobal, (l)ocal, (h)ere
-#         arg: destination
-#         validate: is_destination
-#         required: true
-#     examples:
-#       - |
-#         pls delete_alias -a build -d l
-#           Removes the entry for alias 'build' from the closest local file.
-#       - |
-#         pls d -a deploy -d g
-#           Removes the entry for alias 'deploy' from the global file.
-#       - |
-#         pls d -a foo -d h
-#           Removes the entry for alias 'foo' from the file in the current directory.
 #   - name: list_aliases
 #     alias: [ l ] 
 #     help: |
