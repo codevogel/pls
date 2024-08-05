@@ -254,7 +254,7 @@ To clear the cache, you can run `pls clear_cache`.
 
 ## Configuration
 
-`pls` can be configured using environment variables. Here are the available variables:
+`pls` can be configured using a `.plsrc` file, which is stored at the environment variable `$PLS_RC`. If you have not set `$PLS_RC`, then it will be created at `$HOME/.config/pls/.plsrc` by default, including the default values listed in the table below:
 
 | Variable                | Description                                                                                   | Default Value |
 |-------------------------|-----------------------------------------------------------------------------------------------|---------------|
@@ -265,7 +265,7 @@ To clear the cache, you can run `pls clear_cache`.
 | `PLS_ENABLE_FZF`        | If set to `true`, `pls` will use `fzf` as the picker (given that you have it installed).       | N/A       |
 | `PLS_DIR`               | The directory where internal `pls` files are stored. Not recommended to place this in `/tmp/` as that would delete the cache on reboot.                                   | `$HOME/local/.share/pls`           |
 
-You can add any of these to your bash profile using `export VAR_NAME="value"`.
+Make sure each of these variables is on a new line in the `.plsrc` file, and that you are not missing any. If in doubt, you can always delete the `.plsrc` file and `pls` will recreate it with the default values.
 
 ## Roadmap
 
