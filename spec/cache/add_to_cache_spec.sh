@@ -26,7 +26,7 @@ Describe 'add_to_cache'
       Parameters:value '""' '/tmp/foo/this-directory-does-not-exist'
       
       Example "$1"
-        export PLS_DIR="$2"
+        export PLS_DIR="/tmp/foo/this-directory-does-not-exist"
         When call add_to_cache "origin" "foo" "echo \"foo\""
         The status should be failure
         The stderr should eq "Env Error: PLS_DIR is not set or is not a directory"
@@ -41,8 +41,10 @@ Describe 'add_to_cache'
     End
 
     It "for alias '$2'"
+      export PLS_DIR="$TEST_PLS_DIR"
+      mkdir -p "$TEST_PLS_DIR"
       When call add_to_cache "$1" "$2" "$3"
-      The contents of file "$PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: $3")"
+      The contents of file "$TEST_PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: $3")"
     End
   End
 
@@ -57,8 +59,10 @@ Describe 'add_to_cache'
     }
 
     It "for alias '$2'"
+      export PLS_DIR="$TEST_PLS_DIR" 
+      mkdir -p "$TEST_PLS_DIR"
       When call add_to_cache "$1" "$2" 'echo "biz"\necho "baz"'
-      The contents of file "$PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: |-\n$(correct_tab_format "$3")\n")" 
+      The contents of file "$TEST_PLS_DIR/.cache.yml" should eq "$(printf "$1:\n  $2: |-\n$(correct_tab_format "$3")\n")" 
     End
   End
 
@@ -78,9 +82,11 @@ Describe 'add_to_cache'
     }
   
     Example "for alias 'biz baz'"
-      echo "$original_content" > "$PLS_DIR/.cache.yml"
+      export PLS_DIR="$TEST_PLS_DIR" 
+      mkdir -p "$TEST_PLS_DIR"
+      echo "$original_content" > "$TEST_PLS_DIR/.cache.yml"
       When call add_to_cache "origin biz baz" "biz baz" "echo \"foo\"\necho \"bar\""
-      The contents of file "$PLS_DIR/.cache.yml" should eq "$(printf "$(replaced_content)\n")"
+      The contents of file "$TEST_PLS_DIR/.cache.yml" should eq "$(printf "$(replaced_content)\n")"
     End
   End
 End

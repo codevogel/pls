@@ -8,8 +8,8 @@ Describe 'pick_alias_command'
   Describe 'picks with fzf'
 
     Example "picks 'zulu-global *'"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./$PLS_FILENAME
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
+      cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
       Mock fzf
         echo "zulu-global *"
@@ -21,8 +21,8 @@ Describe 'pick_alias_command'
     End
 
     Example "picks 'foxtrot-local'"
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./$PLS_FILENAME
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
+      cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
       Mock fzf
         echo "foxtrot-local"
@@ -38,10 +38,10 @@ Describe 'pick_alias_command'
     Example 'picks foxtrot-local by name'
 
       # Remove fzf from PATH
-      export PLS_ENABLE_FZF=false 
+      echo "PLS_ENABLE_FZF=false" >> "$TEST_PLS_RC" 
 
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./$PLS_FILENAME
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
+      cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
       When call bash -c 'echo foxtrot-local | ./pls p' 
 
@@ -52,10 +52,10 @@ Describe 'pick_alias_command'
     Example 'picks foxtrot-local by number'
 
       # Remove fzf from PATH
-      export PLS_ENABLE_FZF=false 
+      echo "PLS_ENABLE_FZF=false" >> "$TEST_PLS_RC" 
 
-      cat samples/valid/global_list.yml > "$PLS_GLOBAL"
-      cat samples/valid/local_list.yml > ./$PLS_FILENAME
+      cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
+      cat samples/valid/local_list.yml > ./$TEST_PLS_FILENAME
 
       When call bash -c 'echo 7 | ./pls p' 
 

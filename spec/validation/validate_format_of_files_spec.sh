@@ -12,7 +12,7 @@ get_destination() {
 
 Describe 'validate_format_of_files catches format error'
 
-  BeforeEach 'setup' 'setup_global_pls'
+  BeforeEach 'setup' 'setup_global_pls' 'export_global_pls' 'export_pls_filename'
   AfterEach 'cleanup' 'cleanup_global_pls'
 
   Describe "of type 'top level error'"
