@@ -1,5 +1,6 @@
 
 name: pls
+version: 0.1.0
 help: |
   Project Level Shortcuts (pls) is a command-line tool designed to streamline 
   your workflow by allowing you to create, manage, and execute custom aliases 
@@ -25,155 +26,67 @@ environment_variables:
   - name: pls_rc
     help: The path to the configuration file to use. Contains additional environment variables for advanced users. Default is determined by '\$HOME/.config/pls/.plsrc'. 
     default: $HOME/.config/pls/.plsrc
-commands:
-  - name: execute_alias
-    alias: [ e ]
+args:
+  - name: alias
+    help: |  
+      The alias to execute, add, or delete.
+      When left empty, will launch an interactive picker to select and execute an alias.
+    required: false
+    validate: not_empty
+  - name: command_args
+    help: Optional arguments to pass to the command when executing a parameterized command.
+    repeatable: true
+    required: false
+flags:
+  - short: -a
+    long: --add
     help: |
-      Execute the command associated with given ALIAS.
-    default: force
-    args:
-      - name: alias
-        help: The alias to execute.
-      - name: command_args
-        help: Arguments to pass to the command.
-        repeatable: true
-        required: false
-    flags:
-      - short: -p
-        long: --print
-        help: |
-          Print the command instead of executing it. (Useful if you want to pipe the command into a different shell.)
-    examples:
-      - |
-        pls execute_alias build
-          Executes the command associated with the alias 'build'.
-        pls e test
-          Executes the command associated with the alias 'test'.
-      - |
-        pls deploy
-          Executes the command associated with the alias 'deploy'.
-      - |
-        pls
-          Launches an interactive prompt to select an alias to execute.
-  - name: add_alias
-    alias: [ a ]
+      OPERATION: Adds a new alias for a --command to the pls file at a given --scope.
+    needs: [ --command, --scope ]
+    validate: is_only_operation
+  - short: -d
+    long: --delete
     help: |
-      Add or alter a new alias in the current directory.
-    flags:
-      - short: -a
-        long: --alias
-        arg: alias
-        help: The name of the alias to add.
-        required: true
-        validate: not_empty
-      - short: -c
-        long: --command
-        arg: command
-        help: The command to associate with the alias.
-        required: true
-        validate: not_empty
-      - short: -f
-        long: --force
-        help: |
-          Overwrite the alias if it already exists.
-      - short: -d
-        long: --destination
-        arg: destination
-        help: |
-          Add the alias to the pls file for the desired context. (g)lobal, (l)ocal, or (h)ere. ('here' means 'use the CWD, even if a local file exists') 
-        validate: is_destination
-        required: true
-    examples:
-      - |
-        pls add_alias -a build -c 'npm run build' -d l
-          Adds an alias 'build' that runs a single-line command to the local pls file.
-      - |
-        pls a -a test -c 'echo hello\necho world!' -d g
-          Adds an alias 'hello' that runs a multi-line command to the global pls file.
-      - |
-        pls a -a my_name -c 'echo "My name is $1"' -d h
-          Adds an alias 'foo' that runs a parameterized command and stores it in the pls file in the current directory. The command can be run with 'pls my_name <name>'.
-  - name: delete_alias
-    alias: [ r ]
+      OPERATION: Delete the alias from the pls file at given --scope. 
+    needs: [ --scope ]
+    validate: is_only_operation
+  - short: -l
+    long: --list
     help: |
-      Remove an alias from the desired directory.
-    flags:
-      - short: -a
-        long: --alias
-        arg: alias
-        help: The name of the alias to remove.
-        required: true
-        validate: not_empty
-      - short: -d
-        long: --destination
-        help: |
-          Remove the alias from the pls file for the desired context. (g)lobal, (l)ocal, (h)ere
-        arg: destination
-        validate: is_destination
-        required: true
-    examples:
-      - |
-        pls delete_alias -a build -d l
-          Removes the entry for alias 'build' from the closest local file.
-      - |
-        pls d -a deploy -d g
-          Removes the entry for alias 'deploy' from the global file.
-      - |
-        pls d -a foo -d h
-          Removes the entry for alias 'foo' from the file in the current directory.
-  - name: list_aliases
-    alias: [ l ] 
+      OPERATION: List all aliases available in the current directory.
+      Or, list aliases only from --scope <[g]lobal, [l]ocal, [a]ll>.
+      Use with --print to print the command associated with each alias.
+    validate: is_only_operation
+  - short: -c
+    long: --command
+    arg: command
+    validate: not_empty
     help: |
-      List all aliases available for invocation in the current directory.
-    flags:
-      - short: -l
-        long: --local
-        help: |
-          Lists only aliases available in the local context.
-        conflicts: [ --global, --all ]
-      - short: -g
-        long: --global
-        help: |
-          Lists only aliases available in the global context.
-        conflicts: [ --local, --all ]
-      - short: -a
-        long: --all
-        help: |
-          Shows aliases in local and global context, even if local alias overwrites global.
-        conflicts: [ --local, --global ]
-      - short: -c
-        long: --command
-        help: |
-          Also show the command associated with each alias.
-    examples:
-      - |
-        pls list_aliases
-          Lists all aliases avaliable in the current directory.
-      - |
-        pls l -gc
-          Lists all aliases that are stored in the file at \$PLS_GLOBAL, and additionally shows the command associated with each alias.
-  - name: pick_alias
-    alias: [ p ]
+      ARGFLAG: Supplies a command to associate with the alias in the  --add operation.
+      Pass the command as a string, newline characters ('\\\n') are allowed.
+  - short: -s
+    long:  --scope
+    arg: scope
+    allowed: [ g, global, l, local, h, here, a, all ]
     help: |
-      Pick an alias from the list of available aliases to execute.
-      Note: This supports fuzzy finder 'fzf' if you have it installed.
-    examples:
-      - |
-        pls pick_alias
-          Starts an interactive prompt to select an alias to execute.
-        pls p
-          Same as above.
-        pls
-          Same as above.
-  - name: clear_cache
+      ARGFLAG: The selected scope for --add, --delete, and --list operations.
+      The 'all' scope is exclusive to --list.
+      The 'here' scope is excluded from --list.
+  - short: -p
+    long: --print
     help: |
-      Clear the cache of all commands that have been run with pls.
-    examples:
-      - |
-        pls clear_cache
-  - name: this_does_nothing
+      Prints the command instead of executing it. Useful for piping to other commands or shells.
+      Or, if used in conjunction with --list, it additionally prints the command for each alias.
+  - short: -f
+    long: --force
     help: |
-      This command is just for testing purposes.
+      Overwrite the alias if it already exists when using the --add operation.
+  - long: --clear-cache
+    help: |
+      Before doing anything, clears the cache of all commands that have been run with pls.
+  - long: --this-does-nothing
+    help: |
+      This flag is just for testing purposes.
       It does nothing. It is only used to test the before hook.
     private: true
 dependencies:

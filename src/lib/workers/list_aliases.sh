@@ -1,8 +1,6 @@
 list_aliases() {
-  local flag_command="${args[--command]}"
-  local flag_global="${args[--global]}"
-  local flag_local="${args[--local]}"
-  local flag_all="${args[--all]}"
+  local verbose="${args[--print]}"
+  local flag_scope="${args[--scope]}"
 
   local local_file="$(get_closest_file "$PWD" "$PLS_FILENAME")"
   local global_file="$PLS_GLOBAL"
@@ -20,19 +18,23 @@ list_aliases() {
     yq e "$([[ "$should_print_command" ]] && echo "$command_query" || echo "$alias_query")" "$file"
   }
 
-  if [[ "$flag_all" ]]; then
+  if [ "$flag_scope" == "a" ] || [ "$flag_scope" == "all" ]; then
     echo "--- Global Aliases ---"
-    print_aliases "$global_file" "$flag_command"
+    print_aliases "$global_file" "$verbose"
     echo "--- Local Aliases ---"
-    print_aliases "$local_file" "$flag_command"
-  elif [[ "$flag_global" ]]; then
-    print_aliases "$global_file" "$flag_command"
-  elif [[ "$flag_local" ]]; then
-    print_aliases "$local_file" "$flag_command"
+    print_aliases "$local_file" "$verbose"
+  elif [ "$flag_scope" == "g" ] || [ "$flag_scope" == "global" ]; then
+    print_aliases "$global_file" "$verbose"
+  elif [ "$flag_scope" == "l" ] || [ "$flag_scope" == "local" ]; then
+    print_aliases "$local_file" "$verbose"
+  elif [ "$flag_scope" == "h" ] || [ "$flag_scope" == "here" ]; then
+    echo "Error: Invalid argument. Must be one of [ g, global, l, local, a, all ]" >&2
+    exit 1
   else
+
     local temp_combined_file="$(mktemp)"
     echo "$(merge_pls_files "$global_file" "$local_file")" > "$temp_combined_file"
-    print_aliases "$temp_combined_file" "$flag_command"
+    print_aliases "$temp_combined_file" "$verbose"
     rm "$temp_combined_file"
   fi
 }

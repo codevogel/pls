@@ -10,7 +10,7 @@ Describe 'before.sh'
     export PLS_RC="$temp_pls_rc"
     mkdir -p "$TESTING_CWD/.config/pls" 
     rm -f "$temp_pls_rc"
-    When run ./pls this_does_nothing
+    When run ./pls --this-does-nothing
     The directory "$(dirname "$temp_pls_rc")" should be exist
     The file "$temp_pls_rc" should be exist
   End
@@ -19,7 +19,7 @@ Describe 'before.sh'
     temp_pls_rc="$TESTING_CWD/.config/pls/temp_pls_rc"
     export PLS_RC="$temp_pls_rc"
     rm -f "$temp_pls_rc"
-    When run ./pls this_does_nothing
+    When run ./pls --this-does-nothing
     The directory "$(dirname "$temp_pls_rc")" should be exist
     The file "$temp_pls_rc" should be exist
   End
@@ -29,7 +29,7 @@ Describe 'before.sh'
     PLS_DIR="$TESTING_CWD/test_pls_dir"
     echo "PLS_DIR=\"$PLS_DIR\"" >> "$TEST_PLS_RC"
     rm -rf "$PLS_DIR"
-    When run ./pls this_does_nothing
+    When run ./pls --this-does-nothing
     The directory "$PLS_DIR" should be exist 
   End
 End

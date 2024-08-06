@@ -3,11 +3,11 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup'
 AfterEach 'cleanup'
 
-Describe 'delete_alias_command'
+Describe 'deletes_an_alias'
 
   entry_contents() {
     %= "commands:"
-    %= "  - alias: my alias"
+    %= "  - alias: my_alias"
     %= "    command: echo 'hello'"
   }
 
@@ -16,21 +16,21 @@ Describe 'delete_alias_command'
       echo "PLS_GLOBAL=\"./global_$TEST_PLS_FILENAME\"" >> "$TEST_PLS_RC"
       local target_file="./global_$TEST_PLS_FILENAME"
       echo "$(entry_contents)" > "$target_file"
-      When call ./pls delete_alias -a "my alias" -d g
+      When call ./pls -d my_alias -s g
       The contents of file "$target_file" should eq "commands: []"
     End
 
     Example 'with destination local'
       local target_file="./$TEST_PLS_FILENAME"
       echo "$(entry_contents)" > "$target_file"
-      When call ./pls delete_alias -a "my alias" -d l
+      When call ./pls -d my_alias -s l
       The contents of file "$target_file" should eq "commands: []"
     End
 
     Example 'with destination here'
       local target_file="./$TEST_PLS_FILENAME"
       echo "$(entry_contents)" > "./$TEST_PLS_FILENAME"
-      When call ./pls delete_alias -a "my alias" -d h
+      When call ./pls -d my_alias -s h
       The contents of file "$target_file" should eq "commands: []"
     End
   End
@@ -39,21 +39,21 @@ Describe 'delete_alias_command'
     Example 'with destination global'
       echo "PLS_GLOBAL=\"./global_$TEST_PLS_FILENAME\"" >> "$TEST_PLS_RC"
       local target_file="./global_$TEST_PLS_FILENAME"
-      When run ./pls delete_alias -a "my alias" -d g
+      When run ./pls -d my_alias -s g
       The status should be failure
       The stderr should eq "Error: Can not delete from file '$target_file' as it does not exist."
     End
 
     Example 'with destination local'
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
-      When run ./pls delete_alias -a "my alias" -d l
+      When run ./pls -d my_alias -s l
       The status should be failure
       The stderr should eq "Error: Can not delete from local file as it does exist here or in any parent."
     End
 
     Example 'with destination here'
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
-      When run ./pls delete_alias -a "my alias" -d h
+      When run ./pls -d my_alias -s h
       The status should be failure
       The stderr should eq "Error: Can not delete from file '$target_file' as it does not exist."
     End
@@ -64,7 +64,7 @@ Describe 'delete_alias_command'
       mv ./pls ./subdir
       cd ./subdir
       local target_file="$(realpath .)/$TEST_PLS_FILENAME"
-      When run ./pls delete_alias -a "my alias" -d h
+      When run ./pls -d my_alias -s h
       The status should be failure
       The stderr should eq "Error: Can not delete from file '$target_file' as it does not exist."
     End

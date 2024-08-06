@@ -1,5 +1,5 @@
 execute_alias() {
-  local alias="$1"
+  local alias="${1}"
 
   local result=$(query_command "$alias" 1)
 
