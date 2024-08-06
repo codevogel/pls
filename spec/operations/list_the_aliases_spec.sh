@@ -3,7 +3,7 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup' 'setup_global_pls'
 AfterEach 'cleanup' 'cleanup_global_pls'
 
-Describe 'list_aliases_command'
+Describe 'list_the_aliases'
 
   expected_output_both() {
     %= 'alpha-global *'

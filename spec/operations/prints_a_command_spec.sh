@@ -3,7 +3,7 @@ Include spec/setup_and_cleanup.sh
 BeforeEach 'setup'
 AfterEach 'cleanup'
 
-Describe 'prints an alias'
+Describe 'prints_a_command'
 
   Describe 'prints with -p flag'
     Example 'prints command'

@@ -3,7 +3,7 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup' 'setup_global_pls'
 AfterEach 'cleanup' 'cleanup_global_pls'
 
-Describe 'pick_alias_command'
+Describe 'picks_an_alias'
 
   Describe 'picks with fzf'
 

@@ -4,7 +4,7 @@ Include spec/setup_and_cleanup.sh
 BeforeEach 'setup' 'setup_global_pls'
 AfterEach 'cleanup' 'cleanup_global_pls'
 
-Describe 'executes an alias'
+Describe 'executes_an_alias'
 
   Describe 'fails when alias is not found'
     Parameters

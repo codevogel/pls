@@ -3,7 +3,7 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup'
 AfterEach 'cleanup'
 
-Describe 'delete_alias_command'
+Describe 'deletes_an_alias'
 
   entry_contents() {
     %= "commands:"

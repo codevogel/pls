@@ -3,7 +3,7 @@ Include 'spec/setup_and_cleanup.sh'
 BeforeEach 'setup'
 AfterEach 'cleanup'
 
-Describe 'add_alias_command'
+Describe 'adds_an_alias'
 
   prepare_file_structure() {
     mkdir -p ./new_dir
