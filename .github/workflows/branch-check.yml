@@ -10,7 +10,7 @@ on:
 
 jobs:
   check_branch:
-    if: github.head_ref != "dev"
+    if: github.head_ref != 'dev'
     runs-on: ubuntu-latest
     steps:
       - name: Close Pull Request
