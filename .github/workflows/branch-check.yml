@@ -20,3 +20,5 @@ jobs:
         with:
           # Post a issue comment just before closing a pull request.
           comment: Only dev can  merge into main. Please submit your PR to the dev branch instead.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
