@@ -12,10 +12,34 @@ jobs:
   run_tests:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1.180.1
+        with:
+          ruby-version: '3.3.4'
+      - name: Checkout Bashly
+        uses: actions/checkout@v2
+        with:
+          repository: 'DannyBen/bashly'
+          ref: 'dae0394'
+          path: 'bashly'
+
+      - name: Build Bashly
+        run: |
+          cd bashly
+          gem build bashly.gemspec
+          gem install bashly-*.gem
+          cd ..
+        
       - name: Install Shellspec
         run: |
           curl -fsSL https://git.io/shellspec | sh -s 0.28.0 --yes
-      - uses: actions/checkout@v2
+      - name: Checkout pls
+        uses: actions/checkout@v2
+        with:
+          repository: 'codevogel/pls'
+      - name: Build pls
+        run: |
+          bashly generate
       - name: Run Shellspec
         run: |
           shellspec --shell bash --warning-as-failure -f d
