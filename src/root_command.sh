@@ -12,7 +12,10 @@ if [ -n "$flag_this_does_nothing" ]; then
 fi
 
 if [ -n "$flag_clear_cache" ]; then
-  rm "$PLS_DIR/.cache.yml"
+  rm -f "$PLS_DIR/.cache.yml"
+  if [ ${#args[@]} -eq 1 ]; then
+    exit
+  fi
 fi
 
 if [ -n "$flag_delete" ]; then
