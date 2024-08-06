@@ -32,29 +32,33 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 ### Table of Contents
 
-- [Project Level Shortcuts (pls)](#project-level-shortcuts-pls)
-  - [What does it do?](#what-does-it-do)
-  - [Getting started](#getting-started)
-    - [Installation](#installation)
-      - [Dependencies](#dependencies)
-      - [Instructions](#instructions)
-    - [Usage](#usage)
-    - [Try in Docker](#try-in-docker)
-  - [Command overview](#command-overview)
-    - [Examples](#examples)
-  - [Use in main shell](#use-in-main-shell)
-  - [File format](#file-format)
-  - [Command cache](#command-cache)
-  - [Configuration](#configuration)
-  - [Contributing](#contributing)
+- [Quick Start](#quick-start-)
+- [What is pls and why do I want pls?](#what-is-pls-and-why-do-i-want-pls)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Instructions](#instructions)
+  - [Usage](#usage)
+- [Command overview](#command-overview)
+  - [Operation Flags](#operation-flags)
+  - [Other Flags](#other-flags)
+  - [Examples](#examples)
+- [Use in main shell](#use-in-main-shell)
+  - [If your main shell is bash](#if-your-main-shell-is-bash)
+  - [If your main shell is not bash](#if-your-main-shell-is-not-bash)
+- [File format](#file-format)
+- [Command cache](#command-cache)
+- [Configuration](#configuration)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
 
-## What does it do?
+## What is pls and why do I want pls?
 
 `pls` allows you to store your aliases in `pls` files. You can either define system-wide aliases in a `global` file, or place project-specific aliases in a `local` file, e.g., in the root of your project directory. The `pls` file (by default named `.pls.yml`) contains a list of aliases and their corresponding commands. When you run `pls <alias>`, the command associated with that alias is executed. Aliases from a `local`, project-specific context take precedence over aliases from the `global`, system-wide context, allowing you to reuse the same alias in different contexts. For example, if you have two projects that use different testing frameworks, `pls` allows you to just run `pls test` in either directory, reducing the need to remember framework-specific commands.
 
 `pls` supports single-line and multi-line commands, as well as parameterized commands. Additionally, it caches the commands you run, and warns you when an alias points to an uncached command. This lets you be sure that you are only running the commands that you expect.
 
-<details>
+<details open>
   <summary>❓Why would I use <code>pls</code>?</summary>
   <ul>
     <li><b>Organized alias management:</b> Instead of cluttering your shell profile with numerous aliases, <code>pls</code> lets you keep them organized in separate files, making it easier to manage and maintain your shortcuts.</li>
@@ -115,11 +119,11 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
         ```
     2. Add an alias using the `pls add` command:
        ```bash:
-       pls add_alias --alias  "hello" --command "echo 'Hello, World!'" --destination local
+       pls hello --add --command "echo 'Hello, World!'" --scope local
        ```
        > ℹ️ Note: This is a shorter equivalent of the above command:
        ```bash:
-       pls a -a "hello" -c "echo 'Hello, World!'" -d local
+       pls hello -a -c "echo 'Hello, World!'" -s local
        ```
 2. To execute the alias, run `pls hello`. 
     You should first be prompted to confirm that you indeed want to run this command. Enter `y` or `Y` and press `Return`.
@@ -147,16 +151,35 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 ## Command overview
 
-| Command       | Shorthand | Args               | Flags                                                 | Description                                                         |
-|---------------|-----------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------|
-| `execute_alias` | `e`         | `alias` <br> `command_args` | `-p/--print`                                                      | Execute the command associated with given ALIAS. (default)          |
-| `add_alias`     | `a`         |                    | `-a/--alias` <br> `-c/--command` <br> `-d/--destination` <br> `[-f/--force]` | Add or alter a new alias in the current directory.                  |
-| `delete_alias`  | `d`         |                    | `-a/--alias` <br> `-d/--destination`                           | Remove an alias from the desired directory.                         |
-| `list_aliases`  | `l`         |                    | `-l/--local` <br> `-g/--global` <br> `-a/--all` <br> `-c/--command`          | List all aliases available for invocation in the current directory. |
-| `pick_alias`    | `p`         |                    |                                                       | Pick an alias from the list of available aliases to execute.        |
-| `clear_cache`   |  N/A         |                    |                                                       | Clear the cache of all commands that have been run with pls.        |
+To keep the syntax for using `pls` as short as possible, and because we want to keep the namespace for aliases clean of commands, `pls` uses just a single root command: `pls`. This command can be followed by an alias, command arguments, or flags.
 
-Additional flags are `--help/-h` and `--version/-v` which provide help and version information, respectively. 
+```
+pls [alias] [command_args] [flags]
+```
+
+###  Operation Flags
+
+This is an overview of the flags that trigger `pls` to perform alternative operations (instead of the default operation: executing an alias). Each of these operation flags conflict with one another: you can only use one at a time. 
+
+| Operation  | Shorthand | Needs Flags           | Optional Flags            | Description                                                                                                                                                                               |
+|------------|-----------|-----------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--add`    | `-a`      | `--command` `--scope` | `--force`           | Adds a new alias for a <br>`--command <command>`<br>to the pls file at a given<br>`--scope <[g]lobal, [l]ocal, [h]ere>`.<br> Use with `--force` to overwrite the alias if it exists.                    |
+| `--delete` | `-d`      | `--scope`             |                     | Delete the alias from the pls file at given<br>`--scope  <[g]lobal, [l]ocal, [h]ere>`.                                                                                                       |
+| `--list`   | `-l`      |                       | `--scope` `--print` | List all aliases available in the current directory.<br>Or, list aliases only from `--scope <[g]lobal, [l]ocal, [a]ll>`.<br>Use with `--print` to print the command associated with each alias. |  |
+
+### Other Flags
+
+These are the flags that do not represent operations. Some of them are used to provide additional information to operations, or to modify the behavior of the root command.
+
+| Flag            | Needs argument | Used with                    | Description                                                                                                                                                                                                          |
+|-----------------|----------------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--command`     | yes              | `--add`                      | Supplies a command to associate with the alias in the  `--add` operation. Pass the command as a string, newline characters ('\n') are allowed.                                                                       |
+| `--scope`       |yes              | `--add` `--delete`  `--list` | The selected scope for `--add`, `--delete`, and `--list` operations. Allowed scopes are [g]lobal, [l]ocal, [a]ll, [h]ere.  The 'all' scope is exclusive to `--list`. The 'here' scope is excluded from `--list`.     |
+| `--print`       |               | root command `--list`        | Prints the command instead of executing it when used with root command.  Useful for piping to other commands or shells. Or, if used in conjunction with `--list`, it additionally prints the command for each alias. |
+| `--force`       |              | `--add`                      | Overwrite the alias if it already exists when using the `--add` operation.                                                                                                                                           |
+| `--clear-cache` |              |                              | Before doing anything, clears the cache of all commands that have been run with pls.                                                                                                                                 |
+| `--help`        |              |                              | Show the help.                                                                                                                                                                                                       |
+| `--version`     |              |                              | Show the version number.                                                                                                                                                                                             |
 ### Examples
 
 View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
@@ -276,6 +299,8 @@ Make sure each of these variables is on a new line in the `.plsrc` file, and tha
 - [x] Add command cache verification
 - [x] List available aliases
 - [x] Add alias picker
+- [x] Add `.rc` file
+- [x] Use `pls` with flags, preventing commands from taking up alias namespace.
 - [ ] What else would you like to see? Let us know by opening an issue!
 
 ## Contributing
