@@ -19,7 +19,7 @@ jobs:
       - name: Install Ruby
         uses: ruby/setup-ruby@v1.180.1
         with:
-          ruby-version: '3.3.4'
+          ruby-version: '3.3'
       - name: Checkout Bashly
         uses: actions/checkout@v2
         with:
