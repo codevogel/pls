@@ -2,6 +2,8 @@
 
 Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom aliases for frequently used commands. Say goodbye to messy bash profiles, and say hello to pls! 🐦
 
+Run your most frequently used commands with ease, e.g. `pls test` to run tests, `pls godot` to open your godot project and editor, `pls open-here` to open the current directory in your file manager, and whatever else you can think of!
+
 ### Quick Start 🚀 
 
 - **Install**
