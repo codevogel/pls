@@ -40,13 +40,13 @@ flags:
   - short: -a
     long: --add
     help: |
-      OPERATION: Adds a new alias for a command to the pls file at a given scope.
+      OPERATION: Adds a new alias for a --command to the pls file at a given --scope.
     needs: [ --command, --scope ]
     validate: is_only_operation
   - short: -d
     long: --delete
     help: |
-      OPERATION: Delete the alias from the pls file at --destination.
+      OPERATION: Delete the alias from the pls file at given --scope. 
     needs: [ --scope ]
     validate: is_only_operation
   - short: -l
@@ -80,7 +80,6 @@ flags:
     long: --force
     help: |
       Overwrite the alias if it already exists when using the --add operation.
-    needs: [ --add ]
   - long: --clear-cache
     help: |
       Before doing anything, clears the cache of all commands that have been run with pls.
