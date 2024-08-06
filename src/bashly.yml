@@ -40,35 +40,29 @@ flags:
     help: |
       OPERATION: Adds the alias with the given --command to the pls file at a desired context.
     needs: [ --command, --scope ]
-    conflicts: [ -delete, --list, --List, --clear-cache ]
+    conflicts: [ --delete, --list ]
   - short: -d
     long: --delete
     help: |
       OPERATION: Delete the alias from the pls file at --destination.
       Needs a --scope <[g]lobal, [l]ocal, [h]ere>
     needs: [ --scope ]
-    conflicts: [ -add, --list, --List, --clear-cache ]
+    conflicts: [ --add, --list ]
   - short: -l
     long: --list
     help: |
       OPERATION: List all aliases available.
-    conflicts: [ -add, -delete, --List, --clear-cache ]
-  - short: -L
-    long: --List
-    help: |
-      OPERATION: List all aliases available, and also list the associated commands.
-    conflicts: [ -add, -delete, --list, --clear-cache ]
+    conflicts: [ --add, --delete ]
   - long: --clear-cache
     help: |
       OPERATION: Clear the cache of all commands that have been run with pls.
-    conflicts: [ -add, -delete, --list, --List ]
   - short: -c
     long: --command
     arg: command
     help: |
-      The command to associate with the alias. Only relevant for --add.
-    validate: not_empty
-    private: true
+      The command to associate with the alias.
+      Pass the command as a string, newline characters (\\n) are allowed.
+      If no argument is provided, this can be used in conjunction with --list to print the command associated with the alias.
   - short: -f
     long: --force
     help: |
