@@ -1,0 +1,21 @@
+name: Run tests
+
+on:
+  pull_request_target:
+    types:
+      - opened
+    branches:
+      - 'main'
+      - 'dev'
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Shellspec
+        run: |
+          curl -fsSL https://git.io/shellspec | sh -s 0.28.0 --yes
+      - uses: actions/checkout@v2
+      - name: Run Shellspec
+        run: |
+          shellspec --shell bash --warning-as-failure -f d
