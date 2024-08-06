@@ -24,7 +24,7 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
   # cd to directory that should house the Dockerfile
   cd ./pls-test
   # download the Dockerfile
-  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/Dockerfile > Dockerfile
+  curl -sS https://raw.githubusercontent.com/codevogel/pls/main/docker/Dockerfile > Dockerfile
   # build and run the Docker container
   docker build -t plsbuntu .
   docker run -it plsbuntu
