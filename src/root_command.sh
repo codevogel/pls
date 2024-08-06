@@ -14,7 +14,6 @@ fi
 
 if [ -n "$flag_clear_cache" ]; then
   rm "$PLS_DIR/.cache.yml"
-  exit
 fi
 
 if [ -n "$flag_delete" ]; then
