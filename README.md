@@ -119,11 +119,11 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
         ```
     2. Add an alias using the `pls add` command:
        ```bash:
-       pls hello --add --command "echo 'Hello, World!'" --scope local
+       pls hello --add  --command "echo 'Hello, World!'" --scope local
        ```
-       > ℹ️ Note: This is a shorter equivalent of the above command:
+       > ℹ️ Note: As `pls` supports combining flags, this is a shorter equivalent of the above command:
        ```bash:
-       pls hello -a -c "echo 'Hello, World!'" -s local
+       pls hello -ac "echo 'Hello, World!'" -s local
        ```
 2. To execute the alias, run `pls hello`. 
     You should first be prompted to confirm that you indeed want to run this command. Enter `y` or `Y` and press `Return`.
