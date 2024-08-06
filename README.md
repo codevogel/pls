@@ -43,9 +43,10 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
   - [Operation Flags](#operation-flags)
   - [Other Flags](#other-flags)
   - [Examples](#examples)
-- [Use in main shell](#use-in-main-shell)
+- [Execute commands in the main shell](#execute-commands-in-the-main-shell)
   - [If your main shell is bash](#if-your-main-shell-is-bash)
   - [If your main shell is not bash](#if-your-main-shell-is-not-bash)
+    - [Real-world example](#real-world-example)
 - [File format](#file-format)
 - [Command cache](#command-cache)
 - [Configuration](#configuration)
@@ -184,7 +185,7 @@ These are the flags that do not represent operations. Some of them are used to p
 
 View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
 
-## Use in main shell
+## Execute commands in the main shell
 
 ### If your main shell is bash
 
@@ -235,6 +236,20 @@ We can use `plz` in our `zsh` shell:
 plz go ~/work/godot/ # cd's to ~/work/godot/ and lists the contents
 ```
 
+#### Real-world example
+Here is a real-world example of how I load my development environment for a <a href="https://godotengine.org/">Godot</a> project. In my global <code>.pls.yml</code> I have setup the following alias:
+
+```yml
+  - alias: godot
+    command: |
+      wezterm start --always-new-process -- bash -c "cd ~/work/godot/projects/tit-versus-tat && nvim .; exec zsh" &
+      disown
+      Godot_v4.2.2-stable_linux.x86_64 -e --path ~/work/godot/projects/tit-versus-tat/ --single-window &
+      disown
+      exit
+```
+Now, whenever I sit down to work on my game, I just run `plz godot` and my project loads up, along with launching a new terminal with `nvim` open in the project directory. 
+
 ## File format 
 
 `pls` uses YAML files to store aliases. YAML is a human-readable data serialization format that is easy to read and write, which should make adding commands a pretty straight-forward experience. An example of a properly formatted `.pls.yml` file is shown here:
@@ -265,9 +280,9 @@ A few points of interest here:
 ## Command cache
 
 Each time you execute an alias, `pls` stores:
-- the alias that was executed
-- the exact command that was executed
-- the path to the file where the alias was found
+- The alias that was executed
+- The exact command that was executed
+- The path to the file where the alias was found
 
 This allows `pls` to warn you when you try to execute an alias that points to a different command than the one you have previously executed. This is especially useful when you are working on a project with multiple collaborators (maybe someone has changed one of the aliases), or when you have multiple aliases with the same name in different directories.
 
