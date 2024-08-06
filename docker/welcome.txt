@@ -1,0 +1,20 @@
+Thanks for trying PLS!
+A global pls file is available in /PLS_TEST_ENV/global/pls_global.yml
+A local pls file is available in  /PLS_TEST_ENV/a/b/c/pls.yml
+
+Recommended things to try, in order:
+
+1. run "pls -l" to list all available commands.
+
+2. Run "pls" to pick and execute the command 'duplicate'. You will be prompted to verify and run it.
+
+3. Run "pls duplicate" to run it again, and confirm that verification is no longer needed.
+
+4. cd .. and run "pls -l" to list all available commands again.
+You should notice that the local commands are now gone, and the "duplicate" now refers to the global command.
+
+5. Run "pls -a my_new_alias -c "echo what an alias!" -s h" to add an alias to the 'here' context.
+You should notice that a new pls.yml has been created in the CWD.
+
+6. Explore more!
+
