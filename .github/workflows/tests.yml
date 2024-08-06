@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'DannyBen/bashly'
-          ref: 'dae0394'
+          ref: 'dae0394932687b99d1d7d35685b0bb20ad9c97e2'
           path: 'bashly'
 
       - name: Build Bashly
