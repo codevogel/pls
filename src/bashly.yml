@@ -1,5 +1,6 @@
 
 name: pls
+version: 0.1.0
 help: |
   Project Level Shortcuts (pls) is a command-line tool designed to streamline 
   your workflow by allowing you to create, manage, and execute custom aliases 
