@@ -59,6 +59,7 @@ flags:
   - short: -c
     long: --command
     arg: command
+    default: NO_ARG_PROVIDED
     help: |
       The command to associate with the alias.
       Pass the command as a string, newline characters (\\n) are allowed.
