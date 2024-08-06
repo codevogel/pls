@@ -205,10 +205,10 @@ Describe 'list_aliases_command'
       %= '   echo "global zulu"'
     }
 
-    Example '-L'
+    Example '-lp'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls -L 
+      When call ./pls -lp 
       The status should be success
       The output should eq "$(expected_output_plain)"
     End
@@ -227,10 +227,10 @@ Describe 'list_aliases_command'
       %= '   echo "global zulu"'
     }
 
-    Example '-Ls g'
+    Example '-lps g'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls -Ls g
+      When call ./pls -lps g
       The status should be success
       The output should eq "$(expected_output_global)"
     End
@@ -246,10 +246,10 @@ Describe 'list_aliases_command'
       %= '   echo "local foxtrot"'
     }
 
-    Example '-Ls l'
+    Example '-lps l'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls -Ls l 
+      When call ./pls -lps l 
       The status should be success
       The output should eq "$(expected_output_local)"
     End
@@ -261,10 +261,10 @@ Describe 'list_aliases_command'
       expected_output_local
     }
 
-    Example '-Ls a'
+    Example '-lps a'
       cat samples/valid/local_list.yml > "$TEST_PLS_FILENAME"
       cat samples/valid/global_list.yml > "$TEST_PLS_GLOBAL"
-      When call ./pls -Ls a
+      When call ./pls -lps a
       The status should be success
       The output should eq "$(expected_output_both)"
     End

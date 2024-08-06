@@ -27,58 +27,63 @@ environment_variables:
     default: $HOME/.config/pls/.plsrc
 args:
   - name: alias
-    help: The alias to execute.
+    help: |  
+      The alias to execute, add, or delete.
+      When left empty, will launch an interactive picker to select and execute an alias.
     required: false
     validate: not_empty
   - name: command_args
-    help: Arguments to pass to the command.
+    help: Optional arguments to pass to the command when executing a parameterized command.
     repeatable: true
     required: false
 flags:
   - short: -a
     long: --add
     help: |
-      OPERATION: Adds the alias with the given --command to the pls file at a desired context.
+      OPERATION: Adds a new alias for a command to the pls file at a given scope.
     needs: [ --command, --scope ]
-    conflicts: [ --delete, --list ]
+    validate: is_only_operation
   - short: -d
     long: --delete
     help: |
       OPERATION: Delete the alias from the pls file at --destination.
-      Needs a --scope <[g]lobal, [l]ocal, [h]ere>
     needs: [ --scope ]
-    conflicts: [ --add, --list ]
+    validate: is_only_operation
   - short: -l
     long: --list
     help: |
-      OPERATION: List all aliases available.
-    conflicts: [ --add, --delete ]
-  - long: --clear-cache
-    help: |
-      OPERATION: Clear the cache of all commands that have been run with pls.
+      OPERATION: List all aliases available in the current directory.
+      Or, list aliases only from --scope <[g]lobal, [l]ocal, [a]ll>.
+      Use with --print to print the command associated with each alias.
+    validate: is_only_operation
   - short: -c
     long: --command
     arg: command
-    default: NO_ARG_PROVIDED
+    validate: not_empty
     help: |
-      The command to associate with the alias.
-      Pass the command as a string, newline characters (\\n) are allowed.
-      If no argument is provided, this can be used in conjunction with --list to print the command associated with the alias.
-  - short: -f
-    long: --force
-    help: |
-      Overwrite the alias if it already exists. Only relevant for --add.
-    needs: [ --add ]
+      ARGFLAG: Supplies a command to associate with the alias in the  --add operation.
+      Pass the command as a string, newline characters ('\\\n') are allowed.
   - short: -s
     long:  --scope
     arg: scope
-    allowed: [ global, local, all, here, g, l, a, h ]
+    allowed: [ g, global, l, local, h, here, a, all ]
     help: |
-      The selected scope. Only relevant for --add (excludes opt a) and --list (excludes opt h).
+      ARGFLAG: The selected scope for --add, --delete, and --list operations.
+      The 'all' scope is exclusive to --list.
+      The 'here' scope is excluded from --list.
   - short: -p
     long: --print
     help: |
-      Print the command instead of executing  it. Only relevant when no other flags are passed.
+      Prints the command instead of executing it. Useful for piping to other commands or shells.
+      Or, if used in conjunction with --list, it additionally prints the command for each alias.
+  - short: -f
+    long: --force
+    help: |
+      Overwrite the alias if it already exists when using the --add operation.
+    needs: [ --add ]
+  - long: --clear-cache
+    help: |
+      Before doing anything, clears the cache of all commands that have been run with pls.
   - long: --this-does-nothing
     help: |
       This flag is just for testing purposes.

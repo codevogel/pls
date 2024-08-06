@@ -1,6 +1,5 @@
 list_aliases() {
-  local verbose="$1"
-
+  local verbose="${args[--print]}"
   local flag_scope="${args[--scope]}"
 
   local local_file="$(get_closest_file "$PWD" "$PLS_FILENAME")"
@@ -16,7 +15,7 @@ list_aliases() {
     fi
     local alias_query='.commands | sort_by(.alias) | .[] | .alias'
     local command_query='.commands | sort_by(.alias) | .[] | .alias + "\n" + (.command | split("\n") | map(select(. != "") | "   " + .) | join("\n"))'
-    yq e "$([[ "$should_print_command" -eq 1 ]] && echo "$command_query" || echo "$alias_query")" "$file"
+    yq e "$([[ "$should_print_command" ]] && echo "$command_query" || echo "$alias_query")" "$file"
   }
 
   if [ "$flag_scope" == "a" ] || [ "$flag_scope" == "all" ]; then
