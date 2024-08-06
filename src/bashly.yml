@@ -35,54 +35,55 @@ args:
     repeatable: true
     required: false
 flags:
-  - short: -p
-    long: --print
-    help: |
-      Print the command instead of executing  it. (Useful if you want to pipe the command into a different shell.)
   - short: -a
     long: --add
     help: |
-      OPERATION: Adds the alias with the given --command to the pls file at a desired context. 
+      OPERATION: Adds the alias with the given --command to the pls file at a desired context.
     needs: [ --command, --scope ]
-    conflicts: [ --print, --delete, --list ]
-  - short: -c
-    long: --command
-    arg: command
-    help: |
-      OPTION: The command to associate with the alias. Only relevant for --add.
-    validate: not_empty
-    conflicts:  [ --print, --delete ]
-  - short: -f
-    long: --force
-    help: |
-      OPTION: Overwrite the alias if it already exists. Only relevant for --add.
-    needs: [ --add ]
-  - short: -s
-    long:  --scope
-    arg: scope
-    allowed: [ g, l, a, h, global, local, all, here ]
-    help: |
-      OPTION: The scope of the alias. Only relevant for --add.
+    conflicts: [ -delete, --list, --List, --clear-cache ]
   - short: -d
     long: --delete
     help: |
       OPERATION: Delete the alias from the pls file at --destination.
+      Needs a --scope <[g]lobal, [l]ocal, [h]ere>
     needs: [ --scope ]
-    conflicts: [ --print, --add, --list ]
+    conflicts: [ -add, --list, --List, --clear-cache ]
   - short: -l
     long: --list
     help: |
       OPERATION: List all aliases available.
-    conflicts: [ --print, --add, --delete ]
+    conflicts: [ -add, -delete, --List, --clear-cache ]
   - short: -L
     long: --List
     help: |
       OPERATION: List all aliases available, and also list the associated commands.
-    conflicts: [ --print, --add, --delete ]
+    conflicts: [ -add, -delete, --list, --clear-cache ]
   - long: --clear-cache
     help: |
       OPERATION: Clear the cache of all commands that have been run with pls.
-    conflicts: [ --print, --add, --delete, --list ]
+    conflicts: [ -add, -delete, --list, --List ]
+  - short: -c
+    long: --command
+    arg: command
+    help: |
+      The command to associate with the alias. Only relevant for --add.
+    validate: not_empty
+    private: true
+  - short: -f
+    long: --force
+    help: |
+      Overwrite the alias if it already exists. Only relevant for --add.
+    needs: [ --add ]
+  - short: -s
+    long:  --scope
+    arg: scope
+    allowed: [ global, local, all, here, g, l, a, h ]
+    help: |
+      The selected scope. Only relevant for --add (excludes opt a) and --list (excludes opt h).
+  - short: -p
+    long: --print
+    help: |
+      Print the command instead of executing  it. Only relevant when no other flags are passed.
   - long: --this-does-nothing
     help: |
       This flag is just for testing purposes.
