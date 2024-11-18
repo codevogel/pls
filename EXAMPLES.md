@@ -87,11 +87,11 @@
 
 - `pls build -p`
    
-  Executes the command associated with the alias 'build'.
+  Prints the command associated with the alias 'build'.
 
 - `pls deploy -p`
 
-  Executes the command associated with the alias 'deploy'.
+  Prints the command associated with the alias 'deploy'.
 
 ## Clear the command cache
 
