@@ -45,6 +45,7 @@ Run your most frequently used commands with ease, e.g. `pls test` to run tests, 
   - [Operation Flags](#operation-flags)
   - [Other Flags](#other-flags)
   - [Examples](#examples)
+    - [Real World Examples](#real-world-examples)
 - [Execute commands in the main shell](#execute-commands-in-the-main-shell)
   - [If your main shell is bash](#if-your-main-shell-is-bash)
   - [If your main shell is not bash](#if-your-main-shell-is-not-bash)
@@ -186,6 +187,41 @@ These are the flags that do not represent operations. Some of them are used to p
 ### Examples
 
 View [`EXAMPLES.md` (here)](EXAMPLES.md) to see some examples of how to use commands that `pls` provides.
+
+#### Real World Examples
+
+Given the following `.pls.yml`:
+
+```yml
+commands:
+   - alias: nvimconf
+     command: |
+          cd ~/.config/nvim/lua
+   - alias: bright
+     command: |
+          sudo brightnessctl set $1
+   - alias: se
+     command: |
+          $1 & 
+          disown
+          exit
+```
+
+We can now run the following commands:
+
+```
+# Sets the display brightness to 100%
+$ pls bright 100%
+
+## The following two commands require you to 'Execute commands in the main shell' (see next section).
+
+# Takes you to a frequently used directory (in this case ~/.config/nvim/lua)
+$ plz nvimconf
+
+# Launches <executable>, disowns the process from the shell, and then closes the terminal.
+$ plz se <executable>
+```
+
 
 ## Execute commands in the main shell
 
