@@ -4,9 +4,11 @@ Project Level Shortcuts (pls) is a command-line tool designed to streamline your
 
 Run your most frequently used commands with ease, e.g. `pls test` to run tests, `pls godot` to open your Godot project and editor, `pls open-here` to open the current directory in your file manager, and whatever else you can think of!
 
-### Quick Start 🚀 
+### Demo
 
 ![demo](https://raw.githubusercontent.com/codevogel/pls/refs/heads/main/assets/img/demo.gif)
+
+### Quick Start 🚀 
 
 - **Install**
 
