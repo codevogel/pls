@@ -6,7 +6,7 @@ Run your most frequently used commands with ease, e.g. `pls test` to run tests, 
 
 ### Quick Start 🚀 
 
-![demo](https://raw.githubusercontent.com/codevogel/pls/main/assets/img/demo.gif)
+![demo](https://raw.githubusercontent.com/codevogel/pls/refs/heads/main/assets/img/demo.gif)
 
 - **Install**
 
