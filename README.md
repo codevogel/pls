@@ -6,6 +6,8 @@ Run your most frequently used commands with ease, e.g. `pls test` to run tests, 
 
 ### Quick Start 🚀 
 
+![demo](https://raw.githubusercontent.com/codevogel/pls/main/assets/img/demo.gif)
+
 - **Install**
 
   For advanced users, here's a quick guide to get `pls` working on your system.
