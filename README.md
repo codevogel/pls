@@ -198,6 +198,9 @@ Given the following `.pls.yml`:
 
 ```yml
 commands:
+   - alias: clone
+     command: |
+          git clone git@github.com:codevogel/$1.git
    - alias: nvimconf
      command: |
           cd ~/.config/nvim/lua
@@ -214,6 +217,9 @@ commands:
 We can now run the following commands:
 
 ```
+# Clone a repository under my account by name
+$ pls clone svelte-db-portal
+
 # Sets the display brightness to 100%
 $ pls bright 100%
 
