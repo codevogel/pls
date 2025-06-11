@@ -2,7 +2,7 @@
 
 ![pls logo](https://raw.githubusercontent.com/codevogel/pls/refs/heads/main/assets/img/pls.png)
 
-Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom context-aware aliases for frequently used commands using portable `.pls.yml` files. Say goodbye to messy bash profiles, and say hello to pls! 🐦
+Project Level Shortcuts (pls) is a command-line tool designed to streamline your workflow by allowing you to create, manage, and execute custom context-aware aliases for frequently used commands using portable `.pls.yml` files. Say goodbye to messy shell profiles, and say hello to pls! 🐦
 
 Run your most frequently used commands with ease, e.g. `pls test` to run tests, `pls clone my-repo` to clone a repository under your name, `pls open-here` to open the current directory in your file manager, and whatever else you can think of!
 
