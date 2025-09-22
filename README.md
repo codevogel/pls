@@ -287,18 +287,66 @@ plz go ~/work/godot/ # cd's to ~/work/godot/ and lists the contents
 ```
 
 #### Real-world example
-Here is a real-world example of how I load my development environment for a <a href="https://godotengine.org/">Godot</a> project. In my global <code>.pls.yml</code> I have setup the following alias:
+Here are some real-world examples that show how I use `pls`. 
+
+##### Easy git clones
+
+Using the alias below, I can easily clone any of my repositories by just running `pls clone <repo-name>`.
 
 ```yml
-  - alias: godot
+  - alias: clone
     command: |
-      wezterm start --always-new-process -- bash -c "cd ~/work/godot/projects/tit-versus-tat && nvim .; exec zsh" &
-      disown
-      Godot_v4.2.2-stable_linux.x86_64 -e --path ~/work/godot/projects/tit-versus-tat/ --single-window &
+      git clone git@github.com:codevogel/$1.git
+```
+
+No more remembering the full git SSH URL, or having to copy-paste it from the browser!
+Expanding this further, I use the following alias to quickly clone repositories by other users than myself:
+
+```yml
+  - alias: clone-x
+    command: |
+      git clone git@github.com:$1/$2.git
+```
+##### Launching my TMUX sessions
+
+After using `z` to jump to a project directory, I can quickly launch a default tmux session for that project by running `pls dev`:
+
+```yml
+  - alias: dev
+    command: |
+      ~/startup/default
+```
+
+This runs a tmux startup script defined in my [.dotfiles repository](https://github.com/codevogel/.dotfiles/blob/main/tmux/startup/default), which launches a tmux session with a few default windows, one running neovim, one running `lazygit`, and one running a shell.
+
+##### Running and disowning processes
+
+Sometimes I want to launch a GUI application from the terminal. But closing that very terminal would also close the application. We can use `disown` to prevent this from happening. But typing out the correct sequence of commands can become tedious. So, I created the following alias:
+
+```yml
+  - alias: se
+    command: |
+      $1 & 
       disown
       exit
 ```
-Now, whenever I sit down to work on my game, I just run `plz godot` and my project loads up, along with launching a new terminal with `nvim` open in the project directory. 
+
+Now, when I run `plz se <executable>`, it launched the executable, disowns it from the terminal, and closes the terminal.
+
+##### Switching keyboard layouts
+
+I usually type on a Sofle Choc, a split keyboard, which has CTRL and CAPS LOCK swapped in it's firmware. When I want to use my laptop keyboard, for example when I'm on the go, I need to swap these keys in software instead. I created the following alias to make this easy:
+
+```yml
+   - alias: keeb-split
+     command: |
+          sudo cat /etc/default/keyboard-split | sudo tee /etc/default/keyboard > /dev/null
+          sudo dpkg-reconfigure keyboard-configuration
+   - alias: keeb-laptop
+     command: |
+          sudo cat /etc/default/keyboard-laptop | sudo tee /etc/default/keyboard > /dev/null
+          sudo dpkg-reconfigure keyboard-configuration
+```
 
 ## File format 
 
