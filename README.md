@@ -13,7 +13,7 @@ Run your most frequently used commands with ease, e.g. `pls test` to run tests, 
 ### Quick Start 🚀
 
 - **Install**
-  Here's a quick guide to get `pls` working on your system. (Nix users: Just add [this](#nix) module to your config).
+  Here's a quick guide to get `pls` working on your system.
 
   ```bash
   # cd to directory that should house the pls script
@@ -37,6 +37,10 @@ Run your most frequently used commands with ease, e.g. `pls test` to run tests, 
   docker build -t plsbuntu . --no-cache
   docker run -it plsbuntu
   ```
+
+- **Nix**
+
+  Nix users can just add [this](#nix) module to their system.
 
 ### Table of Contents
 
