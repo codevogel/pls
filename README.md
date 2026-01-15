@@ -133,6 +133,17 @@ in
 }
 ```
 
+If you want to push your `.pls.yml` file along with your Nix repository, you can do something like this:
+
+```nix
+  home.file.".pls.yml" = {
+    source = ./.pls.yml;
+    force = true;
+  };
+```
+
+Which would symlink the file at `./.pls.yml` to `$HOME/.pls.yml`.
+
 #### Dependencies
 
 First, make sure you have the dependencies installed, then proceed to the [instructions](#instructions) below.
